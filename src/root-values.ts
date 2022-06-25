@@ -1,33 +1,39 @@
-import type {CourseModel, ProjectModel} from './models.js'
+import mongoose from 'mongoose'
+import type {CourseDbObject, ProjectDbObject} from './generated/types.js'
 
-const courses: Array<CourseModel> = [
+const {Types} = mongoose
+
+const algoId = new Types.ObjectId( )
+const herdId = new Types.ObjectId( )
+
+const courses: Array<CourseDbObject> = [
 	{
-		_id: '5',
+		_id: new Types.ObjectId( ),
 		name: 'Backend Web 2.0: RESTful Architecture',
 		description: 'Did some amazing stuff with servers!',
 	},
 	{
-		_id: '6',
+		_id: algoId,
 		name: 'Data Structures & Algorithms',
-		projects: ['3'],
+		projects: [herdId],
 	},
 ]
 
-const projects: Array<ProjectModel> = [
+const projects: Array<ProjectDbObject> = [
 	{
-		_id: '1',
+		_id: new Types.ObjectId( ),
 		name: 'Suprez',
 		description: 'Suprise Presentations!',
 	},
 	{
-		_id: '2',
+		_id: new Types.ObjectId( ),
 		name: 'Maze Generator',
 	},
 	{
-		_id: '3',
+		_id: herdId,
 		name: 'Herd Immunity',
 		description: 'Python project for DS & Algo',
-		courses: ['1'],
+		courses: [algoId],
 	},
 ]
 

@@ -8,16 +8,16 @@ type Query {
 	indexProjects: [Project!]
 }
 
-type Course {
-	id: ID!
-	name: String!
-	description: String
-	projects: [Project!]
+type Course @entity {
+	id: ID! @id
+	name: String! @column
+	description: String @column
+	projects: [Project!] @link
 }
 
-type Project {
-	id: ID!
-	name: String!
-	description: String
-	courses: [Course!]
+type Project @entity {
+	id: ID! @id
+	name: String! @column
+	description: String @column
+	courses: [Course!] @link
 }

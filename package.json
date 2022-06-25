@@ -33,6 +33,7 @@
 		"indent-gen": "yarn indent ./src/generated/**/*.ts"
 	},
 	"dependencies": {
+		"@graphql-codegen/typescript-mongodb": "^2.4.1",
 		"express": "^4.18.1",
 		"express-graphql": "^0.12.0",
 		"graphql": "^16.5.0",

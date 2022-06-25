@@ -1,9 +1,8 @@
-import type {CourseResolvers} from '../generated/types.js'
-import type {ProjectModel} from '../models.js'
+import type {CourseResolvers, ProjectDbObject} from '../generated/types.js'
 import {rootValue} from '../root-values.js'
 
 const id: CourseResolvers['id'] = (course) => (
-	course._id
+	course._id.toString( )
 )
 
 const name: CourseResolvers['name'] = (course) => (
@@ -25,7 +24,7 @@ const projects: CourseResolvers['projects'] = (course) => {
 				projectId === project._id
 			))
 		))
-		.reduce((projects: Array<ProjectModel> | null, project) => {
+		.reduce((projects: Array<ProjectDbObject> | null, project) => {
 			if (project != null) {
 				projects ??= []
 				projects.push(project)

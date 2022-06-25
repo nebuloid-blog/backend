@@ -1,5 +1,6 @@
 import type {GraphQLResolveInfo} from 'graphql'
-import type {ProjectModel, CourseModel} from '../models.js'
+
+import type {ObjectId} from 'mongodb'
 
 export type Maybe<T> = T | null
 export type InputMaybe<T> = Maybe<T>
@@ -14,6 +15,11 @@ export type Scalars = {
 	Boolean: boolean,
 	Int: number,
 	Float: number,
+}
+
+export type AdditionalEntityFields = {
+	path?: InputMaybe<Scalars['String']>,
+	type?: InputMaybe<Scalars['String']>,
 }
 
 export type Course = {
@@ -48,6 +54,19 @@ export type QueryCourseArgs = {
 
 export type QueryProjectArgs = {
 	id: Scalars['ID'],
+}
+export type CourseDbObject = {
+	description?: Maybe<string>,
+	_id: ObjectId,
+	name: string,
+	projects?: Maybe<Array<ProjectDbObject['_id']>>,
+}
+
+export type ProjectDbObject = {
+	courses?: Maybe<Array<CourseDbObject['_id']>>,
+	description?: Maybe<string>,
+	_id: ObjectId,
+	name: string,
 }
 
 
@@ -118,23 +137,72 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
-	Boolean: ResolverTypeWrapper<Scalars['Boolean']>,
-	Course: ResolverTypeWrapper<CourseModel>,
-	ID: ResolverTypeWrapper<Scalars['ID']>,
-	Project: ResolverTypeWrapper<ProjectModel>,
-	Query: ResolverTypeWrapper<{}>,
+	AdditionalEntityFields: AdditionalEntityFields,
 	String: ResolverTypeWrapper<Scalars['String']>,
+	Course: ResolverTypeWrapper<CourseDbObject>,
+	ID: ResolverTypeWrapper<Scalars['ID']>,
+	Project: ResolverTypeWrapper<ProjectDbObject>,
+	Query: ResolverTypeWrapper<{}>,
+	Boolean: ResolverTypeWrapper<Scalars['Boolean']>,
 }
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
-	Boolean: Scalars['Boolean'],
-	Course: CourseModel,
-	ID: Scalars['ID'],
-	Project: ProjectModel,
-	Query: {},
+	AdditionalEntityFields: AdditionalEntityFields,
 	String: Scalars['String'],
+	Course: CourseDbObject,
+	ID: Scalars['ID'],
+	Project: ProjectDbObject,
+	Query: {},
+	Boolean: Scalars['Boolean'],
 }
+
+export type UnionDirectiveArgs = {
+	discriminatorField?: Maybe<Scalars['String']>,
+	additionalFields?: Maybe<Array<Maybe<AdditionalEntityFields>>>,
+}
+
+export type UnionDirectiveResolver<Result, Parent, ContextType = any, Args = UnionDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>
+
+export type AbstractEntityDirectiveArgs = {
+	discriminatorField: Scalars['String'],
+	additionalFields?: Maybe<Array<Maybe<AdditionalEntityFields>>>,
+}
+
+export type AbstractEntityDirectiveResolver<Result, Parent, ContextType = any, Args = AbstractEntityDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>
+
+export type EntityDirectiveArgs = {
+	embedded?: Maybe<Scalars['Boolean']>,
+	additionalFields?: Maybe<Array<Maybe<AdditionalEntityFields>>>,
+}
+
+export type EntityDirectiveResolver<Result, Parent, ContextType = any, Args = EntityDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>
+
+export type ColumnDirectiveArgs = {
+	overrideType?: Maybe<Scalars['String']>,
+}
+
+export type ColumnDirectiveResolver<Result, Parent, ContextType = any, Args = ColumnDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>
+
+export type IdDirectiveArgs = { }
+
+export type IdDirectiveResolver<Result, Parent, ContextType = any, Args = IdDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>
+
+export type LinkDirectiveArgs = {
+	overrideType?: Maybe<Scalars['String']>,
+}
+
+export type LinkDirectiveResolver<Result, Parent, ContextType = any, Args = LinkDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>
+
+export type EmbeddedDirectiveArgs = { }
+
+export type EmbeddedDirectiveResolver<Result, Parent, ContextType = any, Args = EmbeddedDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>
+
+export type MapDirectiveArgs = {
+	path: Scalars['String'],
+}
+
+export type MapDirectiveResolver<Result, Parent, ContextType = any, Args = MapDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>
 
 export type CourseResolvers<ContextType = any, ParentType extends ResolversParentTypes['Course'] = ResolversParentTypes['Course']> = {
 	description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
@@ -163,4 +231,15 @@ export type Resolvers<ContextType = any> = {
 	Course?: CourseResolvers<ContextType>,
 	Project?: ProjectResolvers<ContextType>,
 	Query?: QueryResolvers<ContextType>,
+}
+
+export type DirectiveResolvers<ContextType = any> = {
+	union?: UnionDirectiveResolver<any, any, ContextType>,
+	abstractEntity?: AbstractEntityDirectiveResolver<any, any, ContextType>,
+	entity?: EntityDirectiveResolver<any, any, ContextType>,
+	column?: ColumnDirectiveResolver<any, any, ContextType>,
+	id?: IdDirectiveResolver<any, any, ContextType>,
+	link?: LinkDirectiveResolver<any, any, ContextType>,
+	embedded?: EmbeddedDirectiveResolver<any, any, ContextType>,
+	map?: MapDirectiveResolver<any, any, ContextType>,
 }

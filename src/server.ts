@@ -1,4 +1,5 @@
 import fs from 'fs'
+import {DIRECTIVES} from '@graphql-codegen/typescript-mongodb'
 import {makeExecutableSchema} from '@graphql-tools/schema'
 import express from 'express'
 import {graphqlHTTP} from 'express-graphql'
@@ -16,7 +17,7 @@ const main = async ( ) => {
 	// Import the schema's data types and build it with GraphQL.
 	const rawSchema = await fs.promises.readFile(SCHEMA_FILE, 'utf8')
 	const schema = makeExecutableSchema({
-		typeDefs: rawSchema,
+		typeDefs: [DIRECTIVES, rawSchema],
 		resolvers: resolvers,
 	})
 
