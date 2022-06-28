@@ -1,4 +1,5 @@
 import type {GraphQLResolveInfo} from 'graphql'
+import type {ProjectModel, CourseModel} from '../models.js'
 
 export type Maybe<T> = T | null
 export type InputMaybe<T> = Maybe<T>
@@ -14,13 +15,25 @@ export type Scalars = {
 	Float: number,
 }
 
+export type Course = {
+	__typename?: 'Course',
+	description?: Maybe<Scalars['String']>,
+	id: Scalars['ID'],
+	name: Scalars['String'],
+	projects?: Maybe<Array<Project>>,
+}
+
 export type Project = {
 	__typename?: 'Project',
+	courses?: Maybe<Array<Course>>,
+	description?: Maybe<Scalars['String']>,
+	id: Scalars['ID'],
 	name: Scalars['String'],
 }
 
 export type Query = {
 	__typename?: 'Query',
+	courses?: Maybe<Array<Course>>,
 	projects?: Maybe<Array<Project>>,
 }
 
@@ -93,7 +106,9 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
 	Boolean: ResolverTypeWrapper<Scalars['Boolean']>,
-	Project: ResolverTypeWrapper<Project>,
+	Course: ResolverTypeWrapper<CourseModel>,
+	ID: ResolverTypeWrapper<Scalars['ID']>,
+	Project: ResolverTypeWrapper<ProjectModel>,
 	Query: ResolverTypeWrapper<{}>,
 	String: ResolverTypeWrapper<Scalars['String']>,
 }
@@ -101,21 +116,36 @@ export type ResolversTypes = {
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
 	Boolean: Scalars['Boolean'],
-	Project: Project,
+	Course: CourseModel,
+	ID: Scalars['ID'],
+	Project: ProjectModel,
 	Query: {},
 	String: Scalars['String'],
 }
 
+export type CourseResolvers<ContextType = any, ParentType extends ResolversParentTypes['Course'] = ResolversParentTypes['Course']> = {
+	description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+	id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>,
+	name?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+	projects?: Resolver<Maybe<Array<ResolversTypes['Project']>>, ParentType, ContextType>,
+	__isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>,
+}
+
 export type ProjectResolvers<ContextType = any, ParentType extends ResolversParentTypes['Project'] = ResolversParentTypes['Project']> = {
+	courses?: Resolver<Maybe<Array<ResolversTypes['Course']>>, ParentType, ContextType>,
+	description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+	id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>,
 	name?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
 	__isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>,
 }
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+	courses?: Resolver<Maybe<Array<ResolversTypes['Course']>>, ParentType, ContextType>,
 	projects?: Resolver<Maybe<Array<ResolversTypes['Project']>>, ParentType, ContextType>,
 }
 
 export type Resolvers<ContextType = any> = {
+	Course?: CourseResolvers<ContextType>,
 	Project?: ProjectResolvers<ContextType>,
 	Query?: QueryResolvers<ContextType>,
 }

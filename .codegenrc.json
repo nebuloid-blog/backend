@@ -2,6 +2,12 @@
   "schema": "./src/schema.gql",
 	"generates": {
 		"./src/generated/types.ts": {
+			"config": {
+				"mappers": {
+					"Project": "../models.js#ProjectModel",
+					"Course": "../models.js#CourseModel"
+				}
+			},
 			"plugins": [
 				"typescript",
 				"typescript-resolvers"
