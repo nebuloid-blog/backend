@@ -6,6 +6,7 @@ export type InputMaybe<T> = Maybe<T>
 export type Exact<T extends Record<string, unknown>> = {[K in keyof T]: T[K]}
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {[SubKey in K]?: Maybe<T[SubKey]>}
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {[SubKey in K]: Maybe<T[SubKey]>}
+export type RequireFields<T, K extends keyof T> = Omit<T, K> & {[P in K]-?: NonNullable<T[P]>}
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
 	ID: string,
@@ -33,8 +34,20 @@ export type Project = {
 
 export type Query = {
 	__typename?: 'Query',
-	courses?: Maybe<Array<Course>>,
-	projects?: Maybe<Array<Project>>,
+	course?: Maybe<Course>,
+	indexCourses?: Maybe<Array<Course>>,
+	indexProjects?: Maybe<Array<Project>>,
+	project?: Maybe<Project>,
+}
+
+
+export type QueryCourseArgs = {
+	id: Scalars['ID'],
+}
+
+
+export type QueryProjectArgs = {
+	id: Scalars['ID'],
 }
 
 
@@ -140,8 +153,10 @@ export type ProjectResolvers<ContextType = any, ParentType extends ResolversPare
 }
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-	courses?: Resolver<Maybe<Array<ResolversTypes['Course']>>, ParentType, ContextType>,
-	projects?: Resolver<Maybe<Array<ResolversTypes['Project']>>, ParentType, ContextType>,
+	course?: Resolver<Maybe<ResolversTypes['Course']>, ParentType, ContextType, RequireFields<QueryCourseArgs, 'id'>>,
+	indexCourses?: Resolver<Maybe<Array<ResolversTypes['Course']>>, ParentType, ContextType>,
+	indexProjects?: Resolver<Maybe<Array<ResolversTypes['Project']>>, ParentType, ContextType>,
+	project?: Resolver<Maybe<ResolversTypes['Project']>, ParentType, ContextType, RequireFields<QueryProjectArgs, 'id'>>,
 }
 
 export type Resolvers<ContextType = any> = {

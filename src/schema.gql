@@ -1,8 +1,11 @@
 type Query {
 	# Courses
-	courses: [Course!]
+	course(id: ID!): Course
+	indexCourses: [Course!]
+
 	# Projects
-	projects: [Project!]
+	project(id: ID!): Project
+	indexProjects: [Project!]
 }
 
 type Course {

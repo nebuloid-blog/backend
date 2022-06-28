@@ -1,15 +1,15 @@
 interface CourseModel {
-	id: string,
+	_id: string,
 	name: string,
 	description?: string,
-	projects?: [ProjectModel['id']],
+	projects?: [ProjectModel['_id']],
 }
 
 interface ProjectModel {
-	id: string,
+	_id: string,
 	name: string,
 	description?: string,
-	courses?: [CourseModel['id']],
+	courses?: [CourseModel['_id']],
 }
 
 export type {

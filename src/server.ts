@@ -1,24 +1,29 @@
 import fs from 'fs'
+import {makeExecutableSchema} from '@graphql-tools/schema'
 import express from 'express'
 import {graphqlHTTP} from 'express-graphql'
-import {buildSchema} from 'graphql'
-import {rootValue} from './root-values.js'
+import mongoose from 'mongoose'
+import {resolvers} from './resolvers.js'
 
 const SCHEMA_FILE = 'src/schema.gql'
+const DB_URI = 'mongodb://localhost:27017/database'
 const PORT = 4000
 
 const main = async ( ) => {
 	const app = express( )
+	void mongoose.connect(DB_URI)
 
 	// Import the schema's data types and build it with GraphQL.
 	const rawSchema = await fs.promises.readFile(SCHEMA_FILE, 'utf8')
-	const schema = buildSchema(rawSchema)
+	const schema = makeExecutableSchema({
+		typeDefs: rawSchema,
+		resolvers: resolvers,
+	})
 
 	// Feed options to the express server.
 	const options = {
 		graphiql: true,
 		schema: schema,
-		rootValue: rootValue,
 	}
 
 	app.use(graphqlHTTP(options))
