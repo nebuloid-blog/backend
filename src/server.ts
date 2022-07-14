@@ -1,1 +1,3 @@
-console.log('Hello World!')
+console.info('Hello World!')
+
+export default undefined

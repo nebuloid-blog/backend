@@ -29,6 +29,11 @@
 	},
 	"dependencies": { },
 	"devDependencies": {
+		"@typescript-eslint/eslint-plugin": "^5.30.7",
+		"@typescript-eslint/parser": "^5.30.7",
+		"eslint": "^8.20.0",
+		"eslint-config-tabbify-typescript": "^0.1.6",
+		"eslint-plugin-import": "^2.26.0",
 		"nodemon": "^2.0.16",
 		"ts-node": "^10.8.1",
 		"typescript": "^4.7.4"
