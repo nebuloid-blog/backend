@@ -23,7 +23,14 @@
 	"packageManager": "yarn@3.2.1",
 	"main": "",
 	"type": "module",
-	"scripts": { },
+	"scripts": {
+		"start": "ts-node --esm src/server.ts",
+		"dev": "nodemon --exec 'yarn start'"
+	},
 	"dependencies": { },
-	"devDependencies": { }
+	"devDependencies": {
+		"nodemon": "^2.0.16",
+		"ts-node": "^10.8.1",
+		"typescript": "^4.7.4"
+	}
 }
