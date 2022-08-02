@@ -1,14 +1,28 @@
 import fs from 'fs'
 import {DIRECTIVES} from '@graphql-codegen/typescript-mongodb'
 import {makeExecutableSchema} from '@graphql-tools/schema'
+import dotenv from 'dotenv'
 import express from 'express'
 import {graphqlHTTP} from 'express-graphql'
 import mongoose from 'mongoose'
 import {resolvers} from './resolvers.js'
 
+// Load environmental variables with dotenv.
+dotenv.config( )
+
+const {
+	PORT,
+	DB_NAME,
+	DB_CLUSTER,
+	DB_USERNAME,
+	DB_PASSWORD,
+} = process.env
+
+const DB_URI
+= `mongodb+srv://${DB_USERNAME}:${DB_PASSWORD}@${DB_CLUSTER}`
++ `.mongodb.net/${DB_NAME}?retryWrites=true&w=majority`
+
 const SCHEMA_FILE = 'src/schema.gql'
-const DB_URI = 'mongodb://localhost:27017/database'
-const PORT = 4000
 
 const main = async ( ) => {
 	const app = express( )
