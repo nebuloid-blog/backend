@@ -1,5 +1,5 @@
-import type {CourseResolvers, ProjectDbObject} from '../generated/types.js'
-import {rootValue} from '../root-values.js'
+import type {CourseResolvers} from '../generated/types.js'
+import {Projects} from '../models.js'
 
 const id: CourseResolvers['id'] = (course) => (
 	course._id.toString( )
@@ -13,25 +13,9 @@ const description: CourseResolvers['description'] = (course) => (
 	course.description ?? null
 )
 
-const projects: CourseResolvers['projects'] = (course) => {
-	if (course.projects == null) {
-		return null
-	}
-	else {
-		return course.projects
-		.map((projectId) => (
-			rootValue.projects.find((project) => (
-				projectId === project._id
-			))
-		))
-		.reduce((projects: Array<ProjectDbObject> | null, project) => {
-			if (project != null) {
-				projects ??= []
-				projects.push(project)
-			}
-			return projects
-		}, null)
-	}
+const projects: CourseResolvers['projects'] = async (course) => {
+	if (course.projects == null) return null
+	else return await Projects.find({_id: {$in: course.projects}})
 }
 
 export const Course: CourseResolvers = {
