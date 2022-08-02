@@ -30,6 +30,50 @@ export type Course = {
 	projects?: Maybe<Array<Project>>,
 }
 
+export type Mutation = {
+	__typename?: 'Mutation',
+	createCourse: Scalars['ID'],
+	createProject: Scalars['ID'],
+	deleteCourse: Scalars['Boolean'],
+	deleteProject: Scalars['Boolean'],
+	updateCourse: Scalars['Boolean'],
+	updateProject: Scalars['Boolean'],
+}
+
+
+export type MutationCreateCourseArgs = {
+	description?: InputMaybe<Scalars['String']>,
+	name: Scalars['String'],
+	projects?: InputMaybe<Array<Scalars['ID']>>,
+}
+
+
+export type MutationCreateProjectArgs = {
+	courses?: InputMaybe<Array<Scalars['ID']>>,
+	description?: InputMaybe<Scalars['String']>,
+	name: Scalars['String'],
+}
+
+
+export type MutationDeleteCourseArgs = {
+	id: Scalars['ID'],
+}
+
+
+export type MutationDeleteProjectArgs = {
+	id: Scalars['ID'],
+}
+
+
+export type MutationUpdateCourseArgs = {
+	id: Scalars['ID'],
+}
+
+
+export type MutationUpdateProjectArgs = {
+	id: Scalars['ID'],
+}
+
 export type Project = {
 	__typename?: 'Project',
 	courses?: Maybe<Array<Course>>,
@@ -141,9 +185,10 @@ export type ResolversTypes = {
 	String: ResolverTypeWrapper<Scalars['String']>,
 	Course: ResolverTypeWrapper<CourseDbObject>,
 	ID: ResolverTypeWrapper<Scalars['ID']>,
+	Mutation: ResolverTypeWrapper<{}>,
+	Boolean: ResolverTypeWrapper<Scalars['Boolean']>,
 	Project: ResolverTypeWrapper<ProjectDbObject>,
 	Query: ResolverTypeWrapper<{}>,
-	Boolean: ResolverTypeWrapper<Scalars['Boolean']>,
 }
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -152,9 +197,10 @@ export type ResolversParentTypes = {
 	String: Scalars['String'],
 	Course: CourseDbObject,
 	ID: Scalars['ID'],
+	Mutation: {},
+	Boolean: Scalars['Boolean'],
 	Project: ProjectDbObject,
 	Query: {},
-	Boolean: Scalars['Boolean'],
 }
 
 export type UnionDirectiveArgs = {
@@ -212,6 +258,15 @@ export type CourseResolvers<ContextType = any, ParentType extends ResolversParen
 	__isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>,
 }
 
+export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+	createCourse?: Resolver<ResolversTypes['ID'], ParentType, ContextType, RequireFields<MutationCreateCourseArgs, 'name'>>,
+	createProject?: Resolver<ResolversTypes['ID'], ParentType, ContextType, RequireFields<MutationCreateProjectArgs, 'name'>>,
+	deleteCourse?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteCourseArgs, 'id'>>,
+	deleteProject?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteProjectArgs, 'id'>>,
+	updateCourse?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationUpdateCourseArgs, 'id'>>,
+	updateProject?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationUpdateProjectArgs, 'id'>>,
+}
+
 export type ProjectResolvers<ContextType = any, ParentType extends ResolversParentTypes['Project'] = ResolversParentTypes['Project']> = {
 	courses?: Resolver<Maybe<Array<ResolversTypes['Course']>>, ParentType, ContextType>,
 	description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
@@ -229,6 +284,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
 
 export type Resolvers<ContextType = any> = {
 	Course?: CourseResolvers<ContextType>,
+	Mutation?: MutationResolvers<ContextType>,
 	Project?: ProjectResolvers<ContextType>,
 	Query?: QueryResolvers<ContextType>,
 }

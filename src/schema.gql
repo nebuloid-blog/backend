@@ -8,6 +8,26 @@ type Query {
 	indexProjects: [Project!]
 }
 
+type Mutation {
+	# Courses
+	createCourse(
+		name: String!
+		description: String
+		projects: [ID!]
+	): ID!
+	updateCourse(id: ID!): Boolean!
+	deleteCourse(id: ID!): Boolean!
+
+	# Projects
+	createProject(
+		name: String!
+		description: String
+		courses: [ID!]
+	): ID!
+	updateProject(id: ID!): Boolean!
+	deleteProject(id: ID!): Boolean!
+}
+
 type Course @entity {
 	id: ID! @id
 	name: String! @column
