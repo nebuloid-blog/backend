@@ -1,5 +1,5 @@
 {
 	"watch": ["src/**/*"],
-	"ignore": ["node_modules/**/*"],
-	"ext": "ts"
+	"ignore": ["node_modules/**/*", "generated/**/*"],
+	"ext": "ts gql"
 }

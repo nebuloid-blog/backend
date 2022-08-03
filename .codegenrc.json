@@ -1,0 +1,21 @@
+{
+  "schema": "./src/schema.gql",
+	"require": [
+		"ts-node/register"
+	],
+	"generates": {
+		"./src/generated/types.ts": {
+			"config": {
+				"mappers": {
+					"Project": "ProjectDbObject",
+					"Course": "CourseDbObject"
+				}
+			},
+			"plugins": [
+				"typescript",
+				"typescript-mongodb",
+				"typescript-resolvers"
+			]
+		}
+	}
+}
