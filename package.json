@@ -1,0 +1,29 @@
+{
+	"name": "@noltron000/portfolio-backend",
+	"private": false,
+	"license": "MIT",
+	"version": "0.0.0",
+	"description": "GraphQL-based backend for my portfolio.",
+	"keywords": [ ],
+	"homepage": "https://github.com/noltron000-portfolio/backend#README.md",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/noltron000-portfolio/backend.git"
+	},
+	"bugs": {
+		"url": "https://github.com/noltron000-portfolio/backend/issues",
+		"email": "noltron000@gmail.com"
+	},
+	"author": {
+		"name": "noltron000",
+		"email": "noltron000@gmail.com",
+		"url": "https://noltron000.com/"
+	},
+	"contributors": [ ],
+	"packageManager": "yarn@3.2.1",
+	"main": "",
+	"type": "module",
+	"scripts": { },
+	"dependencies": { },
+	"devDependencies": { }
+}
