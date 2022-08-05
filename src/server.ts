@@ -1,14 +1,11 @@
 import fs from 'fs'
 import {DIRECTIVES} from '@graphql-codegen/typescript-mongodb'
 import {makeExecutableSchema} from '@graphql-tools/schema'
-import dotenv from 'dotenv'
 import express from 'express'
 import {graphqlHTTP} from 'express-graphql'
 import mongoose from 'mongoose'
+import {env} from './helpers/secrets.js'
 import {resolvers} from './resolvers.js'
-
-// Load environmental variables with dotenv.
-dotenv.config( )
 
 const {
 	PORT,
@@ -16,7 +13,7 @@ const {
 	DB_CLUSTER,
 	DB_USERNAME,
 	DB_PASSWORD,
-} = process.env
+} = env
 
 const DB_URI
 = `mongodb+srv://${DB_USERNAME}:${DB_PASSWORD}@${DB_CLUSTER}`
