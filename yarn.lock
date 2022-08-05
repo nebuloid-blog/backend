@@ -1300,7 +1300,7 @@ __metadata:
     "@typescript-eslint/parser": ^5.32.0
     dotenv: ^16.0.1
     eslint: ^8.21.0
-    eslint-config-tabbify-typescript: ^0.1.6
+    eslint-config-tabbify-typescript: ^0.1.7
     eslint-plugin-import: ^2.26.0
     express: ^4.18.1
     express-graphql: ^0.12.0
@@ -2998,28 +2998,28 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-config-tabbify-typescript@npm:^0.1.6":
-  version: 0.1.6
-  resolution: "eslint-config-tabbify-typescript@npm:0.1.6"
+"eslint-config-tabbify-typescript@npm:^0.1.7":
+  version: 0.1.7
+  resolution: "eslint-config-tabbify-typescript@npm:0.1.7"
   dependencies:
     "@typescript-eslint/parser": ^5.30.6
-    eslint-config-tabbify: ^0.1.9
+    eslint-config-tabbify: ^0.1.10
     eslint-import-resolver-typescript: ^3.3.0
   peerDependencies:
     "@typescript-eslint/eslint-plugin": ">=5"
     eslint: ">=8"
     eslint-plugin-import: ">=2"
-  checksum: 44dc384d2369b95d062e190b3ae7775ec7603a953e291f8a50d485238b45012b25516ce0f3afe6907760f7378e2d4d9512eae4e8f95314809ec970f64f7740d1
+  checksum: 9c9a1f9b8afe81ccdfc9e2c244905e67b4d29fd1acdaf9641638013d337fa2895644fa18ff286cb506601974f4fd467728db28fee12ba3fcdee7b65ba2e77e08
   languageName: node
   linkType: hard
 
-"eslint-config-tabbify@npm:^0.1.9":
-  version: 0.1.9
-  resolution: "eslint-config-tabbify@npm:0.1.9"
+"eslint-config-tabbify@npm:^0.1.10":
+  version: 0.1.10
+  resolution: "eslint-config-tabbify@npm:0.1.10"
   peerDependencies:
     eslint: ">=8"
     eslint-plugin-import: ">=2"
-  checksum: 3d116900228da19c1f1e5403c244f5bf00702e07afd7e41b3b0a2f45250763b45391acc0101bf3d954f484e64d095e6f47b36cb2bad0d997e5e74b64154720f2
+  checksum: 024e4647430d7f01a296662457e5d3cccb8f244cf46919e8facd2678efd6ead2cc0529665a2a933986cf91f5481c0ecc2fc20ade6517949be7d7cf80f905e194
   languageName: node
   linkType: hard
 

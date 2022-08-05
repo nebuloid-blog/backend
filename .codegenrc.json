@@ -7,8 +7,8 @@
 		"./src/generated/types.ts": {
 			"config": {
 				"mappers": {
-					"Project": "ProjectDbObject",
-					"Course": "CourseDbObject"
+					"Course": "CourseDbObject",
+					"Project": "ProjectDbObject"
 				}
 			},
 			"plugins": [
