@@ -28,6 +28,13 @@ type Mutation {
 	deleteProject(id: ID!): Boolean!
 }
 
+type User @entity {
+	id: ID! @id
+	email: String! @column
+	username: String! @column
+	password: String! @column
+}
+
 type Course @entity {
 	id: ID! @id
 	name: String! @column

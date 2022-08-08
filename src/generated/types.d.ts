@@ -99,6 +99,14 @@ export type QueryCourseArgs = {
 export type QueryProjectArgs = {
 	id: Scalars['ID'],
 }
+
+export type User = {
+	__typename?: 'User',
+	email: Scalars['String'],
+	id: Scalars['ID'],
+	password: Scalars['String'],
+	username: Scalars['String'],
+}
 export type CourseDbObject = {
 	description?: Maybe<string>,
 	_id: ObjectId,
@@ -111,6 +119,13 @@ export type ProjectDbObject = {
 	description?: Maybe<string>,
 	_id: ObjectId,
 	name: string,
+}
+
+export type UserDbObject = {
+	email: string,
+	_id: ObjectId,
+	password: string,
+	username: string,
 }
 
 
@@ -189,6 +204,7 @@ export type ResolversTypes = {
 	Boolean: ResolverTypeWrapper<Scalars['Boolean']>,
 	Project: ResolverTypeWrapper<ProjectDbObject>,
 	Query: ResolverTypeWrapper<{}>,
+	User: ResolverTypeWrapper<UserDbObject>,
 }
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -201,6 +217,7 @@ export type ResolversParentTypes = {
 	Boolean: Scalars['Boolean'],
 	Project: ProjectDbObject,
 	Query: {},
+	User: UserDbObject,
 }
 
 export type UnionDirectiveArgs = {
@@ -282,11 +299,20 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
 	project?: Resolver<Maybe<ResolversTypes['Project']>, ParentType, ContextType, RequireFields<QueryProjectArgs, 'id'>>,
 }
 
+export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
+	email?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+	id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>,
+	password?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+	username?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+	__isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>,
+}
+
 export type Resolvers<ContextType = any> = {
 	Course?: CourseResolvers<ContextType>,
 	Mutation?: MutationResolvers<ContextType>,
 	Project?: ProjectResolvers<ContextType>,
 	Query?: QueryResolvers<ContextType>,
+	User?: UserResolvers<ContextType>,
 }
 
 export type DirectiveResolvers<ContextType = any> = {
