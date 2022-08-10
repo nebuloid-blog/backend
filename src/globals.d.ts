@@ -6,6 +6,7 @@ interface DotEnv {
 	DB_CLUSTER: string,
 	DB_USERNAME: string,
 	DB_PASSWORD: string,
+	JWT_SECRET: string,
 }
 
 declare global {

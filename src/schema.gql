@@ -9,6 +9,18 @@ type Query {
 }
 
 type Mutation {
+	# Users
+	createUser(
+		email: String!
+		username: String!
+		password: String!
+	): String
+
+	signInUser(
+		username: String!
+		password: String!
+	): String
+
 	# Courses
 	createCourse(
 		name: String!

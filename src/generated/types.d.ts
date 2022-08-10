@@ -34,8 +34,10 @@ export type Mutation = {
 	__typename?: 'Mutation',
 	createCourse: Scalars['ID'],
 	createProject: Scalars['ID'],
+	createUser?: Maybe<Scalars['String']>,
 	deleteCourse: Scalars['Boolean'],
 	deleteProject: Scalars['Boolean'],
+	signInUser?: Maybe<Scalars['String']>,
 	updateCourse: Scalars['Boolean'],
 	updateProject: Scalars['Boolean'],
 }
@@ -55,6 +57,13 @@ export type MutationCreateProjectArgs = {
 }
 
 
+export type MutationCreateUserArgs = {
+	email: Scalars['String'],
+	password: Scalars['String'],
+	username: Scalars['String'],
+}
+
+
 export type MutationDeleteCourseArgs = {
 	id: Scalars['ID'],
 }
@@ -62,6 +71,12 @@ export type MutationDeleteCourseArgs = {
 
 export type MutationDeleteProjectArgs = {
 	id: Scalars['ID'],
+}
+
+
+export type MutationSignInUserArgs = {
+	password: Scalars['String'],
+	username: Scalars['String'],
 }
 
 
@@ -278,8 +293,10 @@ export type CourseResolvers<ContextType = any, ParentType extends ResolversParen
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
 	createCourse?: Resolver<ResolversTypes['ID'], ParentType, ContextType, RequireFields<MutationCreateCourseArgs, 'name'>>,
 	createProject?: Resolver<ResolversTypes['ID'], ParentType, ContextType, RequireFields<MutationCreateProjectArgs, 'name'>>,
+	createUser?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'email' | 'password' | 'username'>>,
 	deleteCourse?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteCourseArgs, 'id'>>,
 	deleteProject?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteProjectArgs, 'id'>>,
+	signInUser?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType, RequireFields<MutationSignInUserArgs, 'password' | 'username'>>,
 	updateCourse?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationUpdateCourseArgs, 'id'>>,
 	updateProject?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationUpdateProjectArgs, 'id'>>,
 }
