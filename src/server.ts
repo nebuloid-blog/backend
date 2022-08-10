@@ -1,11 +1,15 @@
 import fs from 'fs'
 import {DIRECTIVES} from '@graphql-codegen/typescript-mongodb'
 import {makeExecutableSchema} from '@graphql-tools/schema'
+import bodyParser from 'body-parser'
 import express from 'express'
 import {graphqlHTTP} from 'express-graphql'
+import {expressjwt as expressJWT} from 'express-jwt'
+import type {Request as JWTRequest} from 'express-jwt'
 import mongoose from 'mongoose'
 import {env} from './helpers/secrets.js'
 import {resolvers} from './resolvers.js'
+import type {UserContext} from './resolvers.js'
 
 const {
 	PORT,
@@ -13,6 +17,7 @@ const {
 	DB_CLUSTER,
 	DB_USERNAME,
 	DB_PASSWORD,
+	JWT_SECRET,
 } = env
 
 const DB_URI
@@ -32,13 +37,27 @@ const main = async ( ) => {
 		resolvers: resolvers,
 	})
 
-	// Feed options to the express server.
-	const options = {
-		graphiql: true,
-		schema: schema,
-	}
+	// Feed middleware & options to the express server.
+	app.use(
+		'/',
+		bodyParser.json( ),
+		expressJWT({
+			secret: JWT_SECRET,
+			algorithms: ['HS256'],
+			credentialsRequired: false,
+		}),
+		graphqlHTTP((request, response, params) => {
+			// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+			const jwtRequest = request as JWTRequest<UserContext>
+			const payload = jwtRequest.auth ?? null
 
-	app.use(graphqlHTTP(options))
+			return ({
+				graphiql: false,
+				schema: schema,
+				context: payload,
+			})
+		}),
+	)
 
 	// Finally, start the express server.
 	app.listen(PORT, ( ) => {

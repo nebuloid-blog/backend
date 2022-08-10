@@ -1319,12 +1319,14 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ^5.32.0
     "@typescript-eslint/parser": ^5.32.0
     bcrypt: ^5.0.1
+    body-parser: ^1.20.0
     dotenv: ^16.0.1
     eslint: ^8.21.0
     eslint-config-tabbify-typescript: ^0.1.7
     eslint-plugin-import: ^2.26.0
     express: ^4.18.1
     express-graphql: ^0.12.0
+    express-jwt: ^7.0.0
     graphql: ^16.5.0
     jsonwebtoken: ^8.5.1
     mongoose: ^6.5.0
@@ -1476,7 +1478,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/express@npm:^4.17.13":
+"@types/express-unless@npm:^0.5.3":
+  version: 0.5.3
+  resolution: "@types/express-unless@npm:0.5.3"
+  dependencies:
+    "@types/express": "*"
+  checksum: 5c76425ff7490123f3c072c942ae6d18bb3cbf91d5d9857c52fca1f9a3d11b72413dbfb3e4af28fdd7f745d1a443f90daadbcf7daff714d608eef10bd7c8763c
+  languageName: node
+  linkType: hard
+
+"@types/express@npm:*, @types/express@npm:^4.17.13":
   version: 4.17.13
   resolution: "@types/express@npm:4.17.13"
   dependencies:
@@ -1516,7 +1527,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jsonwebtoken@npm:^8.5.0":
+"@types/jsonwebtoken@npm:^8.5.0, @types/jsonwebtoken@npm:^8.5.8":
   version: 8.5.8
   resolution: "@types/jsonwebtoken@npm:8.5.8"
   dependencies:
@@ -2109,7 +2120,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"body-parser@npm:1.20.0":
+"body-parser@npm:1.20.0, body-parser@npm:^1.20.0":
   version: 1.20.0
   resolution: "body-parser@npm:1.20.0"
   dependencies:
@@ -3318,6 +3329,25 @@ __metadata:
   peerDependencies:
     graphql: ^14.7.0 || ^15.3.0
   checksum: c1417718edea0ef337b5efafaf9e09554fc154db241fc073d42d2cc8ebfe1b0316a5651cccf9df02bf4e9a492cdd94799e4894bc89d4b80c8d49ffeb83a97075
+  languageName: node
+  linkType: hard
+
+"express-jwt@npm:^7.0.0":
+  version: 7.7.5
+  resolution: "express-jwt@npm:7.7.5"
+  dependencies:
+    "@types/express-unless": ^0.5.3
+    "@types/jsonwebtoken": ^8.5.8
+    express-unless: ^2.0.2
+    jsonwebtoken: ^8.5.1
+  checksum: 815219a8102918e74fba2f392d2837848398beec5c1b604b8c4674881ce15f0c529a42daa7ec9e42da826e0db6cc622bd1718308e45963fae73a2b4de48dc24c
+  languageName: node
+  linkType: hard
+
+"express-unless@npm:^2.0.2":
+  version: 2.1.1
+  resolution: "express-unless@npm:2.1.1"
+  checksum: 3ae3cfdf7775f825d1bece5c6252218250c2e2d445766e46ef63882905bf864bc2b29f11beee01ab4325bbbc57ee2909c93d1745c179cab81a31926b8470adbd
   languageName: node
   linkType: hard
 

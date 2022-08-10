@@ -1,4 +1,7 @@
 type Query {
+	# Users
+	me: User
+
 	# Courses
 	course(id: ID!): Course
 	indexCourses: [Course!]
