@@ -1,6 +1,6 @@
 import type {GraphQLResolveInfo} from 'graphql'
-
 import type {ObjectId} from 'mongodb'
+import type {UserContext} from '../resolvers.js'
 
 export type Maybe<T> = T | null
 export type InputMaybe<T> = Maybe<T>
@@ -34,8 +34,10 @@ export type Mutation = {
 	__typename?: 'Mutation',
 	createCourse: Scalars['ID'],
 	createProject: Scalars['ID'],
+	createUser?: Maybe<Scalars['String']>,
 	deleteCourse: Scalars['Boolean'],
 	deleteProject: Scalars['Boolean'],
+	signInUser?: Maybe<Scalars['String']>,
 	updateCourse: Scalars['Boolean'],
 	updateProject: Scalars['Boolean'],
 }
@@ -55,6 +57,13 @@ export type MutationCreateProjectArgs = {
 }
 
 
+export type MutationCreateUserArgs = {
+	email: Scalars['String'],
+	password: Scalars['String'],
+	username: Scalars['String'],
+}
+
+
 export type MutationDeleteCourseArgs = {
 	id: Scalars['ID'],
 }
@@ -62,6 +71,12 @@ export type MutationDeleteCourseArgs = {
 
 export type MutationDeleteProjectArgs = {
 	id: Scalars['ID'],
+}
+
+
+export type MutationSignInUserArgs = {
+	password: Scalars['String'],
+	username: Scalars['String'],
 }
 
 
@@ -87,6 +102,7 @@ export type Query = {
 	course?: Maybe<Course>,
 	indexCourses?: Maybe<Array<Course>>,
 	indexProjects?: Maybe<Array<Project>>,
+	me?: Maybe<User>,
 	project?: Maybe<Project>,
 }
 
@@ -98,6 +114,14 @@ export type QueryCourseArgs = {
 
 export type QueryProjectArgs = {
 	id: Scalars['ID'],
+}
+
+export type User = {
+	__typename?: 'User',
+	email: Scalars['String'],
+	id: Scalars['ID'],
+	password: Scalars['String'],
+	username: Scalars['String'],
 }
 export type CourseDbObject = {
 	description?: Maybe<string>,
@@ -111,6 +135,13 @@ export type ProjectDbObject = {
 	description?: Maybe<string>,
 	_id: ObjectId,
 	name: string,
+}
+
+export type UserDbObject = {
+	email: string,
+	_id: ObjectId,
+	password: string,
+	username: string,
 }
 
 
@@ -189,6 +220,7 @@ export type ResolversTypes = {
 	Boolean: ResolverTypeWrapper<Scalars['Boolean']>,
 	Project: ResolverTypeWrapper<ProjectDbObject>,
 	Query: ResolverTypeWrapper<{}>,
+	User: ResolverTypeWrapper<UserDbObject>,
 }
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -201,6 +233,7 @@ export type ResolversParentTypes = {
 	Boolean: Scalars['Boolean'],
 	Project: ProjectDbObject,
 	Query: {},
+	User: UserDbObject,
 }
 
 export type UnionDirectiveArgs = {
@@ -208,49 +241,49 @@ export type UnionDirectiveArgs = {
 	additionalFields?: Maybe<Array<Maybe<AdditionalEntityFields>>>,
 }
 
-export type UnionDirectiveResolver<Result, Parent, ContextType = any, Args = UnionDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>
+export type UnionDirectiveResolver<Result, Parent, ContextType = UserContext, Args = UnionDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>
 
 export type AbstractEntityDirectiveArgs = {
 	discriminatorField: Scalars['String'],
 	additionalFields?: Maybe<Array<Maybe<AdditionalEntityFields>>>,
 }
 
-export type AbstractEntityDirectiveResolver<Result, Parent, ContextType = any, Args = AbstractEntityDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>
+export type AbstractEntityDirectiveResolver<Result, Parent, ContextType = UserContext, Args = AbstractEntityDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>
 
 export type EntityDirectiveArgs = {
 	embedded?: Maybe<Scalars['Boolean']>,
 	additionalFields?: Maybe<Array<Maybe<AdditionalEntityFields>>>,
 }
 
-export type EntityDirectiveResolver<Result, Parent, ContextType = any, Args = EntityDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>
+export type EntityDirectiveResolver<Result, Parent, ContextType = UserContext, Args = EntityDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>
 
 export type ColumnDirectiveArgs = {
 	overrideType?: Maybe<Scalars['String']>,
 }
 
-export type ColumnDirectiveResolver<Result, Parent, ContextType = any, Args = ColumnDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>
+export type ColumnDirectiveResolver<Result, Parent, ContextType = UserContext, Args = ColumnDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>
 
 export type IdDirectiveArgs = { }
 
-export type IdDirectiveResolver<Result, Parent, ContextType = any, Args = IdDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>
+export type IdDirectiveResolver<Result, Parent, ContextType = UserContext, Args = IdDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>
 
 export type LinkDirectiveArgs = {
 	overrideType?: Maybe<Scalars['String']>,
 }
 
-export type LinkDirectiveResolver<Result, Parent, ContextType = any, Args = LinkDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>
+export type LinkDirectiveResolver<Result, Parent, ContextType = UserContext, Args = LinkDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>
 
 export type EmbeddedDirectiveArgs = { }
 
-export type EmbeddedDirectiveResolver<Result, Parent, ContextType = any, Args = EmbeddedDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>
+export type EmbeddedDirectiveResolver<Result, Parent, ContextType = UserContext, Args = EmbeddedDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>
 
 export type MapDirectiveArgs = {
 	path: Scalars['String'],
 }
 
-export type MapDirectiveResolver<Result, Parent, ContextType = any, Args = MapDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>
+export type MapDirectiveResolver<Result, Parent, ContextType = UserContext, Args = MapDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>
 
-export type CourseResolvers<ContextType = any, ParentType extends ResolversParentTypes['Course'] = ResolversParentTypes['Course']> = {
+export type CourseResolvers<ContextType = UserContext, ParentType extends ResolversParentTypes['Course'] = ResolversParentTypes['Course']> = {
 	description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
 	id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>,
 	name?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
@@ -258,16 +291,18 @@ export type CourseResolvers<ContextType = any, ParentType extends ResolversParen
 	__isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>,
 }
 
-export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+export type MutationResolvers<ContextType = UserContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
 	createCourse?: Resolver<ResolversTypes['ID'], ParentType, ContextType, RequireFields<MutationCreateCourseArgs, 'name'>>,
 	createProject?: Resolver<ResolversTypes['ID'], ParentType, ContextType, RequireFields<MutationCreateProjectArgs, 'name'>>,
+	createUser?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'email' | 'password' | 'username'>>,
 	deleteCourse?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteCourseArgs, 'id'>>,
 	deleteProject?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteProjectArgs, 'id'>>,
+	signInUser?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType, RequireFields<MutationSignInUserArgs, 'password' | 'username'>>,
 	updateCourse?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationUpdateCourseArgs, 'id'>>,
 	updateProject?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationUpdateProjectArgs, 'id'>>,
 }
 
-export type ProjectResolvers<ContextType = any, ParentType extends ResolversParentTypes['Project'] = ResolversParentTypes['Project']> = {
+export type ProjectResolvers<ContextType = UserContext, ParentType extends ResolversParentTypes['Project'] = ResolversParentTypes['Project']> = {
 	courses?: Resolver<Maybe<Array<ResolversTypes['Course']>>, ParentType, ContextType>,
 	description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
 	id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>,
@@ -275,21 +310,31 @@ export type ProjectResolvers<ContextType = any, ParentType extends ResolversPare
 	__isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>,
 }
 
-export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+export type QueryResolvers<ContextType = UserContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
 	course?: Resolver<Maybe<ResolversTypes['Course']>, ParentType, ContextType, RequireFields<QueryCourseArgs, 'id'>>,
 	indexCourses?: Resolver<Maybe<Array<ResolversTypes['Course']>>, ParentType, ContextType>,
 	indexProjects?: Resolver<Maybe<Array<ResolversTypes['Project']>>, ParentType, ContextType>,
+	me?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>,
 	project?: Resolver<Maybe<ResolversTypes['Project']>, ParentType, ContextType, RequireFields<QueryProjectArgs, 'id'>>,
 }
 
-export type Resolvers<ContextType = any> = {
+export type UserResolvers<ContextType = UserContext, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
+	email?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+	id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>,
+	password?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+	username?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+	__isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>,
+}
+
+export type Resolvers<ContextType = UserContext> = {
 	Course?: CourseResolvers<ContextType>,
 	Mutation?: MutationResolvers<ContextType>,
 	Project?: ProjectResolvers<ContextType>,
 	Query?: QueryResolvers<ContextType>,
+	User?: UserResolvers<ContextType>,
 }
 
-export type DirectiveResolvers<ContextType = any> = {
+export type DirectiveResolvers<ContextType = UserContext> = {
 	union?: UnionDirectiveResolver<any, any, ContextType>,
 	abstractEntity?: AbstractEntityDirectiveResolver<any, any, ContextType>,
 	entity?: EntityDirectiveResolver<any, any, ContextType>,

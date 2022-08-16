@@ -1,4 +1,7 @@
 type Query {
+	# Users
+	me: User
+
 	# Courses
 	course(id: ID!): Course
 	indexCourses: [Course!]
@@ -9,6 +12,18 @@ type Query {
 }
 
 type Mutation {
+	# Users
+	createUser(
+		email: String!
+		username: String!
+		password: String!
+	): String
+
+	signInUser(
+		username: String!
+		password: String!
+	): String
+
 	# Courses
 	createCourse(
 		name: String!
@@ -26,6 +41,13 @@ type Mutation {
 	): ID!
 	updateProject(id: ID!): Boolean!
 	deleteProject(id: ID!): Boolean!
+}
+
+type User @entity {
+	id: ID! @id
+	email: String! @column
+	username: String! @column
+	password: String! @column
 }
 
 type Course @entity {

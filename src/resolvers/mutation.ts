@@ -1,5 +1,30 @@
+import bcrypt from 'bcrypt'
 import type {MutationResolvers} from '../generated/types.js'
-import {Courses, Projects} from '../models.js'
+import {signJWT} from '../helpers/secrets.js'
+import {Courses, Projects, Users} from '../models.js'
+
+/* USERS */
+const createUser: MutationResolvers['createUser'] = async (parent, args) => {
+	const user = await Users.create({
+		email: args.email.trim( ),
+		username: args.username.trim( ),
+		password: await bcrypt.hash(args.password, 12),
+	})
+
+	return signJWT(user)
+}
+
+const signInUser: MutationResolvers['signInUser'] = async (parent, args) => {
+	const AuthError = new Error('Incorrect username or password')
+
+	const user = await Users.findOne({where: {username: args.username}})
+	if (!user) throw AuthError
+
+	const passwordIsValid = await bcrypt.compare(args.password, user.password)
+	if (!passwordIsValid) throw AuthError
+
+	return signJWT(user)
+}
 
 /* COURSES */
 const createCourse: MutationResolvers['createCourse'] = async (parent, args) => {
@@ -34,6 +59,10 @@ const deleteProject: MutationResolvers['deleteProject'] = async (parent, args) =
 }
 
 export const Mutation: MutationResolvers = {
+	// Users
+	createUser,
+	signInUser,
+
 	// Courses
 	createCourse,
 	updateCourse,
