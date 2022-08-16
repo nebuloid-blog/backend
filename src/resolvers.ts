@@ -6,7 +6,8 @@ import {Query} from './resolvers/query.js'
 
 export const resolvers: Resolvers = {
 	Course,
-	Mutation,
 	Project,
+
 	Query,
+	Mutation,
 }

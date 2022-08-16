@@ -1,7 +1,7 @@
 import type {MutationResolvers} from '../generated/types.js'
 import {Courses, Projects} from '../models.js'
 
-// Courses
+/* COURSES */
 const createCourse: MutationResolvers['createCourse'] = async (parent, args) => {
 	const course = await Courses.create(args)
 	return course._id.toString( )
@@ -17,7 +17,7 @@ const deleteCourse: MutationResolvers['deleteCourse'] = async (parent, args) => 
 	return course.acknowledged
 }
 
-// Projects
+/* PROJECTS */
 const createProject: MutationResolvers['createProject'] = async (parent, args) => {
 	const project = await Projects.create(args)
 	return project._id.toString( )
@@ -33,13 +33,14 @@ const deleteProject: MutationResolvers['deleteProject'] = async (parent, args) =
 	return project.acknowledged
 }
 
-const Mutation: MutationResolvers = {
+export const Mutation: MutationResolvers = {
+	// Courses
 	createCourse,
 	updateCourse,
 	deleteCourse,
+
+	// Projects
 	createProject,
 	updateProject,
 	deleteProject,
 }
-
-export {Mutation}

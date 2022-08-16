@@ -4,11 +4,11 @@
 		"ts-node/register"
 	],
 	"generates": {
-		"./src/generated/types.ts": {
+		"./src/generated/types.d.ts": {
 			"config": {
 				"mappers": {
-					"Project": "ProjectDbObject",
-					"Course": "CourseDbObject"
+					"Course": "CourseDbObject",
+					"Project": "ProjectDbObject"
 				}
 			},
 			"plugins": [

@@ -50,7 +50,7 @@
 		"@typescript-eslint/eslint-plugin": "^5.32.0",
 		"@typescript-eslint/parser": "^5.32.0",
 		"eslint": "^8.21.0",
-		"eslint-config-tabbify-typescript": "^0.1.6",
+		"eslint-config-tabbify-typescript": "^0.1.7",
 		"eslint-plugin-import": "^2.26.0",
 		"nodemon": "^2.0.19",
 		"replace-in-files-cli": "^2.0.0",
