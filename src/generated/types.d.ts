@@ -120,7 +120,6 @@ export type User = {
 	__typename?: 'User',
 	email: Scalars['String'],
 	id: Scalars['ID'],
-	password: Scalars['String'],
 	username: Scalars['String'],
 }
 export type CourseDbObject = {
@@ -140,8 +139,8 @@ export type ProjectDbObject = {
 export type UserDbObject = {
 	email: string,
 	_id: ObjectId,
-	password: string,
 	username: string,
+	password: string,
 }
 
 
@@ -321,7 +320,6 @@ export type QueryResolvers<ContextType = Context, ParentType extends ResolversPa
 export type UserResolvers<ContextType = Context, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
 	email?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
 	id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>,
-	password?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
 	username?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
 	__isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>,
 }
