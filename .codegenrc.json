@@ -6,7 +6,7 @@
 	"generates": {
 		"./src/generated/types.d.ts": {
 			"config": {
-				"contextType": "../resolvers.js#UserContext",
+				"contextType": "../context.js#Context",
 				"mappers": {
 					"User": "UserDbObject",
 					"Course": "CourseDbObject",
