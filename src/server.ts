@@ -7,9 +7,9 @@ import {graphqlHTTP} from 'express-graphql'
 import {expressjwt as expressJWT} from 'express-jwt'
 import type {Request as JWTRequest} from 'express-jwt'
 import mongoose from 'mongoose'
+import type {Context} from './context.js'
 import {env} from './helpers/secrets.js'
 import {resolvers} from './resolvers.js'
-import type {UserContext} from './resolvers.js'
 
 const {
 	PORT,
@@ -48,7 +48,7 @@ const main = async ( ) => {
 		}),
 		graphqlHTTP((request, response, params) => {
 			// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-			const jwtRequest = request as JWTRequest<UserContext>
+			const jwtRequest = request as JWTRequest<Context>
 			const payload = jwtRequest.auth ?? null
 
 			return ({

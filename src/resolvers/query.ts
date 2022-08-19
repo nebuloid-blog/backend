@@ -3,7 +3,7 @@ import {Courses, Projects} from '../models.js'
 
 /* USERS */
 const me: QueryResolvers['me'] = (parent, args, context) => (
-	context.user
+	context.user ?? null
 )
 
 /* COURSES */

@@ -43,11 +43,14 @@ type Mutation {
 	deleteProject(id: ID!): Boolean!
 }
 
-type User @entity {
+type User @entity (
+	additionalFields: [{
+		path: "password", type: "string"
+	}]
+) {
 	id: ID! @id
 	email: String! @column
 	username: String! @column
-	password: String! @column
 }
 
 type Course @entity {
