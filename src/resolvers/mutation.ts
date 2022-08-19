@@ -17,8 +17,8 @@ const createUser: MutationResolvers['createUser'] = async (parent, args) => {
 const signInUser: MutationResolvers['signInUser'] = async (parent, args) => {
 	const AuthError = new Error('Incorrect username or password')
 
-	const user = await Users.findOne({where: {username: args.username}})
-	if (!user) throw AuthError
+	const user = await Users.findOne({username: args.username})
+	if (user == null) throw AuthError
 
 	const passwordIsValid = await bcrypt.compare(args.password, user.password)
 	if (!passwordIsValid) throw AuthError
