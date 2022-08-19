@@ -1,13 +1,13 @@
 type Query {
 	# Users
-	me: User
+	getMe: User
 
 	# Courses
-	course(id: ID!): Course
+	getCourse(id: ID!): Course
 	indexCourses: [Course!]
 
 	# Projects
-	project(id: ID!): Project
+	getProject(id: ID!): Project
 	indexProjects: [Project!]
 }
 

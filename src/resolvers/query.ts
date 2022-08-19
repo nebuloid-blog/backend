@@ -2,12 +2,12 @@ import {Courses, Projects} from '../models.js'
 import type {QueryResolvers as Resolvers} from '../types/generated/schema.js'
 
 /* USERS */
-const me: Resolvers['me'] = (parent, args, context) => (
+const getMe: Resolvers['getMe'] = (parent, args, context) => (
 	context.user ?? null
 )
 
 /* COURSES */
-const course: Resolvers['course'] = async (parent, args) => (
+const getCourse: Resolvers['getCourse'] = async (parent, args) => (
 	await Courses.findOne({id: args.id}) ?? null
 )
 
@@ -16,7 +16,7 @@ const indexCourses: Resolvers['indexCourses'] = async (parent, args) => (
 )
 
 /* PROJECTS */
-const project: Resolvers['project'] = async (parent, args) => (
+const getProject: Resolvers['getProject'] = async (parent, args) => (
 	await Projects.findOne({id: args.id}) ?? null
 )
 
@@ -26,13 +26,13 @@ const indexProjects: Resolvers['indexProjects'] = async (parent, args) => (
 
 export const Query: Resolvers = {
 	// Users
-	me,
+	getMe,
 
 	// Courses
-	course,
+	getCourse,
 	indexCourses,
 
 	// Projects
-	project,
+	getProject,
 	indexProjects,
 }

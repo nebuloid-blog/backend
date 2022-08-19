@@ -99,20 +99,20 @@ export type Project = {
 
 export type Query = {
 	__typename?: 'Query',
-	course?: Maybe<Course>,
+	getCourse?: Maybe<Course>,
+	getMe?: Maybe<User>,
+	getProject?: Maybe<Project>,
 	indexCourses?: Maybe<Array<Course>>,
 	indexProjects?: Maybe<Array<Project>>,
-	me?: Maybe<User>,
-	project?: Maybe<Project>,
 }
 
 
-export type QueryCourseArgs = {
+export type QueryGetCourseArgs = {
 	id: Scalars['ID'],
 }
 
 
-export type QueryProjectArgs = {
+export type QueryGetProjectArgs = {
 	id: Scalars['ID'],
 }
 
@@ -310,11 +310,11 @@ export type ProjectResolvers<ContextType = Context, ParentType extends Resolvers
 }
 
 export type QueryResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-	course?: Resolver<Maybe<ResolversTypes['Course']>, ParentType, ContextType, RequireFields<QueryCourseArgs, 'id'>>,
+	getCourse?: Resolver<Maybe<ResolversTypes['Course']>, ParentType, ContextType, RequireFields<QueryGetCourseArgs, 'id'>>,
+	getMe?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>,
+	getProject?: Resolver<Maybe<ResolversTypes['Project']>, ParentType, ContextType, RequireFields<QueryGetProjectArgs, 'id'>>,
 	indexCourses?: Resolver<Maybe<Array<ResolversTypes['Course']>>, ParentType, ContextType>,
 	indexProjects?: Resolver<Maybe<Array<ResolversTypes['Project']>>, ParentType, ContextType>,
-	me?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>,
-	project?: Resolver<Maybe<ResolversTypes['Project']>, ParentType, ContextType, RequireFields<QueryProjectArgs, 'id'>>,
 }
 
 export type UserResolvers<ContextType = Context, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
