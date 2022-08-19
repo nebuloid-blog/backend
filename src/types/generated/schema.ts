@@ -55,6 +55,7 @@ export type MutationCreateProjectArgs = {
 export type MutationCreateUserArgs = {
 	email: Scalars['String'],
 	password: Scalars['String'],
+	role?: InputMaybe<Role>,
 	username: Scalars['String'],
 }
 
@@ -111,10 +112,17 @@ export type QueryGetProjectArgs = {
 	id: Scalars['ID'],
 }
 
+export enum Role {
+	GUEST = 'GUEST',
+	OWNER = 'OWNER',
+	USER = 'USER',
+}
+
 export type User = {
 	__typename?: 'User',
 	email: Scalars['String'],
 	id: Scalars['ID'],
+	role: Role,
 	username: Scalars['String'],
 }
 
@@ -139,6 +147,7 @@ export type ProjectDbObject = {
 export type UserDbObject = {
 	email: string,
 	_id: ObjectId,
+	role: string,
 	username: string,
 	password: string,
 }
@@ -218,6 +227,7 @@ export type ResolversTypes = {
 	Boolean: ResolverTypeWrapper<Scalars['Boolean']>,
 	Project: ResolverTypeWrapper<ProjectDbObject>,
 	Query: ResolverTypeWrapper<{}>,
+	Role: Role,
 	User: ResolverTypeWrapper<UserDbObject>,
 	AdditionalEntityFields: AdditionalEntityFields,
 }
@@ -320,6 +330,7 @@ export type QueryResolvers<ContextType = Context, ParentType extends ResolversPa
 export type UserResolvers<ContextType = Context, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
 	email?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
 	id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>,
+	role?: Resolver<ResolversTypes['Role'], ParentType, ContextType>,
 	username?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
 	__isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>,
 }
