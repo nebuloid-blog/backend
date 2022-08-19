@@ -1,18 +1,18 @@
-import type {UserResolvers} from '../types/generated/schema.js'
+import type {UserResolvers as Resolvers} from '../types/generated/schema.js'
 
-const id: UserResolvers['id'] = (user) => (
+const id: Resolvers['id'] = (user) => (
 	user._id.toString( )
 )
 
-const email: UserResolvers['email'] = (user) => (
+const email: Resolvers['email'] = (user) => (
 	user.email
 )
 
-const username: UserResolvers['username'] = (user) => (
+const username: Resolvers['username'] = (user) => (
 	user.username
 )
 
-export const User: UserResolvers = {
+export const User: Resolvers = {
 	id,
 	email,
 	username,
