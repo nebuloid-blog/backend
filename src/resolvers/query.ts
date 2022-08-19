@@ -1,5 +1,5 @@
-import type {QueryResolvers} from '../generated/types.js'
 import {Courses, Projects} from '../models.js'
+import type {QueryResolvers} from '../types/generated/schema.js'
 
 /* USERS */
 const me: QueryResolvers['me'] = (parent, args, context) => (

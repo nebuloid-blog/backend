@@ -7,9 +7,9 @@ import {graphqlHTTP} from 'express-graphql'
 import {expressjwt as expressJWT} from 'express-jwt'
 import type {Request as JWTRequest} from 'express-jwt'
 import mongoose from 'mongoose'
-import type {Context} from './context.js'
 import {env} from './helpers/secrets.js'
 import {resolvers} from './resolvers.js'
+import type {Context} from './types/context.js'
 
 const {
 	PORT,

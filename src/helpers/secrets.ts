@@ -1,7 +1,7 @@
 import dotenv from 'dotenv'
 import jwt from 'jsonwebtoken'
-import type {UserDbObject} from '../generated/types.js'
-import type DotEnv from '../globals.js'
+import type {UserDbObject} from '../types/generated/schema.js'
+import type {DotEnv} from '../types/globals.js'
 
 // Load environmental variables with dotenv.
 dotenv.config( )
@@ -11,11 +11,10 @@ dotenv.config( )
 const env: DotEnv = process.env
 
 // Out of brevity/laziness, centralize the jwt.sign() method here.
-const {JWT_SECRET} = env
 const signJWT = (payload: UserDbObject) => {
 	const token = jwt.sign(
 		{user: payload},
-		JWT_SECRET,
+		env.JWT_SECRET,
 		{expiresIn: '3d'},
 	)
 	return token

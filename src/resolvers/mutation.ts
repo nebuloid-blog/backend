@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt'
-import type {MutationResolvers} from '../generated/types.js'
 import {signJWT} from '../helpers/secrets.js'
 import {Courses, Projects, Users} from '../models.js'
+import type {MutationResolvers} from '../types/generated/schema.js'
 
 /* USERS */
 const createUser: MutationResolvers['createUser'] = async (parent, args) => {

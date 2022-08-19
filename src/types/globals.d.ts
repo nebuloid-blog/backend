@@ -15,4 +15,4 @@ declare global {
 	}
 }
 
-export default DotEnv
+export type {DotEnv}
