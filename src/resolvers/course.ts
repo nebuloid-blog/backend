@@ -1,24 +1,24 @@
-import type {CourseResolvers} from '../generated/types.js'
 import {Projects} from '../models.js'
+import type {CourseResolvers as Resolvers} from '../types/generated/schema.js'
 
-const id: CourseResolvers['id'] = (course) => (
+const id: Resolvers['id'] = (course) => (
 	course._id.toString( )
 )
 
-const name: CourseResolvers['name'] = (course) => (
+const name: Resolvers['name'] = (course) => (
 	course.name
 )
 
-const description: CourseResolvers['description'] = (course) => (
+const description: Resolvers['description'] = (course) => (
 	course.description ?? null
 )
 
-const projects: CourseResolvers['projects'] = async (course) => {
+const projects: Resolvers['projects'] = async (course) => {
 	if (course.projects == null) return null
 	else return await Projects.find({_id: {$in: course.projects}})
 }
 
-export const Course: CourseResolvers = {
+export const Course: Resolvers = {
 	id,
 	name,
 	description,

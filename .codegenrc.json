@@ -4,7 +4,7 @@
 		"ts-node/register"
 	],
 	"generates": {
-		"./src/generated/types.d.ts": {
+		"./src/types/generated/schema.d.ts": {
 			"config": {
 				"contextType": "../context.js#Context",
 				"mappers": {

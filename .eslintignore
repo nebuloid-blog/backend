@@ -2,4 +2,4 @@
 dist
 drafts
 node_modules
-src/generated
+generated

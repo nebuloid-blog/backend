@@ -1,13 +1,13 @@
 type Query {
 	# Users
-	me: User
+	getMe: User
 
 	# Courses
-	course(id: ID!): Course
+	getCourse(id: ID!): Course
 	indexCourses: [Course!]
 
 	# Projects
-	project(id: ID!): Project
+	getProject(id: ID!): Project
 	indexProjects: [Project!]
 }
 
@@ -30,6 +30,7 @@ type Mutation {
 		description: String
 		projects: [ID!]
 	): ID!
+
 	updateCourse(id: ID!): Boolean!
 	deleteCourse(id: ID!): Boolean!
 
@@ -39,13 +40,15 @@ type Mutation {
 		description: String
 		courses: [ID!]
 	): ID!
+
 	updateProject(id: ID!): Boolean!
 	deleteProject(id: ID!): Boolean!
 }
 
 type User @entity (
 	additionalFields: [{
-		path: "password", type: "string"
+		path: "password",
+		type: "string",
 	}]
 ) {
 	id: ID! @id

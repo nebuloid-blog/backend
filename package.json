@@ -28,9 +28,9 @@
 		"dev": "nodemon --exec 'yarn start'",
 		"codegen": "graphql-codegen --config .codegenrc.json",
 		"lint": "eslint ./src/**/*.ts",
-		"lint-gen": "eslint ./src/generated/**/*.ts --no-ignore --rule '@typescript-eslint/consistent-type-definitions: 0'",
+		"lint-gen": "eslint ./src/**/generated/**/*.ts --no-ignore --rule '@typescript-eslint/consistent-type-definitions: 0'",
 		"indent": "replace-in-files --string='  ' --replacement='\t'",
-		"indent-gen": "yarn indent ./src/generated/**/*.ts"
+		"indent-gen": "yarn indent ./src/**/generated/**/*.ts"
 	},
 	"dependencies": {
 		"@graphql-codegen/typescript-mongodb": "^2.4.2",
