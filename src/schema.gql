@@ -33,6 +33,8 @@ type Mutation {
 		password: String!
 	): String
 
+	deleteUser(id: ID!): Boolean!
+
 	# Courses
 	createCourse(
 		name: String!

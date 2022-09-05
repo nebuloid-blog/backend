@@ -32,6 +32,7 @@ export type Mutation = {
 	createUser?: Maybe<Scalars['String']>,
 	deleteCourse: Scalars['Boolean'],
 	deleteProject: Scalars['Boolean'],
+	deleteUser: Scalars['Boolean'],
 	signInUser?: Maybe<Scalars['String']>,
 	updateCourse: Scalars['Boolean'],
 	updateProject: Scalars['Boolean'],
@@ -66,6 +67,11 @@ export type MutationDeleteCourseArgs = {
 
 
 export type MutationDeleteProjectArgs = {
+	id: Scalars['ID'],
+}
+
+
+export type MutationDeleteUserArgs = {
 	id: Scalars['ID'],
 }
 
@@ -306,6 +312,7 @@ export type MutationResolvers<ContextType = Context, ParentType extends Resolver
 	createUser?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'email' | 'password' | 'username'>>,
 	deleteCourse?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteCourseArgs, 'id'>>,
 	deleteProject?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteProjectArgs, 'id'>>,
+	deleteUser?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteUserArgs, 'id'>>,
 	signInUser?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType, RequireFields<MutationSignInUserArgs, 'password' | 'username'>>,
 	updateCourse?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationUpdateCourseArgs, 'id'>>,
 	updateProject?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationUpdateProjectArgs, 'id'>>,

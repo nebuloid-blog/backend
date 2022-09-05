@@ -1,6 +1,9 @@
 import bcrypt from 'bcrypt'
 import {authenticateUser} from '../helpers/authentication.js'
-import {authorizeRoleAccess} from '../helpers/authorization.js'
+import {
+	authorizeRoleAccess,
+	authorizeOwnership,
+} from '../helpers/authorization.js'
 import {signJWT} from '../helpers/secrets.js'
 import {Courses, Projects, Users} from '../models.js'
 import type {MutationResolvers as Resolvers} from '../types/generated/schema.js'
@@ -23,6 +26,16 @@ const signInUser: Resolvers['signInUser'] = async (parent, args, context) => {
 	const user = await Users.findOne({username: args.username})
 
 	return signJWT(user)
+}
+
+const deleteUser: Resolvers['deleteUser'] = async (parent, args, context) => {
+	await Promise.any([
+		authorizeOwnership(context.user, args.id),
+		authorizeRoleAccess(context.user, Role.OWNER),
+	])
+
+	const user = await Users.deleteOne({_id: args.id})
+	return user.acknowledged
 }
 
 /* COURSES */
@@ -73,6 +86,7 @@ export const Mutation: Resolvers = {
 	// Users
 	createUser,
 	signInUser,
+	deleteUser,
 
 	// Courses
 	createCourse,
