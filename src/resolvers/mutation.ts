@@ -1,4 +1,5 @@
 import bcrypt from 'bcrypt'
+import {authenticateUser} from '../helpers/authentication.js'
 import {signJWT} from '../helpers/secrets.js'
 import {Courses, Projects, Users} from '../models.js'
 import type {MutationResolvers as Resolvers} from '../types/generated/schema.js'
@@ -14,14 +15,10 @@ const createUser: Resolvers['createUser'] = async (parent, args) => {
 	return signJWT(user)
 }
 
-const signInUser: Resolvers['signInUser'] = async (parent, args) => {
-	const AuthError = new Error('Incorrect username or password')
-
+const signInUser: Resolvers['signInUser'] = async (parent, args, context) => {
+	// Check username & password, and get info via username if good-to-go.
+	await authenticateUser(args.username, args.password)
 	const user = await Users.findOne({username: args.username})
-	if (user == null) throw AuthError
-
-	const passwordIsValid = await bcrypt.compare(args.password, user.password)
-	if (!passwordIsValid) throw AuthError
 
 	return signJWT(user)
 }
