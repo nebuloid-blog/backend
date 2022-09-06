@@ -17,11 +17,6 @@ export type Scalars = {
 	Float: number,
 }
 
-export type AdditionalEntityFields = {
-	path?: InputMaybe<Scalars['String']>,
-	type?: InputMaybe<Scalars['String']>,
-}
-
 export type Course = {
 	__typename?: 'Course',
 	description?: Maybe<Scalars['String']>,
@@ -122,6 +117,11 @@ export type User = {
 	id: Scalars['ID'],
 	username: Scalars['String'],
 }
+
+export type AdditionalEntityFields = {
+	path?: InputMaybe<Scalars['String']>,
+	type?: InputMaybe<Scalars['String']>,
+}
 export type CourseDbObject = {
 	description?: Maybe<string>,
 	_id: ObjectId,
@@ -211,28 +211,28 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
-	AdditionalEntityFields: AdditionalEntityFields,
-	String: ResolverTypeWrapper<Scalars['String']>,
 	Course: ResolverTypeWrapper<CourseDbObject>,
+	String: ResolverTypeWrapper<Scalars['String']>,
 	ID: ResolverTypeWrapper<Scalars['ID']>,
 	Mutation: ResolverTypeWrapper<{}>,
 	Boolean: ResolverTypeWrapper<Scalars['Boolean']>,
 	Project: ResolverTypeWrapper<ProjectDbObject>,
 	Query: ResolverTypeWrapper<{}>,
 	User: ResolverTypeWrapper<UserDbObject>,
+	AdditionalEntityFields: AdditionalEntityFields,
 }
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
-	AdditionalEntityFields: AdditionalEntityFields,
-	String: Scalars['String'],
 	Course: CourseDbObject,
+	String: Scalars['String'],
 	ID: Scalars['ID'],
 	Mutation: {},
 	Boolean: Scalars['Boolean'],
 	Project: ProjectDbObject,
 	Query: {},
 	User: UserDbObject,
+	AdditionalEntityFields: AdditionalEntityFields,
 }
 
 export type UnionDirectiveArgs = {
