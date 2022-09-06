@@ -1,3 +1,11 @@
+enum Role {
+	GUEST
+	USER
+	OWNER
+	# ADMINISTRATOR
+	# MODERATOR
+}
+
 type Query {
 	# Users
 	getMe: User
@@ -17,12 +25,15 @@ type Mutation {
 		email: String!
 		username: String!
 		password: String!
+		role: Role
 	): String
 
 	signInUser(
 		username: String!
 		password: String!
 	): String
+
+	deleteUser(id: ID!): Boolean!
 
 	# Courses
 	createCourse(
@@ -54,6 +65,7 @@ type User @entity (
 	id: ID! @id
 	email: String! @column
 	username: String! @column
+	role: Role! @column
 }
 
 type Course @entity {

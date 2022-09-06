@@ -4,13 +4,16 @@
 		"ts-node/register"
 	],
 	"generates": {
-		"./src/types/generated/schema.d.ts": {
+		"./src/types/generated/schema.ts": {
 			"config": {
 				"contextType": "../context.js#Context",
 				"mappers": {
 					"User": "UserDbObject",
 					"Course": "CourseDbObject",
 					"Project": "ProjectDbObject"
+				},
+				"namingConvention": {
+					"enumValues": "keep"
 				}
 			},
 			"plugins": [

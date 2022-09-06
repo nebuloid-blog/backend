@@ -11,7 +11,9 @@ dotenv.config( )
 const env: DotEnv = process.env
 
 // Out of brevity/laziness, centralize the jwt.sign() method here.
-const signJWT = (payload: UserDbObject) => {
+const signJWT = (payload: UserDbObject | null) => {
+	if (payload == null) return null
+
 	const token = jwt.sign(
 		{user: payload},
 		env.JWT_SECRET,
