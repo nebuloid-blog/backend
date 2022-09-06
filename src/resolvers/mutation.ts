@@ -1,11 +1,13 @@
 import bcrypt from 'bcrypt'
 import {authenticateUser} from '../helpers/authentication.js'
+import {authorizeRoleAccess} from '../helpers/authorization.js'
 import {signJWT} from '../helpers/secrets.js'
 import {Courses, Projects, Users} from '../models.js'
 import type {MutationResolvers as Resolvers} from '../types/generated/schema.js'
+import {Role} from '../types/generated/schema.js'
 
 /* USERS */
-const createUser: Resolvers['createUser'] = async (parent, args) => {
+const createUser: Resolvers['createUser'] = async (parent, args, context) => {
 	const user = await Users.create({
 		email: args.email.trim( ),
 		username: args.username.trim( ),
@@ -24,33 +26,45 @@ const signInUser: Resolvers['signInUser'] = async (parent, args, context) => {
 }
 
 /* COURSES */
-const createCourse: Resolvers['createCourse'] = async (parent, args) => {
+const createCourse: Resolvers['createCourse'] = async (parent, args, context) => {
+	await authorizeRoleAccess(context.user, Role.OWNER)
+
 	const course = await Courses.create(args)
 	return course._id.toString( )
 }
 
-const updateCourse: Resolvers['updateCourse'] = async (parent, args) => {
+const updateCourse: Resolvers['updateCourse'] = async (parent, args, context) => {
+	await authorizeRoleAccess(context.user, Role.OWNER)
+
 	const course = await Courses.updateOne({_id: args.id})
 	return course.acknowledged
 }
 
-const deleteCourse: Resolvers['deleteCourse'] = async (parent, args) => {
+const deleteCourse: Resolvers['deleteCourse'] = async (parent, args, context) => {
+	await authorizeRoleAccess(context.user, Role.OWNER)
+
 	const course = await Courses.deleteOne({_id: args.id})
 	return course.acknowledged
 }
 
 /* PROJECTS */
-const createProject: Resolvers['createProject'] = async (parent, args) => {
+const createProject: Resolvers['createProject'] = async (parent, args, context) => {
+	await authorizeRoleAccess(context.user, Role.OWNER)
+
 	const project = await Projects.create(args)
 	return project._id.toString( )
 }
 
-const updateProject: Resolvers['updateProject'] = async (parent, args) => {
+const updateProject: Resolvers['updateProject'] = async (parent, args, context) => {
+	await authorizeRoleAccess(context.user, Role.OWNER)
+
 	const project = await Projects.updateOne({_id: args.id})
 	return project.acknowledged
 }
 
-const deleteProject: Resolvers['deleteProject'] = async (parent, args) => {
+const deleteProject: Resolvers['deleteProject'] = async (parent, args, context) => {
+	await authorizeRoleAccess(context.user, Role.OWNER)
+
 	const project = await Projects.deleteOne({_id: args.id})
 	return project.acknowledged
 }
