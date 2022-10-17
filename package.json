@@ -1,17 +1,17 @@
 {
-	"name": "@noltron000/portfolio-backend",
+	"name": "@noltron000/nebuloid",
 	"private": false,
 	"license": "MIT",
 	"version": "0.0.0",
 	"description": "GraphQL-based backend for my portfolio.",
 	"keywords": [ ],
-	"homepage": "https://github.com/noltron000-portfolio/backend#README.md",
+	"homepage": "https://api.nebuloid.dev",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/noltron000-portfolio/backend.git"
+		"url": "git+https://github.com/nebuloid-blog/backend.git"
 	},
 	"bugs": {
-		"url": "https://github.com/noltron000-portfolio/backend/issues",
+		"url": "https://github.com/nebuloid-blog/backend/issues",
 		"email": "noltron000@gmail.com"
 	},
 	"author": {
@@ -21,45 +21,54 @@
 	},
 	"contributors": [ ],
 	"packageManager": "yarn@3.2.1",
-	"main": "",
+	"main": "./src/server.ts",
 	"type": "module",
 	"scripts": {
-		"start": "yarn codegen && yarn lint-gen --fix; yarn indent-gen && ts-node --esm src/server.ts",
-		"dev": "nodemon --exec 'yarn start'",
-		"codegen": "graphql-codegen --config .codegenrc.json",
-		"lint": "eslint ./src/**/*.ts",
-		"lint-gen": "eslint ./src/**/generated/**/*.ts --no-ignore --rule '@typescript-eslint/consistent-type-definitions: 0'",
+		"start": "ts-node --transpile-only --esm ./src/server.ts",
+		"start:dev": "echo initializing... && ts-node --esm ./src/server.ts",
+		"start:watch": "echo watching... && nodemon --exec 'yarn start:dev'",
+		"dev": "yarn start:dev",
+		"watch": "yarn start:watch",
+
 		"indent": "replace-in-files --string='  ' --replacement='\t'",
-		"indent-gen": "yarn indent ./src/**/generated/**/*.ts"
+
+		"generate":
+			"yarn generate:code && yarn generate:lint --fix; yarn generate:indent",
+		"generate:indent":
+			"yarn indent ./src/**/generated/**/*.ts",
+		"generate:code":
+			"echo generating... && graphql-codegen --config .codegenrc.json",
+		"generate:lint":
+			"echo linting... && eslint ./src/**/generated/**/*.ts --no-ignore --rule '@typescript-eslint/consistent-type-definitions: 0'"
 	},
 	"dependencies": {
-		"@graphql-codegen/typescript-mongodb": "^2.4.3",
-		"bcrypt": "^5.0.1",
-		"body-parser": "^1.20.0",
-		"dotenv": "^16.0.2",
-		"express": "^4.18.1",
+		"@graphql-codegen/typescript-mongodb": "^2.4.4",
+		"@graphql-tools/schema": "^9.0.4",
+		"bcrypt": "^5.1.0",
+		"body-parser": "^1.20.1",
+		"dotenv": "^16.0.3",
+		"express": "^4.18.2",
 		"express-graphql": "^0.12.0",
 		"express-jwt": "^7.7.5",
 		"graphql": "^16.6.0",
 		"jsonwebtoken": "^8.5.1",
-		"mongoose": "^6.5.4"
+		"mongoose": "^6.6.5",
+		"ts-node": "^10.9.1"
 	},
 	"devDependencies": {
-		"@graphql-codegen/cli": "2.12.0",
-		"@graphql-codegen/typescript": "2.7.3",
-		"@graphql-codegen/typescript-resolvers": "2.7.3",
-		"@graphql-tools/schema": "^9.0.3",
+		"@graphql-codegen/cli": "^2.13.7",
+		"@graphql-codegen/typescript": "^2.7.4",
+		"@graphql-codegen/typescript-resolvers": "^2.7.4",
 		"@types/bcrypt": "^5.0.0",
-		"@types/express": "^4.17.13",
-		"@types/node": "^18.7.15",
-		"@typescript-eslint/eslint-plugin": "^5.36.2",
-		"@typescript-eslint/parser": "^5.36.2",
-		"eslint": "^8.23.0",
-		"eslint-config-tabbify-typescript": "^0.1.8",
+		"@types/express": "^4.17.14",
+		"@types/node": "^18.11.0",
+		"@typescript-eslint/eslint-plugin": "^5.40.1",
+		"@typescript-eslint/parser": "^5.40.1",
+		"eslint": "^8.25.0",
+		"eslint-config-tabbify-typescript": "^0.1.9",
 		"eslint-plugin-import": "^2.26.0",
-		"nodemon": "^2.0.19",
+		"nodemon": "^2.0.20",
 		"replace-in-files-cli": "^2.0.0",
-		"ts-node": "^10.9.1",
-		"typescript": "^4.8.2"
+		"typescript": "^4.8.4"
 	}
 }
