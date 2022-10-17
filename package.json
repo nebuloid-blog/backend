@@ -24,8 +24,8 @@
 	"main": "./src/server.ts",
 	"type": "module",
 	"scripts": {
-		"start": "ts-node --transpile-only --esm ./src/server.ts",
-		"start:dev": "echo initializing... && ts-node --esm ./src/server.ts",
+		"start": "ts-node --transpile-only ./src/server.ts",
+		"start:dev": "echo initializing... && ts-node ./src/server.ts",
 		"start:watch": "echo watching... && nodemon --exec 'yarn start:dev'",
 		"dev": "yarn start:dev",
 		"watch": "yarn start:watch",
