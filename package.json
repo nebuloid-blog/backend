@@ -21,16 +21,25 @@
 	},
 	"contributors": [ ],
 	"packageManager": "yarn@3.2.1",
-	"main": "",
+	"main": "./src/server.ts",
 	"type": "module",
 	"scripts": {
-		"start": "yarn codegen && yarn lint-gen --fix; yarn indent-gen && ts-node --esm src/server.ts",
-		"dev": "nodemon --exec 'yarn start'",
-		"codegen": "graphql-codegen --config .codegenrc.json",
-		"lint": "eslint ./src/**/*.ts",
-		"lint-gen": "eslint ./src/**/generated/**/*.ts --no-ignore --rule '@typescript-eslint/consistent-type-definitions: 0'",
+		"start": "ts-node --transpile-only --esm ./src/server.ts",
+		"start:dev": "echo initializing... && ts-node --esm ./src/server.ts",
+		"start:watch": "echo watching... && nodemon --exec 'yarn start:dev'",
+		"dev": "yarn start:dev",
+		"watch": "yarn start:watch",
+
 		"indent": "replace-in-files --string='  ' --replacement='\t'",
-		"indent-gen": "yarn indent ./src/**/generated/**/*.ts"
+
+		"generate":
+			"yarn generate:code && yarn generate:lint --fix; yarn generate:indent",
+		"generate:indent":
+			"yarn indent ./src/**/generated/**/*.ts",
+		"generate:code":
+			"echo generating... && graphql-codegen --config .codegenrc.json",
+		"generate:lint":
+			"echo linting... && eslint ./src/**/generated/**/*.ts --no-ignore --rule '@typescript-eslint/consistent-type-definitions: 0'"
 	},
 	"dependencies": {
 		"@graphql-codegen/typescript-mongodb": "^2.4.3",
