@@ -1,17 +1,17 @@
 {
-	"name": "@noltron000/portfolio-backend",
+	"name": "@noltron000/nebuloid",
 	"private": false,
 	"license": "MIT",
 	"version": "0.0.0",
 	"description": "GraphQL-based backend for my portfolio.",
 	"keywords": [ ],
-	"homepage": "https://github.com/noltron000-portfolio/backend#README.md",
+	"homepage": "https://api.nebuloid.dev",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/noltron000-portfolio/backend.git"
+		"url": "git+https://github.com/nebuloid-blog/backend.git"
 	},
 	"bugs": {
-		"url": "https://github.com/noltron000-portfolio/backend/issues",
+		"url": "https://github.com/nebuloid-blog/backend/issues",
 		"email": "noltron000@gmail.com"
 	},
 	"author": {
