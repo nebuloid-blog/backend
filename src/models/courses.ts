@@ -1,9 +1,16 @@
-import mongoose from 'mongoose'
+import type {Types} from 'mongoose'
+import {Schema, model} from 'mongoose'
 
-const CourseSchema = new mongoose.Schema({
+interface CourseRecord {
+	name: string,
+	description?: string,
+	projects?: Array<Types.ObjectId>,
+}
+
+const CourseSchema: Schema<CourseRecord> = new Schema({
 	name: {type: String, required: true},
 	description: {type: String},
-	projects: [{ref: 'Project', type: mongoose.Schema.Types.ObjectId}],
+	projects: [{ref: 'Project', type: Schema.Types.ObjectId}],
 })
 
-export const Courses = mongoose.model('Course', CourseSchema)
+export const Courses = model('Course', CourseSchema)
