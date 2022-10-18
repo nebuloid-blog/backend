@@ -1371,6 +1371,7 @@ __metadata:
     bcrypt: ^5.1.0
     body-parser: ^1.20.1
     dotenv: ^16.0.3
+    dotenv-expand: ^9.0.0
     eslint: ^8.25.0
     eslint-config-tabbify-typescript: ^0.1.9
     eslint-plugin-import: ^2.26.0
@@ -2961,6 +2962,13 @@ __metadata:
     no-case: ^3.0.4
     tslib: ^2.0.3
   checksum: a65e3519414856df0228b9f645332f974f2bf5433370f544a681122eab59e66038fc3349b4be1cdc47152779dac71a5864f1ccda2f745e767c46e9c6543b1169
+  languageName: node
+  linkType: hard
+
+"dotenv-expand@npm:^9.0.0":
+  version: 9.0.0
+  resolution: "dotenv-expand@npm:9.0.0"
+  checksum: 76f669b87da73d6980d1235cb18e9ccd94b294927784a0c06db5e9e98d1090b0605e75ade70880f0cd812af7f61e41367a80feea223d23fd3bd0b82f3409b9ed
   languageName: node
   linkType: hard
 

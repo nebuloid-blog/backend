@@ -13,22 +13,15 @@ import type {Context} from './types/context.js'
 
 const {
 	PORT,
-	DB_NAME,
-	DB_CLUSTER,
-	DB_USERNAME,
-	DB_PASSWORD,
+	DB_URL,
 	JWT_SECRET,
 } = env
-
-const DB_URI
-= `mongodb+srv://${DB_USERNAME}:${DB_PASSWORD}@${DB_CLUSTER}`
-+ `.mongodb.net/${DB_NAME}?retryWrites=true&w=majority`
 
 const SCHEMA_FILE = 'src/schema.gql'
 
 const main = async ( ) => {
 	const app = express( )
-	void mongoose.connect(DB_URI)
+	void mongoose.connect(DB_URL)
 
 	// Import the schema's data types and build it with GraphQL.
 	const rawSchema = await fs.promises.readFile(SCHEMA_FILE, 'utf8')
@@ -61,8 +54,10 @@ const main = async ( ) => {
 
 	// Finally, start the express server.
 	app.listen(PORT, ( ) => {
-		console.info(`Server started on port ${PORT}.`)
-		console.info(`http://localhost:${PORT}/`)
+		if (env.NODE_ENV === 'development') {
+			console.info(`Server started on port ${PORT}.`)
+			console.info(`http://localhost:${PORT}/`)
+		}
 	})
 }
 
