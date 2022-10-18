@@ -13,22 +13,15 @@ import type {Context} from './types/context.js'
 
 const {
 	PORT,
-	DB_NAME,
-	DB_CLUSTER,
-	DB_USERNAME,
-	DB_PASSWORD,
+	DB_URL,
 	JWT_SECRET,
 } = env
-
-const DB_URI
-= `mongodb+srv://${DB_USERNAME}:${DB_PASSWORD}@${DB_CLUSTER}`
-+ `.mongodb.net/${DB_NAME}?retryWrites=true&w=majority`
 
 const SCHEMA_FILE = 'src/schema.gql'
 
 const main = async ( ) => {
 	const app = express( )
-	void mongoose.connect(DB_URI)
+	void mongoose.connect(DB_URL)
 
 	// Import the schema's data types and build it with GraphQL.
 	const rawSchema = await fs.promises.readFile(SCHEMA_FILE, 'utf8')
@@ -38,31 +31,52 @@ const main = async ( ) => {
 	})
 
 	// Feed middleware & options to the express server.
+	// ------
+	// NOTICE
+	// Express 4 types don't allow middleware to return "Promise<void>", but just "void".
+	// Fortunately, we can wrap each returned promise in a void function, as seen here.
+	// We'll also use a try/catch block to correctly handle any errors.
 	app.use(
 		'/',
 		bodyParser.json( ),
-		expressJWT({
-			secret: JWT_SECRET,
-			algorithms: ['HS256'],
-			credentialsRequired: false,
-		}),
-		graphqlHTTP((request, response, params) => {
-			// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-			const jwtRequest = request as JWTRequest<Context>
-			const payload = jwtRequest.auth ?? null
+		(request, response, next) => {
+			try {
+				void expressJWT({
+					secret: JWT_SECRET,
+					algorithms: ['HS256'],
+					credentialsRequired: false,
+				})(request, response, next)
+			}
+			catch (error) {
+				next(error)
+			}
+		},
+		(request, response, next) => {
+			try {
+				void graphqlHTTP((request, response, params) => {
+					// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+					const jwtRequest = request as JWTRequest<Context>
+					const payload = jwtRequest.auth ?? null
 
-			return ({
-				graphiql: false,
-				schema: schema,
-				context: payload,
-			})
-		}),
+					return ({
+						graphiql: false,
+						schema: schema,
+						context: payload,
+					})
+				})(request, response)
+			}
+			catch (error) {
+				next(error)
+			}
+		},
 	)
 
 	// Finally, start the express server.
 	app.listen(PORT, ( ) => {
-		console.info(`Server started on port ${PORT}.`)
-		console.info(`http://localhost:${PORT}/`)
+		if (env.NODE_ENV === 'development') {
+			console.info(`Server started on port ${PORT}.`)
+			console.info(`http://localhost:${PORT}/`)
+		}
 	})
 }
 
