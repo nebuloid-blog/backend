@@ -44,6 +44,8 @@
 	"dependencies": {
 		"@graphql-codegen/typescript-mongodb": "^2.4.4",
 		"@graphql-tools/schema": "^9.0.4",
+		"@octokit/auth-app": "^4.0.7",
+		"@octokit/graphql": "^5.0.4",
 		"bcrypt": "^5.1.0",
 		"body-parser": "^1.20.1",
 		"dotenv": "^16.0.3",
