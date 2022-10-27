@@ -17,6 +17,15 @@ export type Scalars = {
 	Float: number,
 }
 
+export type Article = {
+	__typename?: 'Article',
+	contents: Scalars['String'],
+	html: Scalars['String'],
+	markdown: Scalars['String'],
+	slug: Scalars['String'],
+	title: Scalars['String'],
+}
+
 export type Course = {
 	__typename?: 'Course',
 	description?: Maybe<Scalars['String']>,
@@ -136,6 +145,14 @@ export type AdditionalEntityFields = {
 	path?: InputMaybe<Scalars['String']>,
 	type?: InputMaybe<Scalars['String']>,
 }
+export type ArticleDbObject = {
+	contents: string,
+	html: string,
+	markdown: string,
+	slug: string,
+	title: string,
+}
+
 export type CourseDbObject = {
 	description?: Maybe<string>,
 	_id: ObjectId,
@@ -226,8 +243,9 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
-	Course: ResolverTypeWrapper<CourseDbObject>,
+	Article: ResolverTypeWrapper<Article>,
 	String: ResolverTypeWrapper<Scalars['String']>,
+	Course: ResolverTypeWrapper<CourseDbObject>,
 	ID: ResolverTypeWrapper<Scalars['ID']>,
 	Mutation: ResolverTypeWrapper<{}>,
 	Boolean: ResolverTypeWrapper<Scalars['Boolean']>,
@@ -240,8 +258,9 @@ export type ResolversTypes = {
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
-	Course: CourseDbObject,
+	Article: Article,
 	String: Scalars['String'],
+	Course: CourseDbObject,
 	ID: Scalars['ID'],
 	Mutation: {},
 	Boolean: Scalars['Boolean'],
@@ -298,6 +317,15 @@ export type MapDirectiveArgs = {
 
 export type MapDirectiveResolver<Result, Parent, ContextType = Context, Args = MapDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>
 
+export type ArticleResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Article'] = ResolversParentTypes['Article']> = {
+	contents?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+	html?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+	markdown?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+	slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+	title?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+	__isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>,
+}
+
 export type CourseResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Course'] = ResolversParentTypes['Course']> = {
 	description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
 	id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>,
@@ -343,6 +371,7 @@ export type UserResolvers<ContextType = Context, ParentType extends ResolversPar
 }
 
 export type Resolvers<ContextType = Context> = {
+	Article?: ArticleResolvers<ContextType>,
 	Course?: CourseResolvers<ContextType>,
 	Mutation?: MutationResolvers<ContextType>,
 	Project?: ProjectResolvers<ContextType>,

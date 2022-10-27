@@ -56,6 +56,19 @@ type Mutation {
 	deleteProject(id: ID!): Boolean!
 }
 
+type Article @entity {
+	# Pre-parsed text contents of the file.
+	contents: String! @column
+	# Trimmed markdown contents of the file.
+	markdown: String! @column
+	# Parsed HTML contents of the file.
+	html: String! @column
+
+	# Metadata
+	title: String! @column
+	slug: String! @column
+}
+
 type User @entity (
 	additionalFields: [{
 		path: "password",
