@@ -44,6 +44,9 @@
 	"dependencies": {
 		"@graphql-codegen/typescript-mongodb": "^2.4.4",
 		"@graphql-tools/schema": "^9.0.4",
+		"@octokit/auth-app": "^4.0.7",
+		"@octokit/graphql": "^5.0.4",
+		"@octokit/graphql-schema": "^12.15.1",
 		"bcrypt": "^5.1.0",
 		"body-parser": "^1.20.1",
 		"dotenv": "^16.0.3",
@@ -52,8 +55,13 @@
 		"express-graphql": "^0.12.0",
 		"express-jwt": "^7.7.5",
 		"graphql": "^15.8.0",
+		"gray-matter": "^4.0.3",
 		"jsonwebtoken": "^8.5.1",
 		"mongoose": "^6.6.5",
+		"remark": "^14.0.2",
+		"remark-html": "^15.0.1",
+		"toml": "^3.0.0",
+		"ts-is-present": "^1.2.2",
 		"ts-node": "^10.9.1"
 	},
 	"devDependencies": {

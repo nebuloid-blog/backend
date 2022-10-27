@@ -7,6 +7,14 @@ enum Role {
 }
 
 type Query {
+	# Articles
+	getArticle(
+		file: String!
+		branch: String
+	): Article
+
+	indexArticles(branch: String): [Article!]
+
 	# Users
 	getMe: User
 
@@ -54,6 +62,19 @@ type Mutation {
 
 	updateProject(id: ID!): Boolean!
 	deleteProject(id: ID!): Boolean!
+}
+
+type Article @entity {
+	# Pre-parsed text contents of the file.
+	contents: String! @column
+	# Trimmed markdown contents of the file.
+	markdown: String! @column
+	# Parsed HTML contents of the file.
+	html: String! @column
+
+	# Metadata
+	title: String! @column
+	slug: String! @column
 }
 
 type User @entity (
