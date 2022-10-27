@@ -1,14 +1,7 @@
 import {Schema, model} from 'mongoose'
 import {Role} from '../types/generated/schema.js'
 
-interface UserRecord {
-	email: string,
-	username: string,
-	password: string,
-	role: Role,
-}
-
-const UserSchema: Schema<UserRecord> = new Schema({
+const UserSchema = new Schema({
 	email: {type: String, required: true, unique: true},
 	username: {type: String, required: true, unique: true},
 	password: {type: String, required: true},
