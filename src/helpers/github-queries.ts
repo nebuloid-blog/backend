@@ -1,7 +1,7 @@
 // GraphQL Query for "getArticle"
 const gqlGetArticle = /* GraphQL */ `
 	query GetArticle(
-		$branch: String,
+		$branch: String = "main",
 		$filePath: String!,
 		$fileExpression: String!,
 		$showHistory: Boolean = false,

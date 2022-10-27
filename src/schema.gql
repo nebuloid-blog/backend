@@ -7,6 +7,14 @@ enum Role {
 }
 
 type Query {
+	# Articles
+	getArticle(
+		file: String!
+		branch: String
+	): Article
+
+	indexArticles(branch: String): [Article!]
+
 	# Users
 	getMe: User
 

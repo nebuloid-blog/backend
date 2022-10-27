@@ -110,11 +110,19 @@ export type Project = {
 
 export type Query = {
 	__typename?: 'Query',
+	getArticle?: Maybe<Article>,
 	getCourse?: Maybe<Course>,
 	getMe?: Maybe<User>,
 	getProject?: Maybe<Project>,
+	indexArticles?: Maybe<Array<Article>>,
 	indexCourses?: Maybe<Array<Course>>,
 	indexProjects?: Maybe<Array<Project>>,
+}
+
+
+export type QueryGetArticleArgs = {
+	branch?: InputMaybe<Scalars['String']>,
+	file: Scalars['String'],
 }
 
 
@@ -125,6 +133,11 @@ export type QueryGetCourseArgs = {
 
 export type QueryGetProjectArgs = {
 	id: Scalars['ID'],
+}
+
+
+export type QueryIndexArticlesArgs = {
+	branch?: InputMaybe<Scalars['String']>,
 }
 
 export enum Role {
@@ -355,9 +368,11 @@ export type ProjectResolvers<ContextType = Context, ParentType extends Resolvers
 }
 
 export type QueryResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+	getArticle?: Resolver<Maybe<ResolversTypes['Article']>, ParentType, ContextType, RequireFields<QueryGetArticleArgs, 'file'>>,
 	getCourse?: Resolver<Maybe<ResolversTypes['Course']>, ParentType, ContextType, RequireFields<QueryGetCourseArgs, 'id'>>,
 	getMe?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>,
 	getProject?: Resolver<Maybe<ResolversTypes['Project']>, ParentType, ContextType, RequireFields<QueryGetProjectArgs, 'id'>>,
+	indexArticles?: Resolver<Maybe<Array<ResolversTypes['Article']>>, ParentType, ContextType, Partial<QueryIndexArticlesArgs>>,
 	indexCourses?: Resolver<Maybe<Array<ResolversTypes['Course']>>, ParentType, ContextType>,
 	indexProjects?: Resolver<Maybe<Array<ResolversTypes['Project']>>, ParentType, ContextType>,
 }
