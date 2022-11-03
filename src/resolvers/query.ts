@@ -11,9 +11,9 @@ import type {QueryResolvers as Resolvers} from '../types/generated/schema.js'
 const getArticle: Resolvers['getArticle'] = async (parent, args) => {
 	// Step 1: Create the query.
 	const query = gqlGetArticle
-	const branch = args.branch
+	const branch = args.branch ?? 'main'
 	const filePath = `articles/${args.file}`
-	const fileExpression = `${args.branch}:${filePath}`
+	const fileExpression = `${branch}:${filePath}`
 
 	// Step 2: Call the query with some type-helpers.
 	interface GitHubResponse {
@@ -39,7 +39,8 @@ const getArticle: Resolvers['getArticle'] = async (parent, args) => {
 const indexArticles: Resolvers['indexArticles'] = async (parent, args) => {
 	// Step 1: Create the query.
 	const query = gqlIndexArticles
-	const dirExpression = `${args.branch}:articles/`
+	const branch = args.branch ?? 'main'
+	const dirExpression = `${branch}:articles/`
 
 	// Step 2: Call the query with some type-helpers.
 	interface GitHubResponse {
