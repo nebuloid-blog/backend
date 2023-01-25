@@ -3,7 +3,7 @@ import type {Blob, Commit, Repository, TreeEntry} from '@octokit/graphql-schema'
 import {isFilled} from 'ts-is-present'
 import {graphqlWithAuth} from '../helpers/github-api-authenticator.js'
 import {gqlGetArticle, gqlIndexArticles} from '../helpers/github-queries.js'
-import {parseMarkdown} from '../helpers/parse-markdown.js'
+import {parseHTML} from '../helpers/parse-html.js'
 import {Courses, Projects} from '../models.js'
 import type {QueryResolvers as Resolvers} from '../types/generated/schema.js'
 
@@ -31,9 +31,9 @@ const getArticle: Resolvers['getArticle'] = async (parent, args) => {
 	})
 
 	// Step 3: Clean the response and return the data.
-	const markdown = response.repository.object?.text
-	if (markdown == null) return null
-	else return await parseMarkdown(markdown)
+	const html = response.repository.object?.text
+	if (html == null) return null
+	else return await parseHTML(html)
 }
 
 const indexArticles: Resolvers['indexArticles'] = async (parent, args) => {
@@ -64,9 +64,9 @@ const indexArticles: Resolvers['indexArticles'] = async (parent, args) => {
 
 	const entries = response.repository.object?.entries ?? []
 	const promisedArticles = entries.map(async (entry) => {
-		const markdown = entry.object?.text
-		if (markdown == null) return null
-		else return await parseMarkdown(markdown)
+		const html = entry.object?.text
+		if (html == null) return null
+		else return await parseHTML(html)
 	})
 
 	// Step 4: Resolve all promises and remove all nullish values.
