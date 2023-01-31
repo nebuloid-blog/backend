@@ -41,7 +41,8 @@ const indexArticles: Resolvers['indexArticles'] = async (parent, args) => {
 	// Step 1: Create the query.
 	const query = gqlIndexArticles
 	const branch = args.branch ?? 'main'
-	const dirExpression = `${branch}:articles/`
+	const directory = args.directory ?? 'articles'
+	const dirExpression = `${branch}:${directory}/`
 
 	// Step 2: Call the query with some type-helpers.
 	interface GitHubResponse {
