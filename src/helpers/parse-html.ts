@@ -2,7 +2,7 @@ import grayMatter from 'gray-matter'
 import {rehype} from 'rehype'
 import rehypeParse from 'rehype-parse'
 import rehypePresetMinify from 'rehype-preset-minify'
-import rehypeSanitize from 'rehype-sanitize'
+import rehypeSanitize, {defaultSchema} from 'rehype-sanitize'
 import rehypeStringify from 'rehype-stringify'
 import toml from 'toml'
 import type {ArticleDbObject} from '../types/generated/schema'
@@ -15,9 +15,22 @@ const validateString = (string: unknown) => {
 }
 
 const validateHTML = async (html: string) => {
+	// Classes shall not be cleansed from the HTML.
+	const schema = {
+		...defaultSchema,
+		attributes: {
+			...defaultSchema.attributes,
+			'*': [
+				...(defaultSchema.attributes?.['*'] ?? []),
+				'className',
+			],
+		},
+	}
+
+	// Parse the HTML according using these plugins.
 	const result = await rehype( )
 	.use(rehypeParse, {fragment: true})
-	.use(rehypeSanitize)
+	.use(rehypeSanitize, schema)
 	.use(rehypePresetMinify)
 	.use(rehypeStringify)
 	.process(html)
