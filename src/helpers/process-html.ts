@@ -14,8 +14,8 @@ const validateString = (string: unknown) => {
 	else return null
 }
 
-const validateHTML = async (html: string) => {
-	// Classes shall not be cleansed from the HTML.
+const sanitizeHTML = async (html: string) => {
+	// Classes shall not be removed from the HTML.
 	const schema = {
 		...defaultSchema,
 		attributes: {
@@ -27,18 +27,19 @@ const validateHTML = async (html: string) => {
 		},
 	}
 
-	// Parse the HTML according using these plugins.
-	const result = await rehype( )
+	// Parse the HTML accordingly, using these plugins.
+	const vFile = await rehype( )
 	.use(rehypeParse, {fragment: true})
 	.use(rehypeSanitize, schema)
 	.use(rehypePresetMinify)
 	.use(rehypeStringify)
 	.process(html)
 
-	return result
+	return vFile
 }
 
-const parseHTML = async (fileText: string) => {
+const processHTML = async (fileText: string) => {
+	// Step 1: Process our Front Matter data.
 	const options = {
 		delimiters: '~~~',
 		engines: {TOML: toml.parse.bind(toml)},
@@ -49,14 +50,15 @@ const parseHTML = async (fileText: string) => {
 		content: rawHTML,
 	} = grayMatter(fileText, options)
 
-	const vFile = await validateHTML(rawHTML)
-	const sanitizedHTML = vFile.toString( )
-
 	const title = validateString(frontMatter.title)
 	if (title == null) return null
 
 	const slug = validateString(frontMatter.slug)
 	if (slug == null) return null
+
+	// Step 2: Sanitize the actual HTML data.
+	const vFile = await sanitizeHTML(rawHTML)
+	const sanitizedHTML = vFile.toString( )
 
 	const data: ArticleDbObject = {
 		html: sanitizedHTML,
@@ -69,4 +71,4 @@ const parseHTML = async (fileText: string) => {
 	return data
 }
 
-export {parseHTML}
+export {processHTML}
