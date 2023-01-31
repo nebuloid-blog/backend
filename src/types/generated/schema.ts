@@ -125,6 +125,7 @@ export type Query = {
 
 export type QueryGetArticleArgs = {
 	branch?: InputMaybe<Scalars['String']>,
+	directory?: InputMaybe<Scalars['String']>,
 	file: Scalars['String'],
 }
 
@@ -141,6 +142,7 @@ export type QueryGetProjectArgs = {
 
 export type QueryIndexArticlesArgs = {
 	branch?: InputMaybe<Scalars['String']>,
+	directory?: InputMaybe<Scalars['String']>,
 }
 
 export enum Role {
