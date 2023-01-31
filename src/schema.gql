@@ -10,10 +10,14 @@ type Query {
 	# Articles
 	getArticle(
 		file: String!
+		directory: String
 		branch: String
 	): Article
 
-	indexArticles(branch: String): [Article!]
+	indexArticles(
+		directory: String
+		branch: String
+	): [Article!]
 
 	# Users
 	getMe: User

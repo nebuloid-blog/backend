@@ -12,7 +12,8 @@ const getArticle: Resolvers['getArticle'] = async (parent, args) => {
 	// Step 1: Create the query.
 	const query = gqlGetArticle
 	const branch = args.branch ?? 'main'
-	const filePath = `articles/${args.file}`
+	const directory = args.directory ?? 'articles'
+	const filePath = `${directory}/${args.file}`
 	const fileExpression = `${branch}:${filePath}`
 
 	// Step 2: Call the query with some type-helpers.
