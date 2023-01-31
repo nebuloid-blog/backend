@@ -14,5 +14,9 @@
 		}
 	},
 	"plugins": ["@typescript-eslint"],
-	"extends": ["tabbify-typescript"]
+	"extends": ["tabbify-typescript"],
+	"rules": {
+		// Temporary rule for {'*': ...} in a dictionary.
+		"@typescript-eslint/naming-convention": "off"
+	}
 }
