@@ -25,6 +25,28 @@ const sanitizeHTML = async (html: string) => {
 				'className',
 			],
 		},
+		tagNames: [
+			...(defaultSchema.tagNames ?? []),
+			'address',
+			'article',
+			'aside',
+			'footer',
+			'header',
+			'nav',
+			'section',
+			'menu',
+			'data',
+			'u',
+			'audio',
+			'img',
+			'track',
+			'video',
+			'picture',
+			'source',
+			'noscript',
+			'col',
+			'colgroup',
+		],
 	}
 
 	// Parse the HTML accordingly, using these plugins.
