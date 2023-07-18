@@ -57,7 +57,7 @@
 		"graphql": "^15.8.0",
 		"gray-matter": "^4.0.3",
 		"jsonwebtoken": "^9.0.0",
-		"mongoose": "^6.6.5",
+		"mongoose": "^6.11.3",
 		"rehype": "^12.0.1",
 		"rehype-parse": "^8.0.4",
 		"rehype-preset-minify": "^6.0.0",
