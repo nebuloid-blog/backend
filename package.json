@@ -24,8 +24,8 @@
 	"main": "./src/server.ts",
 	"type": "module",
 	"scripts": {
-		"start": "ts-node --transpile-only --require dotenv-expand/config ./src/server.ts",
-		"start:dev": "echo initializing... && ts-node --require dotenv-expand/config ./src/server.ts",
+		"start": "node --loader ts-node/esm --transpile-only --require dotenv-expand/config ./src/server.ts",
+		"start:dev": "echo initializing... && node --loader ts-node/esm --require dotenv-expand/config ./src/server.ts",
 		"start:watch": "echo watching... && nodemon --exec 'yarn start:dev'",
 		"dev": "yarn start:dev",
 		"watch": "yarn start:watch",
