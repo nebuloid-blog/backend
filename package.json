@@ -20,7 +20,7 @@
 		"url": "https://noltron000.com/"
 	},
 	"contributors": [ ],
-	"packageManager": "yarn@3.2.1",
+	"packageManager": "yarn@4.6.0",
 	"main": "./src/server.ts",
 	"type": "module",
 	"scripts": {
