@@ -61,6 +61,7 @@
 		"express-graphql": "^0.12.0",
 		"express-jwt": "^8.5.1",
 		"graphql": "^16.10.0",
+		"graphql-tag": "^2.12.6",
 		"gray-matter": "^4.0.3",
 		"jsonwebtoken": "^9.0.2",
 		"mongoose": "^8.12.1",

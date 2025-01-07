@@ -1780,6 +1780,7 @@ __metadata:
     express-graphql: "npm:^0.12.0"
     express-jwt: "npm:^8.5.1"
     graphql: "npm:^16.10.0"
+    graphql-tag: "npm:^2.12.6"
     gray-matter: "npm:^4.0.3"
     jsonwebtoken: "npm:^9.0.2"
     mongoose: "npm:^8.12.1"
@@ -4870,7 +4871,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"graphql-tag@npm:^2.10.3, graphql-tag@npm:^2.11.0":
+"graphql-tag@npm:^2.10.3, graphql-tag@npm:^2.11.0, graphql-tag@npm:^2.12.6":
   version: 2.12.6
   resolution: "graphql-tag@npm:2.12.6"
   dependencies:
