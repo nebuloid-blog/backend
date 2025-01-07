@@ -24,11 +24,12 @@
 	"main": "./src/server.ts",
 	"type": "module",
 	"scripts": {
-		"start": "node --loader ts-node/esm --transpile-only --require dotenv-expand/config ./src/server.ts",
-		"start:dev": "echo initializing... && node --loader ts-node/esm --require dotenv-expand/config ./src/server.ts",
-		"start:watch": "echo watching... && nodemon --exec 'yarn start:dev'",
+		"start": "node --loader ts-node/esm --require dotenv-expand/config ./src/server.ts --transpile-only",
 		"dev": "yarn start:dev",
 		"watch": "yarn start:watch",
+
+		"start:dev": "echo initializing... && node --loader ts-node/esm --require dotenv-expand/config ./src/server.ts",
+		"start:watch": "echo watching... && nodemon --exec 'yarn start:dev'",
 
 		"indent": "replace-in-files --string='  ' --replacement='\t'",
 
