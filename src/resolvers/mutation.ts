@@ -6,8 +6,8 @@ import {
 } from '../helpers/authorization.js'
 import {signJWT} from '../helpers/sign-jwt.js'
 import {Courses, Projects, Users} from '../models.js'
-import type {MutationResolvers as Resolvers} from '../types/generated/schema.js'
 import {Role} from '../types/generated/schema.js'
+import type {MutationResolvers as Resolvers} from '../types/generated/schema.js'
 
 /* USERS */
 const createUser: Resolvers['createUser'] = async (parent, args, context) => {

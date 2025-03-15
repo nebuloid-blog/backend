@@ -1,11 +1,10 @@
-/* eslint-disable no-tabs */
-import type {Blob, Commit, Repository, TreeEntry} from '@octokit/graphql-schema'
 import {isFilled} from 'ts-is-present'
 import {graphqlWithAuth} from '../helpers/github-api-authenticator.js'
 import {gqlGetArticle, gqlIndexArticles} from '../helpers/github-queries.js'
 import {processHTML} from '../helpers/process-html.js'
 import {Courses, Projects} from '../models.js'
 import type {QueryResolvers as Resolvers} from '../types/generated/schema.js'
+import type {Blob, Commit, Repository, TreeEntry} from '@octokit/graphql-schema'
 
 /* ARTICLES */
 const getArticle: Resolvers['getArticle'] = async (parent, args) => {

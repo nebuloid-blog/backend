@@ -1,7 +1,7 @@
 import {createAppAuth} from '@octokit/auth-app'
 import {graphql} from '@octokit/graphql'
-import type {Query, RequestParameters} from '@octokit/graphql/dist-types/types.js'
 import {env} from './secrets.js'
+import type {Query, RequestParameters} from '@octokit/graphql/dist-types/types.js'
 
 // Octokit will cache security credentials and serve from the GitHub API.
 // It automates refreshing tokens, etc, and does so quite intuitively!

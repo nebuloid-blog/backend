@@ -1,15 +1,15 @@
-import fs from 'fs'
+import fs from 'node:fs'
 import {DIRECTIVES} from '@graphql-codegen/typescript-mongodb'
 import {makeExecutableSchema} from '@graphql-tools/schema'
 import bodyParser from 'body-parser'
 import express from 'express'
 import {graphqlHTTP} from 'express-graphql'
 import {expressjwt as expressJWT} from 'express-jwt'
-import type {Request as JWTRequest} from 'express-jwt'
 import mongoose from 'mongoose'
 import {env} from './helpers/secrets.js'
 import {resolvers} from './resolvers.js'
 import type {Context} from './types/context.js'
+import type {Request as JWTRequest} from 'express-jwt'
 
 const {
 	PORT,
@@ -54,7 +54,6 @@ const main = async ( ) => {
 		(request, response, next) => {
 			try {
 				void graphqlHTTP((request, response, params) => {
-					// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
 					const jwtRequest = request as JWTRequest<Context>
 					const payload = jwtRequest.auth ?? null
 
