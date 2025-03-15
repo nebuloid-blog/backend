@@ -31,43 +31,31 @@ const main = async ( ) => {
 	})
 
 	// Feed middleware & options to the express server.
-	// ------
-	// NOTICE
-	// Express 4 types don't allow middleware to return "Promise<void>", but just "void".
-	// Fortunately, we can wrap each returned promise in a void function, as seen here.
-	// We'll also use a try/catch block to correctly handle any errors.
 	app.use(
+		// API URI path...
 		'/',
-		bodyParser.json( ),
-		(request, response, next) => {
-			try {
-				void expressJWT({
-					secret: JWT_SECRET,
-					algorithms: ['HS256'],
-					credentialsRequired: false,
-				})(request, response, next)
-			}
-			catch (error) {
-				next(error)
-			}
-		},
-		(request, response, next) => {
-			try {
-				void graphqlHTTP((request, response, params) => {
-					const jwtRequest = request as JWTRequest<Context>
-					const payload = jwtRequest.auth ?? null
 
-					return ({
-						graphiql: false,
-						schema: schema,
-						context: payload,
-					})
-				})(request, response)
-			}
-			catch (error) {
-				next(error)
-			}
-		},
+		// This handler reformats the body into JS objects.
+		bodyParser.json( ),
+
+		// This reads JWTs using the secret access code.
+		expressJWT({
+			secret: JWT_SECRET,
+			algorithms: ['HS256'],
+			credentialsRequired: false,
+		}),
+
+		// Connect GraphQL schema (and add payload to context).
+		graphqlHTTP((request, response, params) => {
+			const jwtRequest = request as JWTRequest<Context>
+			const payload = jwtRequest.auth ?? null
+
+			return ({
+				graphiql: false,
+				schema: schema,
+				context: payload,
+			})
+		}),
 	)
 
 	// Finally, start the express server.
