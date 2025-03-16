@@ -24,11 +24,13 @@
 	"main": "./src/server.ts",
 	"type": "module",
 	"scripts": {
-		"start": "yarn start:build && yarn start:prod",
-		"dev": "yarn start:watch",
+		"start": "yarn start:init && yarn start:build && yarn start:prod",
+		"dev": "yarn start:init && yarn start:watch",
 
+		"start:init":
+			"echo initializing... && ts-patch install -s",
 		"start:build":
-			"echo building... && tsc",
+			"echo building... && tsc && tsc-alias",
 		"start:prod":
 			"echo launching...\\\n && node --require dotenv-expand/config ./dist/src/server.js",
 		"start:dev":
@@ -91,6 +93,10 @@
 		"nodemon": "^3.1.9",
 		"replace-in-files-cli": "^3.0.0",
 		"ts-node": "^10.9.2",
-		"typescript": "^5.8.2"
+		"ts-patch": "^3.3.0",
+		"tsc-alias": "^1.8.11",
+		"tsconfig-paths": "^4.2.0",
+		"typescript": "^5.8.2",
+		"typescript-transform-paths": "^3.5.5"
 	}
 }
