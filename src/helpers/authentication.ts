@@ -1,5 +1,5 @@
+import {Users} from '@app/models.js'
 import bcrypt from 'bcrypt'
-import {Users} from '../models.js'
 
 interface AuthOptions {
 	throwErrorOnFailure?: boolean,

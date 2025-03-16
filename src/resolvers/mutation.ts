@@ -1,13 +1,10 @@
+import {Courses, Projects, Users} from '@app/models.js'
+import {Role} from '@app/types/generated/schema.js'
+import {authenticateUser} from '@helpers/authentication.js'
+import {authorizeRoleAccess, authorizeOwnership} from '@helpers/authorization.js'
+import {signJWT} from '@helpers/sign-jwt.js'
 import bcrypt from 'bcrypt'
-import {authenticateUser} from '../helpers/authentication.js'
-import {
-	authorizeRoleAccess,
-	authorizeOwnership,
-} from '../helpers/authorization.js'
-import {signJWT} from '../helpers/sign-jwt.js'
-import {Courses, Projects, Users} from '../models.js'
-import {Role} from '../types/generated/schema.js'
-import type {MutationResolvers as Resolvers} from '../types/generated/schema.js'
+import type {MutationResolvers as Resolvers} from '@app/types/generated/schema.js'
 
 /* USERS */
 const createUser: Resolvers['createUser'] = async (parent, args, context) => {

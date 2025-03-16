@@ -1,4 +1,4 @@
-import type {UserResolvers as Resolvers} from '../types/generated/schema.js'
+import type {UserResolvers as Resolvers} from '@app/types/generated/schema.js'
 
 const id: Resolvers['id'] = (user) => (
 	user._id.toString( )

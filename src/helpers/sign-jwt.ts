@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
 import {env} from './secrets.js'
-import type {UserDbObject} from '../types/generated/schema.js'
+import type {UserDbObject} from '@app/types/generated/schema.js'
 
 // Centralize the jwt.sign() method here to maintain defaults.
 const signJWT = (payload: UserDbObject | null) => {

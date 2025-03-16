@@ -1,5 +1,5 @@
+import {Role} from '@app/types/generated/schema.js'
 import {Schema, model} from 'mongoose'
-import {Role} from '../types/generated/schema.js'
 
 const UserSchema = new Schema({
 	email: {type: String, required: true, unique: true},
