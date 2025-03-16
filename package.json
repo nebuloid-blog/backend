@@ -24,12 +24,17 @@
 	"main": "./src/server.ts",
 	"type": "module",
 	"scripts": {
-		"start": "node --loader ts-node/esm --require dotenv-expand/config ./src/server.ts --transpile-only",
-		"dev": "yarn start:dev",
-		"watch": "yarn start:watch",
+		"start": "yarn start:build && yarn start:prod",
+		"dev": "yarn start:watch",
 
-		"start:dev": "echo initializing... && node --loader ts-node/esm --require dotenv-expand/config ./src/server.ts",
-		"start:watch": "echo watching... && nodemon --exec 'yarn start:dev'",
+		"start:build":
+			"echo building... && tsc",
+		"start:prod":
+			"echo launching...\\\n && node --require dotenv-expand/config ./dist/src/server.js",
+		"start:dev":
+			"echo launching...\\\n  && node --loader ts-node/esm --require dotenv-expand/config ./src/server.ts",
+		"start:watch":
+			"echo watching...\\\n  && nodemon --exec 'yarn start:dev'",
 
 		"indent": "replace-in-files --string='  ' --replacement='\t'",
 
@@ -65,8 +70,7 @@
 		"rehype-sanitize": "^6.0.0",
 		"rehype-stringify": "^10.0.1",
 		"toml": "^3.0.0",
-		"ts-is-present": "^1.2.2",
-		"ts-node": "^10.9.2"
+		"ts-is-present": "^1.2.2"
 	},
 	"devDependencies": {
 		"@graphql-codegen/cli": "^5.0.5",
@@ -82,6 +86,7 @@
 		"eslint-plugin-import": "^2.31.0",
 		"nodemon": "^3.1.9",
 		"replace-in-files-cli": "^3.0.0",
+		"ts-node": "^10.9.2",
 		"typescript": "^5.8.2"
 	}
 }
