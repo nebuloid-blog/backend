@@ -23,7 +23,8 @@ interface DotEnv {
 	GH_APP_PRIVATE_KEY: string,
 
 	// Nebuloid App authentication
-	JWT_SECRET: string,
+	ACCESS_TOKEN_SECRET: string,
+	REFRESH_TOKEN_SECRET: string,
 }
 
 // Required to allow `process.env` to extend

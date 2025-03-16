@@ -15,7 +15,7 @@ const signJWT = (user: UserDbObject | null) => {
 
 	const token = jwt.sign(
 		payload,
-		env.JWT_SECRET,
+		env.ACCESS_TOKEN_SECRET,
 		{expiresIn: '3d'},
 	)
 
