@@ -1,4 +1,5 @@
 import fs from 'node:fs'
+import {resolvers} from '@app/resolvers/index.js'
 import {DIRECTIVES} from '@graphql-codegen/typescript-mongodb'
 import {makeExecutableSchema} from '@graphql-tools/schema'
 import {env} from '@helpers/secrets.js'
@@ -7,7 +8,6 @@ import express from 'express'
 import {graphqlHTTP} from 'express-graphql'
 import {expressjwt as expressJWT} from 'express-jwt'
 import mongoose from 'mongoose'
-import {resolvers} from './resolvers.js'
 import type {Context} from '@app/types/context.js'
 import type {Request as JWTRequest} from 'express-jwt'
 

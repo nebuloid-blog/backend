@@ -1,4 +1,3 @@
-import {Courses, Projects} from '@app/models.js'
 import {graphqlWithAuth} from '@helpers/github-api-authenticator.js'
 import {gqlGetArticle, gqlIndexArticles} from '@helpers/github-queries.js'
 import {processHTML} from '@helpers/process-html.js'
@@ -7,7 +6,11 @@ import type {QueryResolvers as Resolvers} from '@app/types/generated/schema.js'
 import type {Blob, Commit, Repository, TreeEntry} from '@octokit/graphql-schema'
 
 /* ARTICLES */
-const getArticle: Resolvers['getArticle'] = async (parent, args) => {
+const getArticle: Resolvers['getArticle'] = async (
+	parent,
+	args,
+	context,
+) => {
 	// Step 1: Create the query.
 	const query = gqlGetArticle
 	const branch = args.branch ?? 'main'
@@ -36,7 +39,11 @@ const getArticle: Resolvers['getArticle'] = async (parent, args) => {
 	else return await processHTML(html)
 }
 
-const indexArticles: Resolvers['indexArticles'] = async (parent, args) => {
+const indexArticles: Resolvers['indexArticles'] = async (
+	parent,
+	args,
+	context,
+) => {
 	// Step 1: Create the query.
 	const query = gqlIndexArticles
 	const branch = args.branch ?? 'main'
@@ -77,42 +84,7 @@ const indexArticles: Resolvers['indexArticles'] = async (parent, args) => {
 	else return articles
 }
 
-/* USERS */
-const getMe: Resolvers['getMe'] = (parent, args, context) => (
-	context.user ?? null
-)
-
-/* COURSES */
-const getCourse: Resolvers['getCourse'] = async (parent, args) => (
-	await Courses.findOne({id: args.id}) ?? null
-)
-
-const indexCourses: Resolvers['indexCourses'] = async (parent, args) => (
-	await Courses.find({ })
-)
-
-/* PROJECTS */
-const getProject: Resolvers['getProject'] = async (parent, args) => (
-	await Projects.findOne({id: args.id}) ?? null
-)
-
-const indexProjects: Resolvers['indexProjects'] = async (parent, args) => (
-	await Projects.find({ })
-)
-
-export const Query: Resolvers = {
-	// Articles
+export {
 	getArticle,
 	indexArticles,
-
-	// Users
-	getMe,
-
-	// Courses
-	getCourse,
-	indexCourses,
-
-	// Projects
-	getProject,
-	indexProjects,
 }
