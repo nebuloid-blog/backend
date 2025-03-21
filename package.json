@@ -34,7 +34,7 @@
 		"start:prod":
 			"echo launching...\\\n && node --require dotenv-expand/config ./dist/src/server.js",
 		"start:dev":
-			"echo launching...\\\n  && node --loader ts-node/esm --require dotenv-expand/config ./src/server.ts",
+			"echo launching...\\\n  && node --experimental-specifier-resolution=node --loader ts-node/esm --require dotenv-expand/config ./src/server.ts",
 		"start:watch":
 			"echo watching...\\\n  && nodemon --exec 'yarn start:dev'",
 

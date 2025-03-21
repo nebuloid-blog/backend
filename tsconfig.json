@@ -11,6 +11,9 @@
 		"transpileOnly": true,
 		"files": true
 	},
+	"tsc-alias": {
+		"resolveFullPaths": true
+	},
 	"compilerOptions": {
 		/* Visit https://aka.ms/tsconfig.json to read more about this file */
 
