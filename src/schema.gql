@@ -53,13 +53,13 @@ type Mutation {
 		username: String!
 		password: String!
 		role: Role
-	): String
+	): UserAuth!
 
 	# Supplies a new refresh token upon success.
 	signInUser(
 		username: String!
 		password: String!
-	): String
+	): UserAuth!
 
 	# Should also delete all associated refresh tokens.
 	deleteUser(
@@ -69,7 +69,7 @@ type Mutation {
 	# Revokes the given refresh token and supplies a new one.
 	replaceRefreshToken(
 		refreshToken: String!
-	): String
+	): SignedTokens!
 
 	# Revokes the given refresh token.
 	revokeRefreshToken(
@@ -118,12 +118,6 @@ type Article @entity {
 	data: ArticleData! @column
 }
 
-# Metadata for Article, as referred earlier.
-type ArticleData {
-	title: String!
-	slug: String!
-}
-
 type User @entity (
 	additionalFields: [{
 		path: "password",
@@ -148,4 +142,22 @@ type Project @entity {
 	name: String! @column
 	description: String @column
 	courses: [Course!] @link
+}
+
+# Metadata for Article entity.
+type ArticleData {
+	title: String!
+	slug: String!
+}
+
+# Return type with auth data.
+type UserAuth {
+	user: User!
+	tokens: SignedTokens!
+}
+
+# A pair of signed tokens.
+type SignedTokens {
+	accessToken: String!
+	refreshToken: String!
 }

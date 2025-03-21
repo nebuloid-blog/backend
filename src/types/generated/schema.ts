@@ -9,6 +9,7 @@ export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {[SubKey in K]?: M
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {[SubKey in K]: Maybe<T[SubKey]>}
 export type MakeEmpty<T extends {[key: string]: unknown}, K extends keyof T> = {[_ in K]?: never}
 export type Incremental<T> = T | {[P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never}
+export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
 export type RequireFields<T, K extends keyof T> = Omit<T, K> & {[P in K]-?: NonNullable<T[P]>}
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -43,15 +44,15 @@ export type Mutation = {
 	__typename?: 'Mutation',
 	createCourse: Scalars['ID']['output'],
 	createProject: Scalars['ID']['output'],
-	createUser?: Maybe<Scalars['String']['output']>,
+	createUser: UserAuth,
 	deleteCourse: Scalars['Boolean']['output'],
 	deleteProject: Scalars['Boolean']['output'],
 	deleteUser: Scalars['Boolean']['output'],
-	replaceRefreshToken?: Maybe<Scalars['String']['output']>,
+	replaceRefreshToken: SignedTokens,
 	revokeAllRefreshTokens: Scalars['Boolean']['output'],
 	revokeAllRefreshTokensGlobal: Scalars['Boolean']['output'],
 	revokeRefreshToken: Scalars['Boolean']['output'],
-	signInUser?: Maybe<Scalars['String']['output']>,
+	signInUser: UserAuth,
 	updateCourse: Scalars['Boolean']['output'],
 	updateProject: Scalars['Boolean']['output'],
 }
@@ -173,12 +174,24 @@ export enum Role {
 	USER = 'USER',
 }
 
+export type SignedTokens = {
+	__typename?: 'SignedTokens',
+	accessToken: Scalars['String']['output'],
+	refreshToken: Scalars['String']['output'],
+}
+
 export type User = {
 	__typename?: 'User',
 	email: Scalars['String']['output'],
 	id: Scalars['ID']['output'],
 	role: Role,
 	username: Scalars['String']['output'],
+}
+
+export type UserAuth = {
+	__typename?: 'UserAuth',
+	tokens: SignedTokens,
+	user: User,
 }
 
 export type AdditionalEntityFields = {
@@ -291,7 +304,9 @@ export type ResolversTypes = {
 	Project: ResolverTypeWrapper<ProjectDbObject>,
 	Query: ResolverTypeWrapper<{}>,
 	Role: Role,
+	SignedTokens: ResolverTypeWrapper<SignedTokens>,
 	User: ResolverTypeWrapper<UserDbObject>,
+	UserAuth: ResolverTypeWrapper<Omit<UserAuth, 'user'> & {user: ResolversTypes['User']}>,
 	AdditionalEntityFields: AdditionalEntityFields,
 }
 
@@ -306,7 +321,9 @@ export type ResolversParentTypes = {
 	Boolean: Scalars['Boolean']['output'],
 	Project: ProjectDbObject,
 	Query: {},
+	SignedTokens: SignedTokens,
 	User: UserDbObject,
+	UserAuth: Omit<UserAuth, 'user'> & {user: ResolversParentTypes['User']},
 	AdditionalEntityFields: AdditionalEntityFields,
 }
 
@@ -380,15 +397,15 @@ export type CourseResolvers<ContextType = Context, ParentType extends ResolversP
 export type MutationResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
 	createCourse?: Resolver<ResolversTypes['ID'], ParentType, ContextType, RequireFields<MutationCreateCourseArgs, 'name'>>,
 	createProject?: Resolver<ResolversTypes['ID'], ParentType, ContextType, RequireFields<MutationCreateProjectArgs, 'name'>>,
-	createUser?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'email' | 'password' | 'username'>>,
+	createUser?: Resolver<ResolversTypes['UserAuth'], ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'email' | 'password' | 'username'>>,
 	deleteCourse?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteCourseArgs, 'id'>>,
 	deleteProject?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteProjectArgs, 'id'>>,
 	deleteUser?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteUserArgs, 'userId'>>,
-	replaceRefreshToken?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType, RequireFields<MutationReplaceRefreshTokenArgs, 'refreshToken'>>,
+	replaceRefreshToken?: Resolver<ResolversTypes['SignedTokens'], ParentType, ContextType, RequireFields<MutationReplaceRefreshTokenArgs, 'refreshToken'>>,
 	revokeAllRefreshTokens?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRevokeAllRefreshTokensArgs, 'userId'>>,
 	revokeAllRefreshTokensGlobal?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>,
 	revokeRefreshToken?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRevokeRefreshTokenArgs, 'refreshToken'>>,
-	signInUser?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType, RequireFields<MutationSignInUserArgs, 'password' | 'username'>>,
+	signInUser?: Resolver<ResolversTypes['UserAuth'], ParentType, ContextType, RequireFields<MutationSignInUserArgs, 'password' | 'username'>>,
 	updateCourse?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationUpdateCourseArgs, 'id'>>,
 	updateProject?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationUpdateProjectArgs, 'id'>>,
 }
@@ -411,11 +428,23 @@ export type QueryResolvers<ContextType = Context, ParentType extends ResolversPa
 	indexProjects?: Resolver<Maybe<Array<ResolversTypes['Project']>>, ParentType, ContextType>,
 }
 
+export type SignedTokensResolvers<ContextType = Context, ParentType extends ResolversParentTypes['SignedTokens'] = ResolversParentTypes['SignedTokens']> = {
+	accessToken?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+	refreshToken?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+	__isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>,
+}
+
 export type UserResolvers<ContextType = Context, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
 	email?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
 	id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>,
 	role?: Resolver<ResolversTypes['Role'], ParentType, ContextType>,
 	username?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+	__isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>,
+}
+
+export type UserAuthResolvers<ContextType = Context, ParentType extends ResolversParentTypes['UserAuth'] = ResolversParentTypes['UserAuth']> = {
+	tokens?: Resolver<ResolversTypes['SignedTokens'], ParentType, ContextType>,
+	user?: Resolver<ResolversTypes['User'], ParentType, ContextType>,
 	__isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>,
 }
 
@@ -426,7 +455,9 @@ export type Resolvers<ContextType = Context> = {
 	Mutation?: MutationResolvers<ContextType>,
 	Project?: ProjectResolvers<ContextType>,
 	Query?: QueryResolvers<ContextType>,
+	SignedTokens?: SignedTokensResolvers<ContextType>,
 	User?: UserResolvers<ContextType>,
+	UserAuth?: UserAuthResolvers<ContextType>,
 }
 
 export type DirectiveResolvers<ContextType = Context> = {
