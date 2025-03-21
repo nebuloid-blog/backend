@@ -26,8 +26,7 @@ const signInUser: Resolvers['signInUser'] = async (
 	context,
 ) => {
 	// Check username & password, and get info via username if good-to-go.
-	await authenticateUser(args.username, args.password)
-	const user = await Users.findOne({username: args.username})
+	const user = await authenticateUser(args.username, args.password)
 
 	return signJWT(user)
 }
