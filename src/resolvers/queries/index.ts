@@ -1,8 +1,8 @@
-import {getArticle, indexArticles} from './articles.js'
-import {getCourse, indexCourses} from './courses.js'
-import {getProject, indexProjects} from './projects.js'
-import {getMe} from './users.js'
-import type {QueryResolvers as Resolvers} from '@app/types/generated/schema.js'
+import {getArticle, indexArticles} from './articles'
+import {getCourse, indexCourses} from './courses'
+import {getProject, indexProjects} from './projects'
+import {getMe} from './users'
+import type {QueryResolvers as Resolvers} from '@app/types/generated/schema'
 
 export const Queries: Resolvers = {
 	// Articles

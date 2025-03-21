@@ -1,4 +1,4 @@
-import {Role} from '@app/types/generated/schema.js'
+import {Role} from '@app/types/generated/schema'
 import {Schema, model} from 'mongoose'
 
 const UserSchema = new Schema({

@@ -1,3 +1,3 @@
-export * from './course.js'
-export * from './project.js'
-export * from './user.js'
+export * from './course'
+export * from './project'
+export * from './user'

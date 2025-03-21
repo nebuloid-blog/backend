@@ -1,5 +1,5 @@
-import {Role} from '@app/types/generated/schema.js'
-import type {UserDbObject} from '@app/types/generated/schema.js'
+import {Role} from '@app/types/generated/schema'
+import type {UserDbObject} from '@app/types/generated/schema'
 
 const authorizationError = new Error('You don\'t have permission to make this request.')
 

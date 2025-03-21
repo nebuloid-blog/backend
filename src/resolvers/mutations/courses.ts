@@ -1,7 +1,7 @@
-import {Courses} from '@app/models/index.js'
-import {Role} from '@app/types/generated/schema.js'
-import {authorizeRoleAccess} from '@helpers/authorization.js'
-import type {MutationResolvers as Resolvers} from '@app/types/generated/schema.js'
+import {Courses} from '@app/models'
+import {Role} from '@app/types/generated/schema'
+import {authorizeRoleAccess} from '@helpers/authorization'
+import type {MutationResolvers as Resolvers} from '@app/types/generated/schema'
 
 const createCourse: Resolvers['createCourse'] = async (
 	parent,

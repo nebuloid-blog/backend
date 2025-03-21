@@ -1,7 +1,7 @@
-import {Mutations} from './mutations/index.js'
-import {Course, Project, User} from './objects/index.js'
-import {Queries} from './queries/index.js'
-import type {Resolvers} from '@app/types/generated/schema.js'
+import {Mutations} from './mutations'
+import {Course, Project, User} from './objects'
+import {Queries} from './queries'
+import type {Resolvers} from '@app/types/generated/schema'
 
 /*
 Notice how the entries within this resolvers object are all
