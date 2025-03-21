@@ -29,32 +29,24 @@ const refineRole = (role: string | undefined): Role => {
 const authorizeOwnership = async (
 	user: UserDbObject | undefined,
 	ownerID: string,
-	throwErrorOnFailure = true,
 ) => {
 	if (user != null && user._id.toString( ) === ownerID) return true
-	else if (throwErrorOnFailure) throw authorizationError
-	else return false
+	else throw authorizationError
 }
 
 const authorizeRoleAccess = async (
 	user: UserDbObject | undefined,
 	requiredRole: Role,
-	throwErrorOnFailure = true,
 ) => {
 	const userRole = refineRole(user?.role)
 	const userAccessLevel = roleAccessLevels.indexOf(userRole)
 	const requiredAccessLevel = roleAccessLevels.indexOf(requiredRole)
 
 	if (userAccessLevel >= requiredAccessLevel) return true
-	else if (throwErrorOnFailure) throw authorizationError
-	else return false
+	else throw authorizationError
 }
 
 export {
-	// Variables
-	authorizationError,
-
-	// Functions
 	authorizeOwnership,
 	authorizeRoleAccess,
 }
