@@ -1,4 +1,4 @@
-import {Users} from '@app/models.js'
+import {Users} from '@app/models/index.js'
 import bcrypt from 'bcrypt'
 
 interface AuthOptions {

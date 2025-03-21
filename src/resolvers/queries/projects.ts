@@ -1,4 +1,4 @@
-import {Projects} from '@app/models.js'
+import {Projects} from '@app/models/index.js'
 import type {QueryResolvers as Resolvers} from '@app/types/generated/schema.js'
 
 const getProject: Resolvers['getProject'] = async (

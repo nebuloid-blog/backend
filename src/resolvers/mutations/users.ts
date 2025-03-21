@@ -1,4 +1,4 @@
-import {Users} from '@app/models.js'
+import {Users} from '@app/models/index.js'
 import {Role} from '@app/types/generated/schema.js'
 import {authenticateUser} from '@helpers/authentication.js'
 import {authorizeRoleAccess, authorizeOwnership} from '@helpers/authorization.js'

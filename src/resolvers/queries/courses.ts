@@ -1,4 +1,4 @@
-import {Courses} from '@app/models.js'
+import {Courses} from '@app/models/index.js'
 import type {QueryResolvers as Resolvers} from '@app/types/generated/schema.js'
 
 const getCourse: Resolvers['getCourse'] = async (

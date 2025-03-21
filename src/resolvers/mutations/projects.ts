@@ -1,4 +1,4 @@
-import {Projects} from '@app/models.js'
+import {Projects} from '@app/models/index.js'
 import {Role} from '@app/types/generated/schema.js'
 import {authorizeRoleAccess} from '@helpers/authorization.js'
 import type {MutationResolvers as Resolvers} from '@app/types/generated/schema.js'
