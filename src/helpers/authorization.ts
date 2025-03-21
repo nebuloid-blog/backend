@@ -1,7 +1,11 @@
 import {Role} from '@app/types/generated/schema'
+import HttpError from 'standard-http-error'
 import type {UserDbObject} from '@app/types/generated/schema'
 
-const authorizationError = new Error('You don\'t have permission to make this request.')
+const authorizationError = new HttpError(
+	403, // FORBIDDEN
+	'Insufficient permissions to make this request.',
+)
 
 const roleAccessLevels = [
 	Role.GUEST,

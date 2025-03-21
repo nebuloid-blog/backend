@@ -1,7 +1,11 @@
 import {Users} from '@app/models'
 import bcrypt from 'bcrypt'
+import HttpError from 'standard-http-error'
 
-const authenticationError = new Error('Incorrect username or password.')
+const authenticationError = new HttpError(
+	401, // UNAUTHORIZED
+	'Incorrect username or password.',
+)
 
 const authenticateUser = async (
 	username: string,
