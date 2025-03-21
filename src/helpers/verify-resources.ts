@@ -1,4 +1,4 @@
-import {Users} from '@app/models'
+import {Users, RefreshTokens} from '@app/models'
 import HttpError from 'standard-http-error'
 
 const userNotAuthorized = new HttpError(
@@ -14,6 +14,11 @@ const loginNotFound = new HttpError(
 const userNotFound = new HttpError(
 	404, // NOT FOUND
 	'Can\'t find target user.',
+)
+
+const tokenNotFound = new HttpError(
+	404, // NOT FOUND
+	'Can\'t find refresh token.',
 )
 
 /**
@@ -48,7 +53,21 @@ const findUserLoginById = async (
 	return user
 }
 
+/**
+Leverages the mongoose `.findById` method, but throws if
+	no matching refresh token is found in the database.
+**/
+const findRefreshTokenById = async (
+	refreshTokenId: string | undefined,
+) => {
+	// Determine refresh token data by finding it in the db.
+	const doc = await RefreshTokens.findById(refreshTokenId)
+	if (doc == null) throw tokenNotFound
+	return doc
+}
+
 export {
 	findUserById,
 	findUserLoginById,
+	findRefreshTokenById,
 }
