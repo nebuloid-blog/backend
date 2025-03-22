@@ -5,7 +5,7 @@ import rehypePresetMinify from 'rehype-preset-minify'
 import rehypeSanitize, {defaultSchema} from 'rehype-sanitize'
 import rehypeStringify from 'rehype-stringify'
 import toml from 'toml'
-import type {ArticleDbObject} from '../types/generated/schema'
+import type {ArticleDbObject} from '@app/types/generated/schema'
 
 // Helper functions for reading/validating html + toml frontmatter,
 //  and transforming it into a valid string via rehype + gray matter.

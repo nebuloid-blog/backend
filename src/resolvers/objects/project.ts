@@ -1,5 +1,5 @@
-import {Courses} from '../models.js'
-import type {ProjectResolvers as Resolvers} from '../types/generated/schema.js'
+import {Courses} from '@app/models'
+import type {ProjectResolvers as Resolvers} from '@app/types/generated/schema'
 
 const id: Resolvers['id'] = (project) => (
 	project._id.toString( )
