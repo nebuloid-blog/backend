@@ -1,6 +1,7 @@
 import {Projects} from '@app/models'
 import {Role} from '@app/types/generated/schema'
 import {authorizeRoleAccess} from '@helpers/authorization'
+import {findUserLoginById} from '@helpers/verify-resources'
 import type {MutationResolvers as Resolvers} from '@app/types/generated/schema'
 
 const createProject: Resolvers['createProject'] = async (
@@ -8,7 +9,8 @@ const createProject: Resolvers['createProject'] = async (
 	args,
 	context,
 ) => {
-	await authorizeRoleAccess(context.user, Role.OWNER)
+	const currentUser = await findUserLoginById(context?.userId)
+	await authorizeRoleAccess(currentUser, Role.OWNER)
 
 	const project = await Projects.create(args)
 	return project._id.toString( )
@@ -19,7 +21,8 @@ const updateProject: Resolvers['updateProject'] = async (
 	args,
 	context,
 ) => {
-	await authorizeRoleAccess(context.user, Role.OWNER)
+	const currentUser = await findUserLoginById(context?.userId)
+	await authorizeRoleAccess(currentUser, Role.OWNER)
 
 	const project = await Projects.updateOne({_id: args.id})
 	return project.acknowledged
@@ -30,7 +33,8 @@ const deleteProject: Resolvers['deleteProject'] = async (
 	args,
 	context,
 ) => {
-	await authorizeRoleAccess(context.user, Role.OWNER)
+	const currentUser = await findUserLoginById(context?.userId)
+	await authorizeRoleAccess(currentUser, Role.OWNER)
 
 	const project = await Projects.deleteOne({_id: args.id})
 	return project.acknowledged

@@ -73,6 +73,7 @@
 		"rehype-preset-minify": "^7.0.1",
 		"rehype-sanitize": "^6.0.0",
 		"rehype-stringify": "^10.0.1",
+		"standard-http-error": "^2.0.1",
 		"toml": "^3.0.0",
 		"ts-is-present": "^1.2.2"
 	},
@@ -84,6 +85,7 @@
 		"@types/express": "^5.0.0",
 		"@types/ms": "^2",
 		"@types/node": "^22.13.9",
+		"@types/standard-http-error": "^2",
 		"@typescript-eslint/eslint-plugin": "^8.26.0",
 		"@typescript-eslint/parser": "^8.26.0",
 		"eslint": "^9.21.0",

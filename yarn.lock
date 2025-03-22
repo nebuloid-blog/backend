@@ -1816,6 +1816,7 @@ __metadata:
     "@types/express": "npm:^5.0.0"
     "@types/ms": "npm:^2"
     "@types/node": "npm:^22.13.9"
+    "@types/standard-http-error": "npm:^2"
     "@typescript-eslint/eslint-plugin": "npm:^8.26.0"
     "@typescript-eslint/parser": "npm:^8.26.0"
     bcrypt: "npm:^5.1.1"
@@ -1842,6 +1843,7 @@ __metadata:
     rehype-sanitize: "npm:^6.0.0"
     rehype-stringify: "npm:^10.0.1"
     replace-in-files-cli: "npm:^3.0.0"
+    standard-http-error: "npm:^2.0.1"
     toml: "npm:^3.0.0"
     ts-is-present: "npm:^1.2.2"
     ts-node: "npm:^10.9.2"
@@ -2350,6 +2352,22 @@ __metadata:
     "@types/mime": "npm:^1"
     "@types/node": "npm:*"
   checksum: 10/62b4e79cb049a5ed81789e2cdd8b91e289eb03b08130c249d74c8fd6d32840cffc6b50384c1ccd2ef0ecf306fe1188634fd9a8bce4339acd4bcc19ed16b2a0c3
+  languageName: node
+  linkType: hard
+
+"@types/standard-error@npm:*":
+  version: 1.1.2
+  resolution: "@types/standard-error@npm:1.1.2"
+  checksum: 10/d8f1f8626b3daeef5529536d6c5c7733953af2d681a1b0926f6bfdd1c26559fd4687a94bd0a14bc59b17659b4315185c4604235c8d50f32c79bc7f103de44d3c
+  languageName: node
+  linkType: hard
+
+"@types/standard-http-error@npm:^2":
+  version: 2.0.4
+  resolution: "@types/standard-http-error@npm:2.0.4"
+  dependencies:
+    "@types/standard-error": "npm:*"
+  checksum: 10/e370e66c814ac376e12c870044de1272945b5ed5ccfb7e2286ae9e5fbf72c521500003f6a942f3364dcaf7c8ab330e514c62f91b923e5475d67d0b2ef986ed2c
   languageName: node
   linkType: hard
 
@@ -8872,6 +8890,22 @@ __metadata:
   version: 0.0.5
   resolution: "stable-hash@npm:0.0.5"
   checksum: 10/9222ea2c558e37c4a576cb4e406966b9e6aa05b93f5c4f09ef4aaabe3577439b9b8fbff407b16840b63e2ae83de74290c7b1c2da7360d571e480e46a4aec0a56
+  languageName: node
+  linkType: hard
+
+"standard-error@npm:>= 1.1.0 < 2":
+  version: 1.1.0
+  resolution: "standard-error@npm:1.1.0"
+  checksum: 10/5997c26045037914c4a2be9749dbeb64a96b404f23ff04eba9c302b1121009563b6473c3c31e9e46fceea966d87f33f6fa08046217b7ca6ac434bb76c9e4b1bf
+  languageName: node
+  linkType: hard
+
+"standard-http-error@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "standard-http-error@npm:2.0.1"
+  dependencies:
+    standard-error: "npm:>= 1.1.0 < 2"
+  checksum: 10/5eb8dfc9ea53d86a644bcc0a73d4205256fbd507fd9612b28ced4ae0305a757530546e72e62b48daeec360c063d5c2f16201a4de667bf87caaa3d2c01dc4d314
   languageName: node
   linkType: hard
 

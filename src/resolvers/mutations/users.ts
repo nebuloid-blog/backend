@@ -3,6 +3,7 @@ import {Role} from '@app/types/generated/schema'
 import {authenticateUser} from '@helpers/authentication'
 import {authorizeRoleAccess, authorizeOwnership} from '@helpers/authorization'
 import {signJWT} from '@helpers/sign-jwt'
+import {findUserById, findUserLoginById} from '@helpers/verify-resources'
 import bcrypt from 'bcrypt'
 import type {MutationResolvers as Resolvers} from '@app/types/generated/schema'
 
@@ -26,8 +27,7 @@ const signInUser: Resolvers['signInUser'] = async (
 	context,
 ) => {
 	// Check username & password, and get info via username if good-to-go.
-	await authenticateUser(args.username, args.password)
-	const user = await Users.findOne({username: args.username})
+	const user = await authenticateUser(args.username, args.password)
 
 	return signJWT(user)
 }
@@ -37,12 +37,16 @@ const deleteUser: Resolvers['deleteUser'] = async (
 	args,
 	context,
 ) => {
+	const currentUser = await findUserLoginById(context?.userId)
+	const targetUser = await findUserById(args.id)
+	const targetUserId = targetUser._id.toString( )
+
 	await Promise.any([
-		authorizeOwnership(context.user, args.id),
-		authorizeRoleAccess(context.user, Role.OWNER),
+		authorizeOwnership(currentUser, targetUserId),
+		authorizeRoleAccess(currentUser, Role.OWNER),
 	])
 
-	const user = await Users.deleteOne({_id: args.id})
+	const user = await Users.deleteOne({_id: targetUserId})
 	return user.acknowledged
 }
 
