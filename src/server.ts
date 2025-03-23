@@ -20,8 +20,14 @@ const {
 const SCHEMA_FILE = 'src/schema.gql'
 
 const main = async ( ) => {
+	// Print the DB connection URI if we're on dev.
+	if (env.NODE_ENV === 'development') {
+		console.info('\nConnecting to database URI...')
+		console.info(DB_URL)
+	}
+
 	const app = express( )
-	void mongoose.connect(DB_URL)
+	await mongoose.connect(DB_URL)
 
 	// Import the schema's data types and build it with GraphQL.
 	const rawSchema = await fs.promises.readFile(SCHEMA_FILE, 'utf8')
@@ -61,7 +67,7 @@ const main = async ( ) => {
 	// Finally, start the express server.
 	app.listen(PORT, ( ) => {
 		if (env.NODE_ENV === 'development') {
-			console.info(`Server started on port ${PORT}.`)
+			console.info(`\nServer started on port ${PORT}.`)
 			console.info(`http://localhost:${PORT}/`)
 		}
 	})

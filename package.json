@@ -32,9 +32,9 @@
 		"start:build":
 			"echo building... && tsc && tsc-alias",
 		"start:prod":
-			"echo launching...\\\n && node --require dotenv-expand/config ./dist/src/server.js",
+			"echo launching...\\\n && dotenvx run -- node ./dist/src/server.js",
 		"start:dev":
-			"echo launching...\\\n  && node --experimental-specifier-resolution=node --loader ts-node/esm --require dotenv-expand/config ./src/server.ts",
+			"echo launching...\\\n  && dotenvx run -f .env -f .env.local --overload -- node --experimental-specifier-resolution=node --loader ts-node/esm ./src/server.ts",
 		"start:watch":
 			"echo watching...\\\n  && nodemon --exec 'yarn start:dev'",
 
@@ -50,6 +50,7 @@
 			"echo linting... && eslint ./src/**/generated/**/*.ts --no-ignore --rule '@typescript-eslint/consistent-type-definitions: 0'"
 	},
 	"dependencies": {
+		"@dotenvx/dotenvx": "^1.39.0",
 		"@graphql-codegen/typescript-mongodb": "^3.0.0",
 		"@graphql-tools/schema": "^10.0.21",
 		"@octokit/auth-app": "^7.1.5",
@@ -57,8 +58,6 @@
 		"@octokit/graphql-schema": "^15.26.0",
 		"bcrypt": "^5.1.1",
 		"body-parser": "^1.20.3",
-		"dotenv": "^16.4.7",
-		"dotenv-expand": "^12.0.1",
 		"express": "^4.21.2",
 		"express-graphql": "^0.12.0",
 		"express-jwt": "^8.5.1",
