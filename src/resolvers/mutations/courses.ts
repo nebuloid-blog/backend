@@ -10,7 +10,7 @@ const createCourse: Resolvers['createCourse'] = async (
 	context,
 ) => {
 	const currentUser = await findUserLoginById(context?.userId)
-	await authorizeRoleAccess(currentUser, Role.OWNER)
+	await authorizeRoleAccess(currentUser, Role.ADMINISTRATOR)
 
 	const course = await Courses.create(args)
 	return course._id.toString( )
@@ -22,7 +22,7 @@ const updateCourse: Resolvers['updateCourse'] = async (
 	context,
 ) => {
 	const currentUser = await findUserLoginById(context?.userId)
-	await authorizeRoleAccess(currentUser, Role.OWNER)
+	await authorizeRoleAccess(currentUser, Role.ADMINISTRATOR)
 
 	const course = await Courses.updateOne({_id: args.id})
 	return course.acknowledged
@@ -34,7 +34,7 @@ const deleteCourse: Resolvers['deleteCourse'] = async (
 	context,
 ) => {
 	const currentUser = await findUserLoginById(context?.userId)
-	await authorizeRoleAccess(currentUser, Role.OWNER)
+	await authorizeRoleAccess(currentUser, Role.ADMINISTRATOR)
 
 	const course = await Courses.deleteOne({_id: args.id})
 	return course.acknowledged

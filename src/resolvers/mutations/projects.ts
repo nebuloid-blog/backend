@@ -10,7 +10,7 @@ const createProject: Resolvers['createProject'] = async (
 	context,
 ) => {
 	const currentUser = await findUserLoginById(context?.userId)
-	await authorizeRoleAccess(currentUser, Role.OWNER)
+	await authorizeRoleAccess(currentUser, Role.ADMINISTRATOR)
 
 	const project = await Projects.create(args)
 	return project._id.toString( )
@@ -22,7 +22,7 @@ const updateProject: Resolvers['updateProject'] = async (
 	context,
 ) => {
 	const currentUser = await findUserLoginById(context?.userId)
-	await authorizeRoleAccess(currentUser, Role.OWNER)
+	await authorizeRoleAccess(currentUser, Role.ADMINISTRATOR)
 
 	const project = await Projects.updateOne({_id: args.id})
 	return project.acknowledged
@@ -34,7 +34,7 @@ const deleteProject: Resolvers['deleteProject'] = async (
 	context,
 ) => {
 	const currentUser = await findUserLoginById(context?.userId)
-	await authorizeRoleAccess(currentUser, Role.OWNER)
+	await authorizeRoleAccess(currentUser, Role.ADMINISTRATOR)
 
 	const project = await Projects.deleteOne({_id: args.id})
 	return project.acknowledged

@@ -14,7 +14,7 @@ import type {Request as JWTRequest} from 'express-jwt'
 const {
 	PORT,
 	DB_URL,
-	JWT_SECRET,
+	ACCESS_TOKEN_SECRET,
 } = env
 
 const SCHEMA_FILE = 'src/schema.gql'
@@ -40,7 +40,7 @@ const main = async ( ) => {
 
 		// This reads JWTs using the secret access code.
 		expressJWT({
-			secret: JWT_SECRET,
+			secret: ACCESS_TOKEN_SECRET,
 			algorithms: ['HS256'],
 			credentialsRequired: false,
 		}),
