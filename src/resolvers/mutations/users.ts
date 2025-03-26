@@ -2,7 +2,7 @@ import {Users} from '@app/models'
 import {Role} from '@app/types/generated/schema'
 import {authenticateUser} from '@helpers/authentication'
 import {authorizeRoleAccess, authorizeOwnership} from '@helpers/authorization'
-import {signJWT} from '@helpers/sign-jwt'
+import {signAccessToken} from '@helpers/sign-jwt'
 import {findUserById, findUserLoginById} from '@helpers/verify-resources'
 import bcrypt from 'bcrypt'
 import type {MutationResolvers as Resolvers} from '@app/types/generated/schema'
@@ -18,7 +18,8 @@ const createUser: Resolvers['createUser'] = async (
 		password: await bcrypt.hash(args.password, 12),
 	})
 
-	return signJWT(user)
+	// TODO: Add refresh token after schema change.
+	return signAccessToken(user)
 }
 
 const signInUser: Resolvers['signInUser'] = async (
@@ -29,7 +30,8 @@ const signInUser: Resolvers['signInUser'] = async (
 	// Check username & password, and get info via username if good-to-go.
 	const user = await authenticateUser(args.username, args.password)
 
-	return signJWT(user)
+	// TODO: Add refresh token after schema change.
+	return signAccessToken(user)
 }
 
 const deleteUser: Resolvers['deleteUser'] = async (
