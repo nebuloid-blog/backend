@@ -47,6 +47,10 @@ export type Mutation = {
 	deleteCourse: Scalars['Boolean']['output'],
 	deleteProject: Scalars['Boolean']['output'],
 	deleteUser: Scalars['Boolean']['output'],
+	replaceRefreshToken?: Maybe<Scalars['String']['output']>,
+	revokeAllRefreshTokens: Scalars['Boolean']['output'],
+	revokeAllRefreshTokensGlobal: Scalars['Boolean']['output'],
+	revokeRefreshToken: Scalars['Boolean']['output'],
 	signInUser?: Maybe<Scalars['String']['output']>,
 	updateCourse: Scalars['Boolean']['output'],
 	updateProject: Scalars['Boolean']['output'],
@@ -86,7 +90,22 @@ export type MutationDeleteProjectArgs = {
 
 
 export type MutationDeleteUserArgs = {
-	id: Scalars['ID']['input'],
+	userId: Scalars['ID']['input'],
+}
+
+
+export type MutationReplaceRefreshTokenArgs = {
+	refreshToken: Scalars['String']['input'],
+}
+
+
+export type MutationRevokeAllRefreshTokensArgs = {
+	userId: Scalars['ID']['input'],
+}
+
+
+export type MutationRevokeRefreshTokenArgs = {
+	refreshToken: Scalars['String']['input'],
 }
 
 
@@ -364,7 +383,11 @@ export type MutationResolvers<ContextType = Context, ParentType extends Resolver
 	createUser?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'email' | 'password' | 'username'>>,
 	deleteCourse?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteCourseArgs, 'id'>>,
 	deleteProject?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteProjectArgs, 'id'>>,
-	deleteUser?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteUserArgs, 'id'>>,
+	deleteUser?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteUserArgs, 'userId'>>,
+	replaceRefreshToken?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType, RequireFields<MutationReplaceRefreshTokenArgs, 'refreshToken'>>,
+	revokeAllRefreshTokens?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRevokeAllRefreshTokensArgs, 'userId'>>,
+	revokeAllRefreshTokensGlobal?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>,
+	revokeRefreshToken?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRevokeRefreshTokenArgs, 'refreshToken'>>,
 	signInUser?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType, RequireFields<MutationSignInUserArgs, 'password' | 'username'>>,
 	updateCourse?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationUpdateCourseArgs, 'id'>>,
 	updateProject?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationUpdateProjectArgs, 'id'>>,

@@ -1,12 +1,15 @@
 enum Role {
 	GUEST
 	USER
-	ADMINISTRATOR
 	MODERATOR
+	ADMINISTRATOR
 }
 
 type Query {
-	# Articles
+	############
+	# ARTICLES #
+	############
+
 	getArticle(
 		file: String!
 		directory: String
@@ -18,20 +21,33 @@ type Query {
 		branch: String
 	): [Article!]
 
-	# Users
+	#########
+	# USERS #
+	#########
+
 	getMe: User
 
-	# Courses
+	###########
+	# COURSES #
+	###########
+
 	getCourse(id: ID!): Course
 	indexCourses: [Course!]
 
-	# Projects
+	############
+	# PROJECTS #
+	############
+
 	getProject(id: ID!): Project
 	indexProjects: [Project!]
 }
 
 type Mutation {
-	# Users
+	#########
+	# USERS #
+	#########
+
+	# Supplies a new refresh token upon success.
 	createUser(
 		email: String!
 		username: String!
@@ -39,14 +55,39 @@ type Mutation {
 		role: Role
 	): String
 
+	# Supplies a new refresh token upon success.
 	signInUser(
 		username: String!
 		password: String!
 	): String
 
-	deleteUser(id: ID!): Boolean!
+	# Should also delete all associated refresh tokens.
+	deleteUser(
+		userId: ID!
+	): Boolean!
 
-	# Courses
+	# Revokes the given refresh token and supplies a new one.
+	replaceRefreshToken(
+		refreshToken: String!
+	): String
+
+	# Revokes the given refresh token.
+	revokeRefreshToken(
+		refreshToken: String!
+	): Boolean!
+
+	# Revokes all refresh tokens for a given user.
+	revokeAllRefreshTokens(
+		userId: ID!
+	): Boolean!
+
+	# Revokes all refresh tokens for all users.
+	revokeAllRefreshTokensGlobal: Boolean!
+
+	###########
+	# COURSES #
+	###########
+
 	createCourse(
 		name: String!
 		description: String
@@ -56,7 +97,10 @@ type Mutation {
 	updateCourse(id: ID!): Boolean!
 	deleteCourse(id: ID!): Boolean!
 
-	# Projects
+	############
+	# PROJECTS #
+	############
+
 	createProject(
 		name: String!
 		description: String

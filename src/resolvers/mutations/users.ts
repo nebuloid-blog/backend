@@ -38,7 +38,7 @@ const deleteUser: Resolvers['deleteUser'] = async (
 	context,
 ) => {
 	const currentUser = await findUserLoginById(context?.userId)
-	const targetUser = await findUserById(args.id)
+	const targetUser = await findUserById(args.userId)
 	const targetUserId = targetUser._id.toString( )
 
 	await Promise.any([
