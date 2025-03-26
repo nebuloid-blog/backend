@@ -10,7 +10,8 @@ const authorizationError = new HttpError(
 const roleAccessLevels = [
 	Role.GUEST,
 	Role.USER,
-	Role.OWNER,
+	Role.MODERATOR,
+	Role.ADMINISTRATOR,
 ]
 
 // Stupid work-around for filtering typescript enums...

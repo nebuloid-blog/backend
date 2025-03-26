@@ -1,9 +1,8 @@
 enum Role {
 	GUEST
 	USER
-	OWNER
-	# ADMINISTRATOR
-	# MODERATOR
+	ADMINISTRATOR
+	MODERATOR
 }
 
 type Query {

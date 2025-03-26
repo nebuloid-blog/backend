@@ -43,7 +43,7 @@ const deleteUser: Resolvers['deleteUser'] = async (
 
 	await Promise.any([
 		authorizeOwnership(currentUser, targetUserId),
-		authorizeRoleAccess(currentUser, Role.OWNER),
+		authorizeRoleAccess(currentUser, Role.ADMINISTRATOR),
 	])
 
 	const user = await Users.deleteOne({_id: targetUserId})

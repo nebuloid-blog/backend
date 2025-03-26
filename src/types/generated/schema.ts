@@ -1,6 +1,6 @@
 import {GraphQLResolveInfo} from 'graphql'
 import {ObjectId} from 'mongodb'
-import {Context} from '../context'
+import {Context} from '../context.js'
 
 export type Maybe<T> = T | null
 export type InputMaybe<T> = Maybe<T>
@@ -148,8 +148,9 @@ export type QueryIndexArticlesArgs = {
 }
 
 export enum Role {
+	ADMINISTRATOR = 'ADMINISTRATOR',
 	GUEST = 'GUEST',
-	OWNER = 'OWNER',
+	MODERATOR = 'MODERATOR',
 	USER = 'USER',
 }
 
