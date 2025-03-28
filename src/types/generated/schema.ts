@@ -75,7 +75,6 @@ export type MutationCreateProjectArgs = {
 export type MutationCreateUserArgs = {
 	email: Scalars['String']['input'],
 	password: Scalars['String']['input'],
-	role?: InputMaybe<Role>,
 	username: Scalars['String']['input'],
 }
 
