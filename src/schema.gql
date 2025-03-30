@@ -52,7 +52,6 @@ type Mutation {
 		email: String!
 		username: String!
 		password: String!
-		role: Role
 	): UserAuth!
 
 	# Supplies a new refresh token upon success.

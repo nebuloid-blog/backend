@@ -1,12 +1,14 @@
 # Portfolio Backend
 ## Setup
-1. Clone this repository by running `git clone git@github.com:noltron000-portfolio/backend.git`.
+1. Clone this repository by running `git clone git@github.com/nebuloid-blog/backend.git`.
 1. In your terminal, `cd` into the project root.
+1. Create a `.env` file and populate it with the requisite data!
 1. Run `yarn` to install dependencies.
 1. Run `git submodule init` to register submodules.
 1. Run `git submodule update` to clone submodules.
-1. Make sure you have a local instance of `mongodb` running on port <kbd>27017</kbd>.
+1. Open Docker Desktop and run `docker-compose up -d`.
 1. Finally, you can run `yarn start` or `yarn dev`.
+1. Now, you can use apps like *MongoDB Compass* and *Altair GraphQL Client*!
 
 ## Project Details
 ### Notable Technologies
@@ -63,6 +65,10 @@ To make this work, I've extended my own ESLint config, **Tabbify**.
 [*Creating an API with GraphQL*]:
 	https://fjolt.com/article/graphql-express-node-js-mongodb-api
 		"Creating an API with GraphQL, MongoDB, and Express"
+
+[*Docker Compose with MongoDB Replica Sets*]:
+	https://anthonysimmon.com/the-only-local-mongodb-replica-set-with-docker-compose-guide-youll-ever-need/
+		"The only local MongoDB replica set with Docker Compose guide you'll ever need!"
 
 [*GraphQL the Simple Way*]:
 	https://httptoolkit.tech/blog/simple-graphql-server-without-apollo/
