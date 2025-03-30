@@ -30,9 +30,9 @@ const createUser: Resolvers['createUser'] = async (
 
 	// Object added for legibility.
 	const userData = {
-		email,
-		username,
-		hashedPassword,
+		email: email,
+		username: username,
+		password: hashedPassword,
 	}
 
 	// Start a database session to ensure atomicity.
