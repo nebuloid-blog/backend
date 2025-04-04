@@ -2,6 +2,7 @@ import {RefreshTokens} from '@app/models'
 import {UserDbObject} from '@app/types/generated/schema'
 import {ClientSession} from 'mongoose'
 import {signAccessToken, signRefreshToken} from './sign-jwt'
+import type {CookieStore} from '@whatwg-node/cookie-store'
 
 /**
 This function first creates a new refresh token in the
@@ -9,6 +10,7 @@ This function first creates a new refresh token in the
 **/
 const generateTokens = async (
 	user: UserDbObject,
+	cookieStore: CookieStore | undefined,
 	session?: ClientSession,
 ) => {
 	const userId = user._id.toString( )
@@ -31,11 +33,15 @@ const generateTokens = async (
 
 	// Sign the access and refresh tokens.
 	const refreshTokenId = refreshTokenDoc._id.toString( )
-	const accessToken = signAccessToken(user)
 	const refreshToken = signRefreshToken(refreshTokenId)
+	const accessToken = signAccessToken(user)
 
-	// Return the tokens.
-	return {accessToken}
+	// Save the refresh token to a http-only cookie.
+	if (cookieStore == null) throw new Error('No cookies!')
+	await cookieStore.set('refreshToken', refreshToken)
+
+	// Return the access token to the backend system.
+	return accessToken
 }
 
 export {
