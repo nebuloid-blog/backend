@@ -99,11 +99,6 @@ export type MutationDeleteUserArgs = {
 }
 
 
-export type MutationReplaceRefreshTokenArgs = {
-	refreshToken: Scalars['String']['input'],
-}
-
-
 export type MutationRevokeAllRefreshTokensArgs = {
 	userId: Scalars['ID']['input'],
 }
@@ -404,7 +399,7 @@ export type MutationResolvers<ContextType = Context, ParentType extends Resolver
 	deleteCourse?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteCourseArgs, 'id'>>,
 	deleteProject?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteProjectArgs, 'id'>>,
 	deleteUser?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteUserArgs, 'userId'>>,
-	replaceRefreshToken?: Resolver<ResolversTypes['AccessToken'], ParentType, ContextType, RequireFields<MutationReplaceRefreshTokenArgs, 'refreshToken'>>,
+	replaceRefreshToken?: Resolver<ResolversTypes['AccessToken'], ParentType, ContextType>,
 	revokeAllRefreshTokens?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRevokeAllRefreshTokensArgs, 'userId'>>,
 	revokeAllRefreshTokensGlobal?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>,
 	revokeRefreshToken?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRevokeRefreshTokenArgs, 'refreshToken'>>,

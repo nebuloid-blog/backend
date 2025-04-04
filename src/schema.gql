@@ -66,9 +66,7 @@ type Mutation {
 	): Boolean!
 
 	# Revokes the given refresh token and supplies a new one.
-	replaceRefreshToken(
-		refreshToken: String!
-	): AccessToken!
+	replaceRefreshToken: AccessToken!
 
 	# Revokes the given refresh token.
 	revokeRefreshToken(
