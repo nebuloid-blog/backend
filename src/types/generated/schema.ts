@@ -104,11 +104,6 @@ export type MutationRevokeAllRefreshTokensArgs = {
 }
 
 
-export type MutationRevokeRefreshTokenArgs = {
-	refreshToken: Scalars['String']['input'],
-}
-
-
 export type MutationSignInUserArgs = {
 	password: Scalars['String']['input'],
 	username: Scalars['String']['input'],
@@ -402,7 +397,7 @@ export type MutationResolvers<ContextType = Context, ParentType extends Resolver
 	replaceRefreshToken?: Resolver<ResolversTypes['AccessToken'], ParentType, ContextType>,
 	revokeAllRefreshTokens?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRevokeAllRefreshTokensArgs, 'userId'>>,
 	revokeAllRefreshTokensGlobal?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>,
-	revokeRefreshToken?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRevokeRefreshTokenArgs, 'refreshToken'>>,
+	revokeRefreshToken?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>,
 	signInUser?: Resolver<ResolversTypes['UserAuth'], ParentType, ContextType, RequireFields<MutationSignInUserArgs, 'password' | 'username'>>,
 	updateCourse?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationUpdateCourseArgs, 'id'>>,
 	updateProject?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationUpdateProjectArgs, 'id'>>,
