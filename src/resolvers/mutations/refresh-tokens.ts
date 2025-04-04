@@ -44,12 +44,13 @@ const replaceRefreshToken: Resolvers['replaceRefreshToken'] = async (
 
 			// Await these async calls SIMULTANEOUSLY!
 			[deleted, newTokens] = await Promise.all([deleted, newTokens])
+			const {accessToken, refreshToken} = newTokens
 
 			// There was a problem deleting the given token.
 			if (deleted.deletedCount === 0) throw tokenNotDeleted
 
 			// Issue a new refresh token and return it.
-			return newTokens
+			return {accessToken}
 		})
 
 		// Return the result from the successful session.

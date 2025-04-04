@@ -48,10 +48,13 @@ const createUser: Resolvers['createUser'] = async (
 
 			// Creates a new refresh token in the database.
 			// Also signs & returns an access & refresh token.
-			const tokens = await generateTokens(user, session)
+			const {
+				accessToken,
+				refreshToken,
+			} = await generateTokens(user, session)
 
 			// Return user data.
-			return {user, tokens}
+			return {user, accessToken}
 		})
 
 		// Return the result from the successful session.
@@ -73,10 +76,13 @@ const signInUser: Resolvers['signInUser'] = async (
 
 	// Create a new refresh token in the database.
 	// Then, sign & return an access token + refresh token.
-	const tokens = await generateTokens(user)
+	const {
+		accessToken,
+		refreshToken,
+	} = await generateTokens(user)
 
 	// Return user data.
-	return {user, tokens}
+	return {user, accessToken}
 }
 
 const deleteUser: Resolvers['deleteUser'] = async (

@@ -35,7 +35,7 @@ const generateTokens = async (
 	const refreshToken = signRefreshToken(refreshTokenId)
 
 	// Return the tokens.
-	return {accessToken, refreshToken}
+	return {accessToken}
 }
 
 export {
