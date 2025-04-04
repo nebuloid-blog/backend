@@ -68,7 +68,7 @@ type Mutation {
 	# Revokes the given refresh token and supplies a new one.
 	replaceRefreshToken(
 		refreshToken: String!
-	): SignedTokens!
+	): AccessToken!
 
 	# Revokes the given refresh token.
 	revokeRefreshToken(
@@ -152,11 +152,10 @@ type ArticleData {
 # Return type with auth data.
 type UserAuth {
 	user: User!
-	tokens: SignedTokens!
+	accessToken: String!
 }
 
 # A pair of signed tokens.
-type SignedTokens {
+type AccessToken {
 	accessToken: String!
-	refreshToken: String!
 }

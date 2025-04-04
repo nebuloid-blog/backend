@@ -20,6 +20,11 @@ export type Scalars = {
 	Float: {input: number, output: number},
 }
 
+export type AccessToken = {
+	__typename?: 'AccessToken',
+	accessToken: Scalars['String']['output'],
+}
+
 export type Article = {
 	__typename?: 'Article',
 	data: ArticleData,
@@ -48,7 +53,7 @@ export type Mutation = {
 	deleteCourse: Scalars['Boolean']['output'],
 	deleteProject: Scalars['Boolean']['output'],
 	deleteUser: Scalars['Boolean']['output'],
-	replaceRefreshToken: SignedTokens,
+	replaceRefreshToken: AccessToken,
 	revokeAllRefreshTokens: Scalars['Boolean']['output'],
 	revokeAllRefreshTokensGlobal: Scalars['Boolean']['output'],
 	revokeRefreshToken: Scalars['Boolean']['output'],
@@ -173,12 +178,6 @@ export enum Role {
 	USER = 'USER',
 }
 
-export type SignedTokens = {
-	__typename?: 'SignedTokens',
-	accessToken: Scalars['String']['output'],
-	refreshToken: Scalars['String']['output'],
-}
-
 export type User = {
 	__typename?: 'User',
 	email: Scalars['String']['output'],
@@ -189,7 +188,7 @@ export type User = {
 
 export type UserAuth = {
 	__typename?: 'UserAuth',
-	tokens: SignedTokens,
+	accessToken: Scalars['String']['output'],
 	user: User,
 }
 
@@ -293,8 +292,9 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
-	Article: ResolverTypeWrapper<Article>,
+	AccessToken: ResolverTypeWrapper<AccessToken>,
 	String: ResolverTypeWrapper<Scalars['String']['output']>,
+	Article: ResolverTypeWrapper<Article>,
 	ArticleData: ResolverTypeWrapper<ArticleData>,
 	Course: ResolverTypeWrapper<CourseDbObject>,
 	ID: ResolverTypeWrapper<Scalars['ID']['output']>,
@@ -303,7 +303,6 @@ export type ResolversTypes = {
 	Project: ResolverTypeWrapper<ProjectDbObject>,
 	Query: ResolverTypeWrapper<{}>,
 	Role: Role,
-	SignedTokens: ResolverTypeWrapper<SignedTokens>,
 	User: ResolverTypeWrapper<UserDbObject>,
 	UserAuth: ResolverTypeWrapper<Omit<UserAuth, 'user'> & {user: ResolversTypes['User']}>,
 	AdditionalEntityFields: AdditionalEntityFields,
@@ -311,8 +310,9 @@ export type ResolversTypes = {
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
-	Article: Article,
+	AccessToken: AccessToken,
 	String: Scalars['String']['output'],
+	Article: Article,
 	ArticleData: ArticleData,
 	Course: CourseDbObject,
 	ID: Scalars['ID']['output'],
@@ -320,7 +320,6 @@ export type ResolversParentTypes = {
 	Boolean: Scalars['Boolean']['output'],
 	Project: ProjectDbObject,
 	Query: {},
-	SignedTokens: SignedTokens,
 	User: UserDbObject,
 	UserAuth: Omit<UserAuth, 'user'> & {user: ResolversParentTypes['User']},
 	AdditionalEntityFields: AdditionalEntityFields,
@@ -373,6 +372,11 @@ export type MapDirectiveArgs = {
 
 export type MapDirectiveResolver<Result, Parent, ContextType = Context, Args = MapDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>
 
+export type AccessTokenResolvers<ContextType = Context, ParentType extends ResolversParentTypes['AccessToken'] = ResolversParentTypes['AccessToken']> = {
+	accessToken?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+	__isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>,
+}
+
 export type ArticleResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Article'] = ResolversParentTypes['Article']> = {
 	data?: Resolver<ResolversTypes['ArticleData'], ParentType, ContextType>,
 	html?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
@@ -400,7 +404,7 @@ export type MutationResolvers<ContextType = Context, ParentType extends Resolver
 	deleteCourse?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteCourseArgs, 'id'>>,
 	deleteProject?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteProjectArgs, 'id'>>,
 	deleteUser?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteUserArgs, 'userId'>>,
-	replaceRefreshToken?: Resolver<ResolversTypes['SignedTokens'], ParentType, ContextType, RequireFields<MutationReplaceRefreshTokenArgs, 'refreshToken'>>,
+	replaceRefreshToken?: Resolver<ResolversTypes['AccessToken'], ParentType, ContextType, RequireFields<MutationReplaceRefreshTokenArgs, 'refreshToken'>>,
 	revokeAllRefreshTokens?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRevokeAllRefreshTokensArgs, 'userId'>>,
 	revokeAllRefreshTokensGlobal?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>,
 	revokeRefreshToken?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRevokeRefreshTokenArgs, 'refreshToken'>>,
@@ -427,12 +431,6 @@ export type QueryResolvers<ContextType = Context, ParentType extends ResolversPa
 	indexProjects?: Resolver<Maybe<Array<ResolversTypes['Project']>>, ParentType, ContextType>,
 }
 
-export type SignedTokensResolvers<ContextType = Context, ParentType extends ResolversParentTypes['SignedTokens'] = ResolversParentTypes['SignedTokens']> = {
-	accessToken?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
-	refreshToken?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
-	__isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>,
-}
-
 export type UserResolvers<ContextType = Context, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
 	email?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
 	id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>,
@@ -442,19 +440,19 @@ export type UserResolvers<ContextType = Context, ParentType extends ResolversPar
 }
 
 export type UserAuthResolvers<ContextType = Context, ParentType extends ResolversParentTypes['UserAuth'] = ResolversParentTypes['UserAuth']> = {
-	tokens?: Resolver<ResolversTypes['SignedTokens'], ParentType, ContextType>,
+	accessToken?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
 	user?: Resolver<ResolversTypes['User'], ParentType, ContextType>,
 	__isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>,
 }
 
 export type Resolvers<ContextType = Context> = {
+	AccessToken?: AccessTokenResolvers<ContextType>,
 	Article?: ArticleResolvers<ContextType>,
 	ArticleData?: ArticleDataResolvers<ContextType>,
 	Course?: CourseResolvers<ContextType>,
 	Mutation?: MutationResolvers<ContextType>,
 	Project?: ProjectResolvers<ContextType>,
 	Query?: QueryResolvers<ContextType>,
-	SignedTokens?: SignedTokensResolvers<ContextType>,
 	User?: UserResolvers<ContextType>,
 	UserAuth?: UserAuthResolvers<ContextType>,
 }
