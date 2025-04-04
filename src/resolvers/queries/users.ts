@@ -6,7 +6,17 @@ const getMe: Resolvers['getMe'] = async (
 	args,
 	context,
 ) => {
-	const currentUser = await findUserLoginById(context?.userId)
+	console.info({
+		parent,
+		args,
+		context,
+	})
+
+	console.info({
+		data: context?.params?.variables?.userId,
+	})
+
+	const currentUser = await findUserLoginById(context?.params?.variables?.userId)
 	return currentUser
 }
 
