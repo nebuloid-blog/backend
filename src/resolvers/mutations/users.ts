@@ -1,16 +1,26 @@
 import {Users} from '@app/models'
 import {Role} from '@app/types/generated/schema'
 import {authenticateUser} from '@helpers/authentication'
-import {authorizeRoleAccess, authorizeOwnership} from '@helpers/authorization'
+
+import {
+	authorizeRoleAccess,
+	authorizeOwnership,
+} from '@helpers/authorization'
+
 import {generateTokens} from '@helpers/modify-resources'
+
 import {
 	findUserById,
 	findUserLoginById,
 } from '@helpers/verify-resources'
+
 import bcrypt from 'bcrypt'
 import {startSession} from 'mongoose'
 import HttpError from 'standard-http-error'
-import type {MutationResolvers as Resolvers} from '@app/types/generated/schema'
+
+import type {
+	MutationResolvers as Resolvers,
+} from '@app/types/generated/schema'
 
 const userNotDeleted = new HttpError(
 	404, // NOT FOUND
