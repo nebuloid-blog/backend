@@ -40,6 +40,7 @@ const main = async ( ) => {
 	})
 
 	const yoga = createYoga({
+		graphqlEndpoint: '/',
 		schema: schema,
 		plugins: [
 			// Make sure to add the useCookies plugin
