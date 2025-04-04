@@ -118,6 +118,8 @@ const deleteUser: Resolvers['deleteUser'] = async (
 	// Delete the target user.
 	const deleted = await Users.deleteOne({_id: targetUserId})
 
+	// TODO: Probably should delete refresh tokens as well.
+
 	// There was a problem deleting the target user.
 	if (deleted.deletedCount === 0) throw userNotDeleted
 	else return true // There was no problem - return true.
