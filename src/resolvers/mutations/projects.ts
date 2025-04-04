@@ -9,7 +9,11 @@ const createProject: Resolvers['createProject'] = async (
 	args,
 	context,
 ) => {
-	const currentUser = await findUserLoginById(context?.userId)
+	// Extract variables from context.
+	const {variables} = context.params
+
+	// Obtain user data / ensure user is logged in.
+	const currentUser = await findUserLoginById(variables?.userId)
 	await authorizeRoleAccess(currentUser, Role.ADMINISTRATOR)
 
 	const project = await Projects.create(args)
@@ -21,7 +25,11 @@ const updateProject: Resolvers['updateProject'] = async (
 	args,
 	context,
 ) => {
-	const currentUser = await findUserLoginById(context?.userId)
+	// Extract variables from context.
+	const {variables} = context.params
+
+	// Obtain user data / ensure user is logged in.
+	const currentUser = await findUserLoginById(variables?.userId)
 	await authorizeRoleAccess(currentUser, Role.ADMINISTRATOR)
 
 	const project = await Projects.updateOne({_id: args.id})
@@ -33,7 +41,11 @@ const deleteProject: Resolvers['deleteProject'] = async (
 	args,
 	context,
 ) => {
-	const currentUser = await findUserLoginById(context?.userId)
+	// Extract variables from context.
+	const {variables} = context.params
+
+	// Obtain user data / ensure user is logged in.
+	const currentUser = await findUserLoginById(variables?.userId)
 	await authorizeRoleAccess(currentUser, Role.ADMINISTRATOR)
 
 	const project = await Projects.deleteOne({_id: args.id})
