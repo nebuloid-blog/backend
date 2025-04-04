@@ -67,7 +67,11 @@ const revokeRefreshToken: Resolvers['revokeRefreshToken'] = async (
 	args,
 	context,
 ) => {
-	const currentUser = await findUserLoginById(context?.userId)
+	// Extract variables from context.
+	const {variables} = context.params
+
+	// Obtain user data / ensure user is logged in.
+	const currentUser = await findUserLoginById(variables?.userId)
 	const {refreshTokenId} = verifyRefreshToken(args.refreshToken)
 	const refreshTokenDoc = await findRefreshTokenById(refreshTokenId)
 	const ownerId = refreshTokenDoc.owner._id.toString( )
@@ -92,7 +96,11 @@ const revokeAllRefreshTokens: Resolvers['revokeAllRefreshTokens'] = async (
 	args,
 	context,
 ) => {
-	const currentUser = await findUserLoginById(context?.userId)
+	// Extract variables from context.
+	const {variables} = context.params
+
+	// Obtain user data / ensure user is logged in.
+	const currentUser = await findUserLoginById(variables?.userId)
 	const targetUser = await findUserById(args.userId)
 	const targetUserId = targetUser._id.toString( )
 
@@ -113,7 +121,11 @@ const revokeAllRefreshTokensGlobal: Resolvers['revokeAllRefreshTokensGlobal'] = 
 	args,
 	context,
 ) => {
-	const currentUser = await findUserLoginById(context?.userId)
+	// Extract variables from context.
+	const {variables} = context.params
+
+	// Obtain user data / ensure user is logged in.
+	const currentUser = await findUserLoginById(variables?.userId)
 
 	// Ensure logged-in user has the ADMIN role.
 	await authorizeRoleAccess(currentUser, Role.ADMINISTRATOR)

@@ -6,17 +6,11 @@ const getMe: Resolvers['getMe'] = async (
 	args,
 	context,
 ) => {
-	console.info({
-		parent,
-		args,
-		context,
-	})
+	// Extract variables from context.
+	const {variables} = context.params
 
-	console.info({
-		data: context?.params?.variables?.userId,
-	})
-
-	const currentUser = await findUserLoginById(context?.params?.variables?.userId)
+	// Obtain user data / ensure user is logged in.
+	const currentUser = await findUserLoginById(variables?.userId)
 	return currentUser
 }
 
