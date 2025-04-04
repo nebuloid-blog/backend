@@ -32,6 +32,9 @@ const createUser: Resolvers['createUser'] = async (
 	args,
 	context,
 ) => {
+	// Obtain the http-only cookie store.
+	const {cookieStore} = context.request
+
 	// TODO: Sanitize email address
 	// TODO: Run multiple database operations in a session.
 	const email = args.email.trim( )
@@ -58,10 +61,11 @@ const createUser: Resolvers['createUser'] = async (
 
 			// Creates a new refresh token in the database.
 			// Also signs & returns an access & refresh token.
-			const {
-				accessToken,
-				refreshToken,
-			} = await generateTokens(user, session)
+			const accessToken = await generateTokens(
+				user,
+				cookieStore,
+				session,
+			)
 
 			// Return user data.
 			return {user, accessToken}
@@ -82,14 +86,14 @@ const signInUser: Resolvers['signInUser'] = async (
 	args,
 	context,
 ) => {
+	// Obtain the http-only cookie store.
+	const {cookieStore} = context.request
+
 	const user = await authenticateUser(args.username, args.password)
 
 	// Create a new refresh token in the database.
 	// Then, sign & return an access token + refresh token.
-	const {
-		accessToken,
-		refreshToken,
-	} = await generateTokens(user)
+	const accessToken = await generateTokens(user, cookieStore)
 
 	// Return user data.
 	return {user, accessToken}
