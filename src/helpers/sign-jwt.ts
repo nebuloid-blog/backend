@@ -61,6 +61,10 @@ const verifyAccessToken = (accessToken: string) => {
 	const verified = jwt.verify(
 		accessToken,
 		env.ACCESS_TOKEN_SECRET,
+		{
+			issuer: ORIGIN_URL,
+			audience: 'nebuloid-backend',
+		},
 	)
 
 	if (typeof verified === 'string') {
