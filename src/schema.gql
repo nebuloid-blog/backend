@@ -65,22 +65,20 @@ type Mutation {
 		userId: ID!
 	): Boolean!
 
-	# Revokes the given refresh token and supplies a new one.
-	replaceRefreshToken(
-		refreshToken: String!
-	): SignedTokens!
+	# Revokes the active refresh token and supplies a new one.
+	replaceRefreshToken: AccessToken!
 
-	# Revokes the given refresh token.
-	revokeRefreshToken(
-		refreshToken: String!
-	): Boolean!
+	# Revokes the active refresh token.
+	revokeRefreshToken: Boolean!
 
 	# Revokes all refresh tokens for a given user.
+	# Requires authorization permissions.
 	revokeAllRefreshTokens(
 		userId: ID!
 	): Boolean!
 
 	# Revokes all refresh tokens for all users.
+	# Requires authorization permissions.
 	revokeAllRefreshTokensGlobal: Boolean!
 
 	###########
@@ -152,11 +150,10 @@ type ArticleData {
 # Return type with auth data.
 type UserAuth {
 	user: User!
-	tokens: SignedTokens!
+	accessToken: String!
 }
 
 # A pair of signed tokens.
-type SignedTokens {
+type AccessToken {
 	accessToken: String!
-	refreshToken: String!
 }
