@@ -100,8 +100,8 @@ const main = async ( ) => {
 				// By default, the plugin will reject the request if the token
 				//   is missing or invalid.
 				reject: {
+					invalidToken: true,
 					missingToken: false,
-					invalidToken: false,
 				},
 			}),
 		],
