@@ -72,7 +72,7 @@ const getCookieFromStore = async (
 	cookieKey: string,
 ) => {
 	// Get the current refresh token's value from a cookie.
-	if (cookieStore == null) throw new Error('No cookie!')
+	if (cookieStore == null) throw new Error('No cookie store!')
 	const cookie = await cookieStore.get(cookieKey)
 	if (cookie == null) throw new Error('No cookie!')
 
