@@ -10,6 +10,7 @@ import {
 } from '@graphql-yoga/plugin-jwt'
 
 import {env} from '@helpers/secrets'
+import {ORIGIN_URL} from '@helpers/variables'
 import {useCookies} from '@whatwg-node/server-plugin-cookies'
 import {createSchema, createYoga} from 'graphql-yoga'
 import mongoose from 'mongoose'
@@ -45,7 +46,7 @@ const main = async ( ) => {
 
 		// Allows credentials (ie, refresh tokens in http cookies)
 		cors: {
-			origin: ['http://localhost:3000'], // Allowed frontend origin
+			origin: [ORIGIN_URL], // Allowed frontend origin
 			credentials: true, // Allow cookies and credentials
 		},
 
@@ -57,7 +58,10 @@ const main = async ( ) => {
 			useJWT({
 				// Configure your signing providers:
 				//   either a local signing-key or a remote JWKS are supported.
-				signingKeyProviders: [createInlineSigningKeyProvider(ACCESS_TOKEN_SECRET)],
+				signingKeyProviders: [
+					// This will extract the jwt using the env secret.
+					createInlineSigningKeyProvider(ACCESS_TOKEN_SECRET),
+				],
 
 				// Configure where to look for the JWT token:
 				//   in the headers, or cookies.
