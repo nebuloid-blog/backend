@@ -4,6 +4,10 @@ import {ClientSession} from 'mongoose'
 import {signAccessToken, signRefreshToken} from './sign-jwt'
 import type {CookieStore} from '@whatwg-node/cookie-store'
 
+// Max age is 5 days on the backend.
+const MAX_COOKIE_AGE_IN_SECONDS = 1000 * 60 * 60 * 24 * 5
+//                                ms.    min. hour day
+
 /**
 This function first creates a new refresh token in the
 	database, but then also signs a pair of tokens to return.
@@ -37,8 +41,19 @@ const generateTokens = async (
 	const accessToken = signAccessToken(user)
 
 	// Save the refresh token to a http-only cookie.
-	if (cookieStore == null) throw new Error('No cookies!')
-	await cookieStore.set('refreshToken', refreshToken)
+	if (cookieStore == null) throw new Error('No cookies to set!')
+
+	await cookieStore.set({
+		name: 'refreshToken',
+		value: refreshToken,
+		expires: Date.now( ) + MAX_COOKIE_AGE_IN_SECONDS,
+		domain: null,
+		sameSite: 'lax', // 'none' | 'lax' | 'strict'
+
+		// TODO: Temporary / insecure
+		httpOnly: true,
+		secure: false,
+	})
 
 	// Return the access token to the backend system.
 	return accessToken
