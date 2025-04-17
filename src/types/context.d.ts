@@ -1,4 +1,4 @@
-import type {YogaInitialContext, GraphQLParams} from 'graphql-yoga'
+import type {YogaInitialContext} from 'graphql-yoga'
 import type {JwtPayload} from 'jsonwebtoken'
 
 interface Payload extends JwtPayload {
@@ -8,7 +8,7 @@ interface Payload extends JwtPayload {
 }
 
 interface Context extends YogaInitialContext {
-	params: GraphQLParams<Payload>,
+	jwt?: Payload,
 }
 
 export type {Context, Payload}
