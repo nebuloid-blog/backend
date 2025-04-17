@@ -1,15 +1,19 @@
 import fs from 'node:fs'
+import {createServer} from 'node:http'
 import {resolvers} from '@app/resolvers'
 import {DIRECTIVES} from '@graphql-codegen/typescript-mongodb'
-import {makeExecutableSchema} from '@graphql-tools/schema'
+
+import {
+	createInlineSigningKeyProvider,
+	extractFromHeader,
+	useJWT,
+} from '@graphql-yoga/plugin-jwt'
+
 import {env} from '@helpers/secrets'
-import bodyParser from 'body-parser'
-import express from 'express'
-import {graphqlHTTP} from 'express-graphql'
-import {expressjwt as expressJWT} from 'express-jwt'
+import {ORIGIN_URL} from '@helpers/variables'
+import {useCookies} from '@whatwg-node/server-plugin-cookies'
+import {createSchema, createYoga} from 'graphql-yoga'
 import mongoose from 'mongoose'
-import type {Context} from '@app/types/context'
-import type {Request as JWTRequest} from 'express-jwt'
 
 const {
 	PORT,
@@ -26,46 +30,90 @@ const main = async ( ) => {
 		console.info(DB_URL)
 	}
 
-	const app = express( )
 	await mongoose.connect(DB_URL)
 
 	// Import the schema's data types and build it with GraphQL.
 	const rawSchema = await fs.promises.readFile(SCHEMA_FILE, 'utf8')
-	const schema = makeExecutableSchema({
+
+	const schema = createSchema({
 		typeDefs: [DIRECTIVES, rawSchema],
 		resolvers: resolvers,
 	})
 
-	// Feed middleware & options to the express server.
-	app.use(
-		// API URI path...
-		'/',
+	const yoga = createYoga({
+		graphqlEndpoint: '/',
+		schema: schema,
 
-		// This handler reformats the body into JS objects.
-		bodyParser.json( ),
+		// Allows credentials (ie, refresh tokens in http cookies)
+		cors: {
+			origin: [ORIGIN_URL], // Allowed frontend origin
+			credentials: true, // Allow cookies and credentials
+		},
 
-		// This reads JWTs using the secret access code.
-		expressJWT({
-			secret: ACCESS_TOKEN_SECRET,
-			algorithms: ['HS256'],
-			credentialsRequired: false,
-		}),
+		plugins: [
+			// Make sure to add the useCookies plugin
+			//   before the useJWT plugin.
+			useCookies( ),
 
-		// Connect GraphQL schema (and add payload to context).
-		graphqlHTTP((request, response, params) => {
-			const jwtRequest = request as JWTRequest<Context>
-			const payload = jwtRequest.auth ?? null
+			useJWT({
+				// Configure your signing providers:
+				//   either a local signing-key or a remote JWKS are supported.
+				signingKeyProviders: [
+					// This will extract the jwt using the env secret.
+					createInlineSigningKeyProvider(ACCESS_TOKEN_SECRET),
+				],
 
-			return ({
-				graphiql: false,
-				schema: schema,
-				context: payload,
-			})
-		}),
-	)
+				// Configure where to look for the JWT token:
+				//   in the headers, or cookies.
+				// By default, the plugin will look for
+				//   the token in the 'authorization' header only.
+				tokenLookupLocations: [
+					extractFromHeader({
+						name: 'Authorization',
+						prefix: 'Bearer',
+					}),
+				],
+
+				// Configure your token issuers/audience/algorithms
+				//   verification options.
+				// By default, the plugin will only verify
+				//   the HS256/RS256 algorithms.
+				// Please note that this should match the
+				//   JWT signer issuer/audience/algorithms.
+				tokenVerification: {
+					algorithms: ['HS256'],
+
+					// Audience gets set in the JWT, and is expected.
+					// Otherwise it'll be considered malformed!
+					audience: 'nebuloid-backend',
+
+					// Similar to the audience, except the issuer is either
+					//   'https://nebuloid.dev/' or 'http://localhost:3000/'.
+					issuer: ORIGIN_URL,
+				},
+
+				// Configure context injection after the token is verified.
+				// By default, the plugin will inject the token's payload
+				//   into the context into the `jwt` field.
+				// You can pass a string: `"myJwt"` to change the field name.
+				extendContext: true,
+
+				// The plugin can reject the request if the token is missing
+				//   or invalid (doesn't pass JWT `verify` flow).
+				// By default, the plugin will reject the request if the token
+				//   is missing or invalid.
+				reject: {
+					invalidToken: false,
+					missingToken: false,
+				},
+			}),
+		],
+	})
+
+	const server = createServer(yoga)
 
 	// Finally, start the express server.
-	app.listen(PORT, ( ) => {
+	server.listen(PORT, ( ) => {
 		if (env.NODE_ENV === 'development') {
 			console.info(`\nServer started on port ${PORT}.`)
 			console.info(`http://localhost:${PORT}/`)

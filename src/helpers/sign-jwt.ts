@@ -1,5 +1,6 @@
 import jwt, {JwtPayload} from 'jsonwebtoken'
 import {env} from './secrets'
+import {ORIGIN_URL} from './variables'
 import type {Payload} from '@app/types/context'
 import type {UserDbObject} from '@app/types/generated/schema'
 
@@ -24,7 +25,11 @@ const signAccessToken = (user: UserDbObject) => {
 	const token = jwt.sign(
 		payload,
 		env.ACCESS_TOKEN_SECRET,
-		{expiresIn: lifetime},
+		{
+			expiresIn: lifetime,
+			audience: 'nebuloid-backend',
+			issuer: ORIGIN_URL,
+		},
 	)
 
 	// Return the signed JWT.
@@ -56,6 +61,10 @@ const verifyAccessToken = (accessToken: string) => {
 	const verified = jwt.verify(
 		accessToken,
 		env.ACCESS_TOKEN_SECRET,
+		{
+			audience: 'nebuloid-backend',
+			issuer: ORIGIN_URL,
+		},
 	)
 
 	if (typeof verified === 'string') {

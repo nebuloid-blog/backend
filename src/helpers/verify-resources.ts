@@ -1,5 +1,6 @@
 import {Users, RefreshTokens} from '@app/models'
 import HttpError from 'standard-http-error'
+import type {CookieStore} from '@whatwg-node/cookie-store'
 
 const userNotAuthorized = new HttpError(
 	401, // UNAUTHORIZED
@@ -66,8 +67,23 @@ const findRefreshTokenById = async (
 	return doc
 }
 
+const getCookieFromStore = async (
+	cookieStore: CookieStore | undefined,
+	cookieKey: string,
+) => {
+	// Get the current refresh token's value from a cookie.
+	if (cookieStore == null) throw new Error('No cookie store!')
+	const cookie = await cookieStore.get(cookieKey)
+	if (cookie == null) throw new Error('No cookie!')
+
+	// Return the result at last!
+	const refreshToken = cookie.value
+	return refreshToken
+}
+
 export {
 	findUserById,
 	findUserLoginById,
 	findRefreshTokenById,
+	getCookieFromStore,
 }
