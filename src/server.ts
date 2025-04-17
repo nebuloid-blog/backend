@@ -42,6 +42,13 @@ const main = async ( ) => {
 	const yoga = createYoga({
 		graphqlEndpoint: '/',
 		schema: schema,
+
+		// Allows credentials (ie, refresh tokens in http cookies)
+		cors: {
+			origin: ['http://localhost:3000'], // Allowed frontend origin
+			credentials: true, // Allow cookies and credentials
+		},
+
 		plugins: [
 			// Make sure to add the useCookies plugin
 			//   before the useJWT plugin.
