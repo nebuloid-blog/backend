@@ -92,7 +92,7 @@ const revokeRefreshToken: Resolvers['revokeRefreshToken'] = async (
 ) => {
 	// Obtain the various data from the context.
 	const {cookieStore} = context.request
-	const {variables} = context.params
+	const payload = context.jwt?.payload
 
 	/*
 	IMPORTANT NOTE: This route is one of the only routes that
@@ -105,7 +105,7 @@ const revokeRefreshToken: Resolvers['revokeRefreshToken'] = async (
 	)
 
 	// Obtain user data / ensure user is logged in.
-	const currentUser = await findUserLoginById(variables?.userId)
+	const currentUser = await findUserLoginById(payload?.userId)
 	const {refreshTokenId} = verifyRefreshToken(refreshToken)
 	const refreshTokenDoc = await findRefreshTokenById(refreshTokenId)
 	const ownerId = refreshTokenDoc.owner._id.toString( )
@@ -130,11 +130,11 @@ const revokeAllRefreshTokens: Resolvers['revokeAllRefreshTokens'] = async (
 	args,
 	context,
 ) => {
-	// Extract variables from context.
-	const {variables} = context.params
+	// Extract jwt payload from context.
+	const payload = context.jwt?.payload
 
 	// Obtain user data / ensure user is logged in.
-	const currentUser = await findUserLoginById(variables?.userId)
+	const currentUser = await findUserLoginById(payload?.userId)
 	const targetUser = await findUserById(args.userId)
 	const targetUserId = targetUser._id.toString( )
 
@@ -155,11 +155,11 @@ const revokeAllRefreshTokensGlobal: Resolvers['revokeAllRefreshTokensGlobal'] = 
 	args,
 	context,
 ) => {
-	// Extract variables from context.
-	const {variables} = context.params
+	// Extract jwt payload from context.
+	const payload = context.jwt?.payload
 
 	// Obtain user data / ensure user is logged in.
-	const currentUser = await findUserLoginById(variables?.userId)
+	const currentUser = await findUserLoginById(payload?.userId)
 
 	// Ensure logged-in user has the ADMIN role.
 	await authorizeRoleAccess(currentUser, Role.ADMINISTRATOR)

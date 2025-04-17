@@ -6,11 +6,11 @@ const getMe: Resolvers['getMe'] = async (
 	args,
 	context,
 ) => {
-	// Extract variables from context.
-	const {variables} = context.params
+	// Extract jwt payload from context.
+	const payload = context.jwt?.payload
 
 	// Obtain user data / ensure user is logged in.
-	const currentUser = await findUserLoginById(variables?.userId)
+	const currentUser = await findUserLoginById(payload?.userId)
 	return currentUser
 }
 
