@@ -12,7 +12,6 @@ const signAccessToken = (user: UserDbObject) => {
 	// The access token's additional payload is a convenience.
 	// It merely contains non-essential user metadata.
 	const payload: Payload = {
-		audience: ORIGIN_URL,
 		userId: user._id.toString( ),
 		username: user.username,
 		role: user.role,
@@ -26,7 +25,11 @@ const signAccessToken = (user: UserDbObject) => {
 	const token = jwt.sign(
 		payload,
 		env.ACCESS_TOKEN_SECRET,
-		{expiresIn: lifetime},
+		{
+			expiresIn: lifetime,
+			issuer: ORIGIN_URL,
+			audience: 'nebuloid-backend',
+		},
 	)
 
 	// Return the signed JWT.
