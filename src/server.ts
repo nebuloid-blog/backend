@@ -65,7 +65,7 @@ const main = async ( ) => {
 				//   the token in the 'authorization' header only.
 				tokenLookupLocations: [
 					extractFromHeader({
-						name: 'authorization',
+						name: 'Authentication',
 						prefix: 'Bearer',
 					}),
 				],
