@@ -33,17 +33,14 @@ const replaceRefreshToken: Resolvers['replaceRefreshToken'] = async (
 
 	try {
 		const result = await session.withTransaction(async ( ) => {
-			let deleted // Delete the token and save to session.
-			deleted = RefreshTokens.deleteOne(
+			// Delete the token and save to session.
+			const deleted = await RefreshTokens.deleteOne(
 				{_id: refreshTokenId},
 				{session},
 			)
 
-			let newTokens // Create new tokens and save to session.
-			newTokens = generateTokens(currentUser, session);
-
-			// Await these async calls SIMULTANEOUSLY!
-			[deleted, newTokens] = await Promise.all([deleted, newTokens])
+			// Create new tokens and save to session.
+			const newTokens = await generateTokens(currentUser, session)
 
 			// There was a problem deleting the given token.
 			if (deleted.deletedCount === 0) throw tokenNotDeleted
