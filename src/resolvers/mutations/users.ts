@@ -1,16 +1,26 @@
 import {Users} from '@app/models'
 import {Role} from '@app/types/generated/schema'
 import {authenticateUser} from '@helpers/authentication'
-import {authorizeRoleAccess, authorizeOwnership} from '@helpers/authorization'
+
+import {
+	authorizeRoleAccess,
+	authorizeOwnership,
+} from '@helpers/authorization'
+
 import {generateTokens} from '@helpers/modify-resources'
+
 import {
 	findUserById,
 	findUserLoginById,
 } from '@helpers/verify-resources'
+
 import bcrypt from 'bcrypt'
 import {startSession} from 'mongoose'
 import HttpError from 'standard-http-error'
-import type {MutationResolvers as Resolvers} from '@app/types/generated/schema'
+
+import type {
+	MutationResolvers as Resolvers,
+} from '@app/types/generated/schema'
 
 const userNotDeleted = new HttpError(
 	404, // NOT FOUND
@@ -22,6 +32,9 @@ const createUser: Resolvers['createUser'] = async (
 	args,
 	context,
 ) => {
+	// Obtain the http-only cookie store.
+	const {cookieStore} = context.request
+
 	// TODO: Sanitize email address
 	// TODO: Run multiple database operations in a session.
 	const email = args.email.trim( )
@@ -48,10 +61,14 @@ const createUser: Resolvers['createUser'] = async (
 
 			// Creates a new refresh token in the database.
 			// Also signs & returns an access & refresh token.
-			const tokens = await generateTokens(user, session)
+			const accessToken = await generateTokens(
+				user,
+				cookieStore,
+				session,
+			)
 
 			// Return user data.
-			return {user, tokens}
+			return {user, accessToken}
 		})
 
 		// Return the result from the successful session.
@@ -69,14 +86,17 @@ const signInUser: Resolvers['signInUser'] = async (
 	args,
 	context,
 ) => {
+	// Obtain the http-only cookie store.
+	const {cookieStore} = context.request
+
 	const user = await authenticateUser(args.username, args.password)
 
 	// Create a new refresh token in the database.
 	// Then, sign & return an access token + refresh token.
-	const tokens = await generateTokens(user)
+	const accessToken = await generateTokens(user, cookieStore)
 
 	// Return user data.
-	return {user, tokens}
+	return {user, accessToken}
 }
 
 const deleteUser: Resolvers['deleteUser'] = async (
@@ -101,6 +121,8 @@ const deleteUser: Resolvers['deleteUser'] = async (
 
 	// Delete the target user.
 	const deleted = await Users.deleteOne({_id: targetUserId})
+
+	// TODO: Probably should delete refresh tokens as well.
 
 	// There was a problem deleting the target user.
 	if (deleted.deletedCount === 0) throw userNotDeleted

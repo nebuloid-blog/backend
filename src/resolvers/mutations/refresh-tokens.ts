@@ -7,6 +7,7 @@ import {
 	findUserById,
 	findUserLoginById,
 	findRefreshTokenById,
+	getCookieFromStore,
 } from '@helpers/verify-resources'
 import {startSession} from 'mongoose'
 import HttpError from 'standard-http-error'
@@ -22,8 +23,29 @@ const replaceRefreshToken: Resolvers['replaceRefreshToken'] = async (
 	args,
 	context,
 ) => {
+	/*
+	IMPORTANT NOTE:
+	This route -cannot- require an access token, since this is
+		the route that gets called in case the access token expires.
+	Furthermore, a username and password should not be required:
+		this route gets called frequently, and it would hurt the UX.
+
+	Access tokens have a very short lifespan, so its important
+		that refresh tokens are both secure and easy to refresh.
+
+	Furthermore, this route is one of the only routes that
+		require a secure HTTP cookie payload.
+	*/
+
+	// Obtain the refresh token from the cookie store.
+	const {cookieStore} = context.request
+	const refreshToken = await getCookieFromStore(
+		cookieStore,
+		'refreshToken',
+	)
+
 	// Obtain the current user from the JWT.
-	const {refreshTokenId} = verifyRefreshToken(args.refreshToken)
+	const {refreshTokenId} = verifyRefreshToken(refreshToken)
 	const refreshTokenDoc = await findRefreshTokenById(refreshTokenId)
 	const currentUserId = refreshTokenDoc.owner._id.toString( )
 	const currentUser = await findUserLoginById(currentUserId)
@@ -40,13 +62,17 @@ const replaceRefreshToken: Resolvers['replaceRefreshToken'] = async (
 			)
 
 			// Create new tokens and save to session.
-			const newTokens = await generateTokens(currentUser, session)
+			const accessToken = await generateTokens(
+				currentUser,
+				cookieStore,
+				session,
+			)
 
 			// There was a problem deleting the given token.
 			if (deleted.deletedCount === 0) throw tokenNotDeleted
 
 			// Issue a new refresh token and return it.
-			return newTokens
+			return {accessToken}
 		})
 
 		// Return the result from the successful session.
@@ -64,12 +90,23 @@ const revokeRefreshToken: Resolvers['revokeRefreshToken'] = async (
 	args,
 	context,
 ) => {
-	// Extract jwt payload from context.
+	// Obtain the various data from the context.
+	const {cookieStore} = context.request
 	const payload = context.jwt?.payload
+
+	/*
+	IMPORTANT NOTE: This route is one of the only routes that
+		require a secure HTTP cookie payload.
+	*/
+
+	const refreshToken = await getCookieFromStore(
+		cookieStore,
+		'refreshToken',
+	)
 
 	// Obtain user data / ensure user is logged in.
 	const currentUser = await findUserLoginById(payload?.userId)
-	const {refreshTokenId} = verifyRefreshToken(args.refreshToken)
+	const {refreshTokenId} = verifyRefreshToken(refreshToken)
 	const refreshTokenDoc = await findRefreshTokenById(refreshTokenId)
 	const ownerId = refreshTokenDoc.owner._id.toString( )
 
