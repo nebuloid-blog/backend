@@ -82,6 +82,14 @@ const main = async ( ) => {
 				//   JWT signer issuer/audience/algorithms.
 				tokenVerification: {
 					algorithms: ['HS256'],
+
+					// Audience gets set in the JWT, and is expected.
+					// Otherwise it'll be considered malformed!
+					audience: 'nebuloid-backend',
+
+					// Similar to the audience, except the issuer is either
+					//   'https://nebuloid.dev/' or 'http://localhost:3000/'.
+					issuer: ORIGIN_URL,
 				},
 
 				// Configure context injection after the token is verified.
