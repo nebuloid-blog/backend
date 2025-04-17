@@ -1,11 +1,22 @@
+import type {YogaInitialContext} from 'graphql-yoga'
 import type {JwtPayload} from 'jsonwebtoken'
 
-interface Payload extends Record<string, unknown>, JwtPayload {
+interface Payload extends JwtPayload {
 	userId: string,
 	username: string,
 	role: string,
 }
 
-type Context = Payload | undefined
+interface Token {
+	prefix: string,
+	value: string,
+}
+
+interface Context extends YogaInitialContext {
+	jwt?: {
+		payload: Payload,
+		token: Token,
+	},
+}
 
 export type {Context, Payload}

@@ -84,7 +84,11 @@ const deleteUser: Resolvers['deleteUser'] = async (
 	args,
 	context,
 ) => {
-	const currentUser = await findUserLoginById(context?.userId)
+	// Extract jwt payload from context.
+	const payload = context.jwt?.payload
+
+	// Obtain user data / ensure user is logged in.
+	const currentUser = await findUserLoginById(payload?.userId)
 	const targetUser = await findUserById(args.userId)
 	const targetUserId = targetUser._id.toString( )
 
