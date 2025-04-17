@@ -7,8 +7,16 @@ interface Payload extends JwtPayload {
 	role: string,
 }
 
+interface Token {
+	prefix: string,
+	value: string,
+}
+
 interface Context extends YogaInitialContext {
-	jwt?: Payload,
+	jwt?: {
+		payload: Payload,
+		token: Token,
+	},
 }
 
 export type {Context, Payload}
