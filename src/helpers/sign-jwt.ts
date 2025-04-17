@@ -1,5 +1,6 @@
 import jwt, {JwtPayload} from 'jsonwebtoken'
 import {env} from './secrets'
+import {ORIGIN_URL} from './variables'
 import type {Payload} from '@app/types/context'
 import type {UserDbObject} from '@app/types/generated/schema'
 
@@ -11,6 +12,7 @@ const signAccessToken = (user: UserDbObject) => {
 	// The access token's additional payload is a convenience.
 	// It merely contains non-essential user metadata.
 	const payload: Payload = {
+		audience: ORIGIN_URL,
 		userId: user._id.toString( ),
 		username: user.username,
 		role: user.role,

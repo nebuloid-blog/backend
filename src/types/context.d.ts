@@ -2,6 +2,7 @@ import type {YogaInitialContext} from 'graphql-yoga'
 import type {JwtPayload} from 'jsonwebtoken'
 
 interface Payload extends JwtPayload {
+	audience: string,
 	userId: string,
 	username: string,
 	role: string,

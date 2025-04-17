@@ -81,8 +81,11 @@ const main = async ( ) => {
 				// Please note that this should match the
 				//   JWT signer issuer/audience/algorithms.
 				tokenVerification: {
-					// issuer: 'https://nebuloid.dev/',
-					// audience: 'my-audience', // TODO? What?
+					// The issuer is either 'https://nebuloid.dev/'
+					//  or 'http://localhost:3000/'.
+					issuer: ORIGIN_URL,
+					// Audience also gets set in the JWT.
+					audience: 'nebuloid-backend',
 					algorithms: ['HS256'],
 				},
 
