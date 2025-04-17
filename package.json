@@ -2,7 +2,7 @@
 	"name": "@noltron000/nebuloid",
 	"private": false,
 	"license": "MIT",
-	"version": "0.0.0",
+	"version": "0.0.1",
 	"description": "GraphQL-based backend for my portfolio.",
 	"keywords": [ ],
 	"homepage": "https://api.nebuloid.dev",
