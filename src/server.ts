@@ -19,13 +19,14 @@ const {
 	PORT,
 	DB_URL,
 	ACCESS_TOKEN_SECRET,
+	NODE_ENV,
 } = env
 
 const SCHEMA_FILE = 'src/schema.gql'
 
 const main = async ( ) => {
 	// Print the DB connection URI if we're on dev.
-	if (env.NODE_ENV === 'development') {
+	if (NODE_ENV === 'development') {
 		console.info('\nConnecting to database URI...')
 		console.info(DB_URL)
 	}
@@ -43,6 +44,7 @@ const main = async ( ) => {
 	const yoga = createYoga({
 		graphqlEndpoint: '/',
 		schema: schema,
+		graphiql: NODE_ENV === 'development',
 
 		// Allows credentials (ie, refresh tokens in http cookies)
 		cors: {
@@ -114,7 +116,7 @@ const main = async ( ) => {
 
 	// Finally, start the express server.
 	server.listen(PORT, ( ) => {
-		if (env.NODE_ENV === 'development') {
+		if (NODE_ENV === 'development') {
 			console.info(`\nServer started on port ${PORT}.`)
 			console.info(`http://localhost:${PORT}/`)
 		}
