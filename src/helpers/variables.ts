@@ -5,11 +5,11 @@ const {NODE_ENV} = env
 const getOriginUrl = ( ) => {
 	switch (NODE_ENV) {
 		case ('development'): {
-			return 'http://localhost:3000/'
+			return 'http://localhost:3000'
 		}
 		default:
 		case ('production'): {
-			return 'https://nebuloid.dev/'
+			return 'https://nebuloid.dev'
 		}
 	}
 }
