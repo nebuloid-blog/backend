@@ -41,16 +41,21 @@ const main = async ( ) => {
 		resolvers: resolvers,
 	})
 
+	// NGinX will set cors on production environments.
+	let corsOptions
+	if (NODE_ENV === 'development') {
+		// Allows credentials (ie, refresh tokens in http cookies)
+		corsOptions = {
+			origin: ORIGIN_URL, // Allowed frontend origin
+			credentials: true, // Allow cookies and credentials
+		}
+	}
+
 	const yoga = createYoga({
 		graphqlEndpoint: '/',
 		schema: schema,
 		graphiql: NODE_ENV === 'development',
-
-		// Allows credentials (ie, refresh tokens in http cookies)
-		cors: {
-			origin: [ORIGIN_URL], // Allowed frontend origin
-			credentials: true, // Allow cookies and credentials
-		},
+		cors: corsOptions,
 
 		plugins: [
 			// Make sure to add the useCookies plugin
