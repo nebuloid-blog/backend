@@ -46,6 +46,8 @@ const sanitizeHTML = async (html: string) => {
 			'noscript',
 			'col',
 			'colgroup',
+			'figure',
+			'figcaption',
 		],
 	}
 
