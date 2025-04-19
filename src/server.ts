@@ -45,11 +45,21 @@ const main = async ( ) => {
 		graphqlEndpoint: '/',
 		schema: schema,
 		graphiql: NODE_ENV === 'development',
-
-		// Allows credentials (ie, refresh tokens in http cookies)
 		cors: {
-			origin: [ORIGIN_URL], // Allowed frontend origin
-			credentials: true, // Allow cookies and credentials
+			origin: ORIGIN_URL,
+			credentials: true,
+			allowedHeaders: [
+				'Origin',
+				'Content-Type',
+				'Accept',
+				'Authorization',
+			],
+			methods: [
+				'GET',
+				'POST',
+				'OPTIONS',
+			],
+			maxAge: 1728000,
 		},
 
 		plugins: [
