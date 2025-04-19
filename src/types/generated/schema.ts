@@ -1,114 +1,130 @@
-import type {GraphQLResolveInfo} from 'graphql'
-import type {ObjectId} from 'mongodb'
-import type {Context} from '../context.js'
+import {GraphQLResolveInfo} from 'graphql'
+import {ObjectId} from 'mongodb'
+import {Context} from '../context.js'
 
 export type Maybe<T> = T | null
 export type InputMaybe<T> = Maybe<T>
-export type Exact<T extends Record<string, unknown>> = {[K in keyof T]: T[K]}
+export type Exact<T extends {[key: string]: unknown}> = {[K in keyof T]: T[K]}
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {[SubKey in K]?: Maybe<T[SubKey]>}
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {[SubKey in K]: Maybe<T[SubKey]>}
+export type MakeEmpty<T extends {[key: string]: unknown}, K extends keyof T> = {[_ in K]?: never}
+export type Incremental<T> = T | {[P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never}
+export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
 export type RequireFields<T, K extends keyof T> = Omit<T, K> & {[P in K]-?: NonNullable<T[P]>}
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-	ID: string,
-	String: string,
-	Boolean: boolean,
-	Int: number,
-	Float: number,
+	ID: {input: string, output: string},
+	String: {input: string, output: string},
+	Boolean: {input: boolean, output: boolean},
+	Int: {input: number, output: number},
+	Float: {input: number, output: number},
+}
+
+export type AccessToken = {
+	__typename?: 'AccessToken',
+	accessToken: Scalars['String']['output'],
 }
 
 export type Article = {
 	__typename?: 'Article',
 	data: ArticleData,
-	html: Scalars['String'],
+	html: Scalars['String']['output'],
 }
 
 export type ArticleData = {
 	__typename?: 'ArticleData',
-	slug: Scalars['String'],
-	title: Scalars['String'],
+	slug: Scalars['String']['output'],
+	title: Scalars['String']['output'],
 }
 
 export type Course = {
 	__typename?: 'Course',
-	description?: Maybe<Scalars['String']>,
-	id: Scalars['ID'],
-	name: Scalars['String'],
+	description?: Maybe<Scalars['String']['output']>,
+	id: Scalars['ID']['output'],
+	name: Scalars['String']['output'],
 	projects?: Maybe<Array<Project>>,
 }
 
 export type Mutation = {
 	__typename?: 'Mutation',
-	createCourse: Scalars['ID'],
-	createProject: Scalars['ID'],
-	createUser?: Maybe<Scalars['String']>,
-	deleteCourse: Scalars['Boolean'],
-	deleteProject: Scalars['Boolean'],
-	deleteUser: Scalars['Boolean'],
-	signInUser?: Maybe<Scalars['String']>,
-	updateCourse: Scalars['Boolean'],
-	updateProject: Scalars['Boolean'],
+	createCourse: Scalars['ID']['output'],
+	createProject: Scalars['ID']['output'],
+	createUser: UserAuth,
+	deleteCourse: Scalars['Boolean']['output'],
+	deleteProject: Scalars['Boolean']['output'],
+	deleteUser: Scalars['Boolean']['output'],
+	replaceRefreshToken: AccessToken,
+	revokeAllRefreshTokens: Scalars['Boolean']['output'],
+	revokeAllRefreshTokensGlobal: Scalars['Boolean']['output'],
+	revokeRefreshToken: Scalars['Boolean']['output'],
+	signInUser: UserAuth,
+	updateCourse: Scalars['Boolean']['output'],
+	updateProject: Scalars['Boolean']['output'],
 }
 
 
 export type MutationCreateCourseArgs = {
-	description?: InputMaybe<Scalars['String']>,
-	name: Scalars['String'],
-	projects?: InputMaybe<Array<Scalars['ID']>>,
+	description?: InputMaybe<Scalars['String']['input']>,
+	name: Scalars['String']['input'],
+	projects?: InputMaybe<Array<Scalars['ID']['input']>>,
 }
 
 
 export type MutationCreateProjectArgs = {
-	courses?: InputMaybe<Array<Scalars['ID']>>,
-	description?: InputMaybe<Scalars['String']>,
-	name: Scalars['String'],
+	courses?: InputMaybe<Array<Scalars['ID']['input']>>,
+	description?: InputMaybe<Scalars['String']['input']>,
+	name: Scalars['String']['input'],
 }
 
 
 export type MutationCreateUserArgs = {
-	email: Scalars['String'],
-	password: Scalars['String'],
-	role?: InputMaybe<Role>,
-	username: Scalars['String'],
+	email: Scalars['String']['input'],
+	password: Scalars['String']['input'],
+	username: Scalars['String']['input'],
 }
 
 
 export type MutationDeleteCourseArgs = {
-	id: Scalars['ID'],
+	id: Scalars['ID']['input'],
 }
 
 
 export type MutationDeleteProjectArgs = {
-	id: Scalars['ID'],
+	id: Scalars['ID']['input'],
 }
 
 
 export type MutationDeleteUserArgs = {
-	id: Scalars['ID'],
+	userId: Scalars['ID']['input'],
+}
+
+
+export type MutationRevokeAllRefreshTokensArgs = {
+	userId: Scalars['ID']['input'],
 }
 
 
 export type MutationSignInUserArgs = {
-	password: Scalars['String'],
-	username: Scalars['String'],
+	password: Scalars['String']['input'],
+	username: Scalars['String']['input'],
 }
 
 
 export type MutationUpdateCourseArgs = {
-	id: Scalars['ID'],
+	id: Scalars['ID']['input'],
 }
 
 
 export type MutationUpdateProjectArgs = {
-	id: Scalars['ID'],
+	id: Scalars['ID']['input'],
 }
 
 export type Project = {
 	__typename?: 'Project',
 	courses?: Maybe<Array<Course>>,
-	description?: Maybe<Scalars['String']>,
-	id: Scalars['ID'],
-	name: Scalars['String'],
+	description?: Maybe<Scalars['String']['output']>,
+	id: Scalars['ID']['output'],
+	name: Scalars['String']['output'],
 }
 
 export type Query = {
@@ -124,44 +140,51 @@ export type Query = {
 
 
 export type QueryGetArticleArgs = {
-	branch?: InputMaybe<Scalars['String']>,
-	directory?: InputMaybe<Scalars['String']>,
-	file: Scalars['String'],
+	branch?: InputMaybe<Scalars['String']['input']>,
+	directory?: InputMaybe<Scalars['String']['input']>,
+	file: Scalars['String']['input'],
 }
 
 
 export type QueryGetCourseArgs = {
-	id: Scalars['ID'],
+	id: Scalars['ID']['input'],
 }
 
 
 export type QueryGetProjectArgs = {
-	id: Scalars['ID'],
+	id: Scalars['ID']['input'],
 }
 
 
 export type QueryIndexArticlesArgs = {
-	branch?: InputMaybe<Scalars['String']>,
-	directory?: InputMaybe<Scalars['String']>,
+	branch?: InputMaybe<Scalars['String']['input']>,
+	directory?: InputMaybe<Scalars['String']['input']>,
 }
 
 export enum Role {
+	ADMINISTRATOR = 'ADMINISTRATOR',
 	GUEST = 'GUEST',
-	OWNER = 'OWNER',
+	MODERATOR = 'MODERATOR',
 	USER = 'USER',
 }
 
 export type User = {
 	__typename?: 'User',
-	email: Scalars['String'],
-	id: Scalars['ID'],
+	email: Scalars['String']['output'],
+	id: Scalars['ID']['output'],
 	role: Role,
-	username: Scalars['String'],
+	username: Scalars['String']['output'],
+}
+
+export type UserAuth = {
+	__typename?: 'UserAuth',
+	accessToken: Scalars['String']['output'],
+	user: User,
 }
 
 export type AdditionalEntityFields = {
-	path?: InputMaybe<Scalars['String']>,
-	type?: InputMaybe<Scalars['String']>,
+	path?: InputMaybe<Scalars['String']['input']>,
+	type?: InputMaybe<Scalars['String']['input']>,
 }
 export type ArticleDbObject = {
 	data: ArticleData,
@@ -235,7 +258,7 @@ export type SubscriptionObject<TResult, TKey extends string, TParent, TContext, 
 	| SubscriptionResolverObject<TResult, TParent, TContext, TArgs>
 
 export type SubscriptionResolver<TResult, TKey extends string, TParent = {}, TContext = {}, TArgs = {}> =
-	| ((...args: Array<any>) => SubscriptionObject<TResult, TKey, TParent, TContext, TArgs>)
+	| ((...args: any[]) => SubscriptionObject<TResult, TKey, TParent, TContext, TArgs>)
 	| SubscriptionObject<TResult, TKey, TParent, TContext, TArgs>
 
 export type TypeResolveFn<TTypes, TParent = {}, TContext = {}> = (
@@ -256,60 +279,65 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 	info: GraphQLResolveInfo
 ) => TResult | Promise<TResult>
 
+
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
+	AccessToken: ResolverTypeWrapper<AccessToken>,
+	String: ResolverTypeWrapper<Scalars['String']['output']>,
 	Article: ResolverTypeWrapper<Article>,
-	String: ResolverTypeWrapper<Scalars['String']>,
 	ArticleData: ResolverTypeWrapper<ArticleData>,
 	Course: ResolverTypeWrapper<CourseDbObject>,
-	ID: ResolverTypeWrapper<Scalars['ID']>,
+	ID: ResolverTypeWrapper<Scalars['ID']['output']>,
 	Mutation: ResolverTypeWrapper<{}>,
-	Boolean: ResolverTypeWrapper<Scalars['Boolean']>,
+	Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>,
 	Project: ResolverTypeWrapper<ProjectDbObject>,
 	Query: ResolverTypeWrapper<{}>,
 	Role: Role,
 	User: ResolverTypeWrapper<UserDbObject>,
+	UserAuth: ResolverTypeWrapper<Omit<UserAuth, 'user'> & {user: ResolversTypes['User']}>,
 	AdditionalEntityFields: AdditionalEntityFields,
 }
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
+	AccessToken: AccessToken,
+	String: Scalars['String']['output'],
 	Article: Article,
-	String: Scalars['String'],
 	ArticleData: ArticleData,
 	Course: CourseDbObject,
-	ID: Scalars['ID'],
+	ID: Scalars['ID']['output'],
 	Mutation: {},
-	Boolean: Scalars['Boolean'],
+	Boolean: Scalars['Boolean']['output'],
 	Project: ProjectDbObject,
 	Query: {},
 	User: UserDbObject,
+	UserAuth: Omit<UserAuth, 'user'> & {user: ResolversParentTypes['User']},
 	AdditionalEntityFields: AdditionalEntityFields,
 }
 
 export type UnionDirectiveArgs = {
-	discriminatorField?: Maybe<Scalars['String']>,
+	discriminatorField?: Maybe<Scalars['String']['input']>,
 	additionalFields?: Maybe<Array<Maybe<AdditionalEntityFields>>>,
 }
 
 export type UnionDirectiveResolver<Result, Parent, ContextType = Context, Args = UnionDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>
 
 export type AbstractEntityDirectiveArgs = {
-	discriminatorField: Scalars['String'],
+	discriminatorField: Scalars['String']['input'],
 	additionalFields?: Maybe<Array<Maybe<AdditionalEntityFields>>>,
 }
 
 export type AbstractEntityDirectiveResolver<Result, Parent, ContextType = Context, Args = AbstractEntityDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>
 
 export type EntityDirectiveArgs = {
-	embedded?: Maybe<Scalars['Boolean']>,
+	embedded?: Maybe<Scalars['Boolean']['input']>,
 	additionalFields?: Maybe<Array<Maybe<AdditionalEntityFields>>>,
 }
 
 export type EntityDirectiveResolver<Result, Parent, ContextType = Context, Args = EntityDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>
 
 export type ColumnDirectiveArgs = {
-	overrideType?: Maybe<Scalars['String']>,
+	overrideType?: Maybe<Scalars['String']['input']>,
 }
 
 export type ColumnDirectiveResolver<Result, Parent, ContextType = Context, Args = ColumnDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>
@@ -319,7 +347,7 @@ export type IdDirectiveArgs = { }
 export type IdDirectiveResolver<Result, Parent, ContextType = Context, Args = IdDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>
 
 export type LinkDirectiveArgs = {
-	overrideType?: Maybe<Scalars['String']>,
+	overrideType?: Maybe<Scalars['String']['input']>,
 }
 
 export type LinkDirectiveResolver<Result, Parent, ContextType = Context, Args = LinkDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>
@@ -329,10 +357,15 @@ export type EmbeddedDirectiveArgs = { }
 export type EmbeddedDirectiveResolver<Result, Parent, ContextType = Context, Args = EmbeddedDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>
 
 export type MapDirectiveArgs = {
-	path: Scalars['String'],
+	path: Scalars['String']['input'],
 }
 
 export type MapDirectiveResolver<Result, Parent, ContextType = Context, Args = MapDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>
+
+export type AccessTokenResolvers<ContextType = Context, ParentType extends ResolversParentTypes['AccessToken'] = ResolversParentTypes['AccessToken']> = {
+	accessToken?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+	__isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>,
+}
 
 export type ArticleResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Article'] = ResolversParentTypes['Article']> = {
 	data?: Resolver<ResolversTypes['ArticleData'], ParentType, ContextType>,
@@ -357,11 +390,15 @@ export type CourseResolvers<ContextType = Context, ParentType extends ResolversP
 export type MutationResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
 	createCourse?: Resolver<ResolversTypes['ID'], ParentType, ContextType, RequireFields<MutationCreateCourseArgs, 'name'>>,
 	createProject?: Resolver<ResolversTypes['ID'], ParentType, ContextType, RequireFields<MutationCreateProjectArgs, 'name'>>,
-	createUser?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'email' | 'password' | 'username'>>,
+	createUser?: Resolver<ResolversTypes['UserAuth'], ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'email' | 'password' | 'username'>>,
 	deleteCourse?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteCourseArgs, 'id'>>,
 	deleteProject?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteProjectArgs, 'id'>>,
-	deleteUser?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteUserArgs, 'id'>>,
-	signInUser?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType, RequireFields<MutationSignInUserArgs, 'password' | 'username'>>,
+	deleteUser?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteUserArgs, 'userId'>>,
+	replaceRefreshToken?: Resolver<ResolversTypes['AccessToken'], ParentType, ContextType>,
+	revokeAllRefreshTokens?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRevokeAllRefreshTokensArgs, 'userId'>>,
+	revokeAllRefreshTokensGlobal?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>,
+	revokeRefreshToken?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>,
+	signInUser?: Resolver<ResolversTypes['UserAuth'], ParentType, ContextType, RequireFields<MutationSignInUserArgs, 'password' | 'username'>>,
 	updateCourse?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationUpdateCourseArgs, 'id'>>,
 	updateProject?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationUpdateProjectArgs, 'id'>>,
 }
@@ -392,7 +429,14 @@ export type UserResolvers<ContextType = Context, ParentType extends ResolversPar
 	__isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>,
 }
 
+export type UserAuthResolvers<ContextType = Context, ParentType extends ResolversParentTypes['UserAuth'] = ResolversParentTypes['UserAuth']> = {
+	accessToken?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+	user?: Resolver<ResolversTypes['User'], ParentType, ContextType>,
+	__isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>,
+}
+
 export type Resolvers<ContextType = Context> = {
+	AccessToken?: AccessTokenResolvers<ContextType>,
 	Article?: ArticleResolvers<ContextType>,
 	ArticleData?: ArticleDataResolvers<ContextType>,
 	Course?: CourseResolvers<ContextType>,
@@ -400,6 +444,7 @@ export type Resolvers<ContextType = Context> = {
 	Project?: ProjectResolvers<ContextType>,
 	Query?: QueryResolvers<ContextType>,
 	User?: UserResolvers<ContextType>,
+	UserAuth?: UserAuthResolvers<ContextType>,
 }
 
 export type DirectiveResolvers<ContextType = Context> = {

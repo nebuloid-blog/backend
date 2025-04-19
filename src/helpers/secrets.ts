@@ -1,8 +1,4 @@
-import dotenv from 'dotenv'
-import type {DotEnv} from '../types/globals.js'
-
-// Load environmental variables with dotenv.
-dotenv.config( )
+import type {DotEnv} from '@app/types/globals'
 
 // Generally I don't like global variables.
 // We'll abstract our env into an importable var here.

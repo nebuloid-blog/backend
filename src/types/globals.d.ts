@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 interface DotEnv {
 	// Override generic type-any variables to type-unknown
 	[key: string]: unknown,
@@ -21,9 +23,12 @@ interface DotEnv {
 	GH_APP_PRIVATE_KEY: string,
 
 	// Nebuloid App authentication
-	JWT_SECRET: string,
+	ACCESS_TOKEN_SECRET: string,
+	REFRESH_TOKEN_SECRET: string,
 }
 
+// Required to allow `process.env` to extend
+//  our lovely interface that's defined just above.
 declare global {
 	namespace NodeJS {
 		interface ProcessEnv extends DotEnv { }

@@ -1,80 +1,121 @@
-import fs from 'fs'
+import fs from 'node:fs'
+import {createServer} from 'node:http'
+import {resolvers} from '@app/resolvers'
 import {DIRECTIVES} from '@graphql-codegen/typescript-mongodb'
-import {makeExecutableSchema} from '@graphql-tools/schema'
-import bodyParser from 'body-parser'
-import express from 'express'
-import {graphqlHTTP} from 'express-graphql'
-import {expressjwt as expressJWT} from 'express-jwt'
-import type {Request as JWTRequest} from 'express-jwt'
+
+import {
+	createInlineSigningKeyProvider,
+	extractFromHeader,
+	useJWT,
+} from '@graphql-yoga/plugin-jwt'
+
+import {env} from '@helpers/secrets'
+import {ORIGIN_URL} from '@helpers/variables'
+import {useCookies} from '@whatwg-node/server-plugin-cookies'
+import {createSchema, createYoga} from 'graphql-yoga'
 import mongoose from 'mongoose'
-import {env} from './helpers/secrets.js'
-import {resolvers} from './resolvers.js'
-import type {Context} from './types/context.js'
 
 const {
 	PORT,
 	DB_URL,
-	JWT_SECRET,
+	ACCESS_TOKEN_SECRET,
 } = env
 
 const SCHEMA_FILE = 'src/schema.gql'
 
 const main = async ( ) => {
-	const app = express( )
-	void mongoose.connect(DB_URL)
+	// Print the DB connection URI if we're on dev.
+	if (env.NODE_ENV === 'development') {
+		console.info('\nConnecting to database URI...')
+		console.info(DB_URL)
+	}
+
+	await mongoose.connect(DB_URL)
 
 	// Import the schema's data types and build it with GraphQL.
 	const rawSchema = await fs.promises.readFile(SCHEMA_FILE, 'utf8')
-	const schema = makeExecutableSchema({
+
+	const schema = createSchema({
 		typeDefs: [DIRECTIVES, rawSchema],
 		resolvers: resolvers,
 	})
 
-	// Feed middleware & options to the express server.
-	// ------
-	// NOTICE
-	// Express 4 types don't allow middleware to return "Promise<void>", but just "void".
-	// Fortunately, we can wrap each returned promise in a void function, as seen here.
-	// We'll also use a try/catch block to correctly handle any errors.
-	app.use(
-		'/',
-		bodyParser.json( ),
-		(request, response, next) => {
-			try {
-				void expressJWT({
-					secret: JWT_SECRET,
-					algorithms: ['HS256'],
-					credentialsRequired: false,
-				})(request, response, next)
-			}
-			catch (error) {
-				next(error)
-			}
-		},
-		(request, response, next) => {
-			try {
-				void graphqlHTTP((request, response, params) => {
-					// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-					const jwtRequest = request as JWTRequest<Context>
-					const payload = jwtRequest.auth ?? null
+	const yoga = createYoga({
+		graphqlEndpoint: '/',
+		schema: schema,
 
-					return ({
-						graphiql: false,
-						schema: schema,
-						context: payload,
-					})
-				})(request, response)
-			}
-			catch (error) {
-				next(error)
-			}
+		// Allows credentials (ie, refresh tokens in http cookies)
+		cors: {
+			origin: [ORIGIN_URL], // Allowed frontend origin
+			credentials: true, // Allow cookies and credentials
 		},
-	)
+
+		plugins: [
+			// Make sure to add the useCookies plugin
+			//   before the useJWT plugin.
+			useCookies( ),
+
+			useJWT({
+				// Configure your signing providers:
+				//   either a local signing-key or a remote JWKS are supported.
+				signingKeyProviders: [
+					// This will extract the jwt using the env secret.
+					createInlineSigningKeyProvider(ACCESS_TOKEN_SECRET),
+				],
+
+				// Configure where to look for the JWT token:
+				//   in the headers, or cookies.
+				// By default, the plugin will look for
+				//   the token in the 'authorization' header only.
+				tokenLookupLocations: [
+					extractFromHeader({
+						name: 'Authorization',
+						prefix: 'Bearer',
+					}),
+				],
+
+				// Configure your token issuers/audience/algorithms
+				//   verification options.
+				// By default, the plugin will only verify
+				//   the HS256/RS256 algorithms.
+				// Please note that this should match the
+				//   JWT signer issuer/audience/algorithms.
+				tokenVerification: {
+					algorithms: ['HS256'],
+
+					// Audience gets set in the JWT, and is expected.
+					// Otherwise it'll be considered malformed!
+					audience: 'nebuloid-backend',
+
+					// Similar to the audience, except the issuer is either
+					//   'https://nebuloid.dev/' or 'http://localhost:3000/'.
+					issuer: ORIGIN_URL,
+				},
+
+				// Configure context injection after the token is verified.
+				// By default, the plugin will inject the token's payload
+				//   into the context into the `jwt` field.
+				// You can pass a string: `"myJwt"` to change the field name.
+				extendContext: true,
+
+				// The plugin can reject the request if the token is missing
+				//   or invalid (doesn't pass JWT `verify` flow).
+				// By default, the plugin will reject the request if the token
+				//   is missing or invalid.
+				reject: {
+					invalidToken: false,
+					missingToken: false,
+				},
+			}),
+		],
+	})
+
+	const server = createServer(yoga)
 
 	// Finally, start the express server.
-	app.listen(PORT, ( ) => {
+	server.listen(PORT, ( ) => {
 		if (env.NODE_ENV === 'development') {
-			console.info(`Server started on port ${PORT}.`)
+			console.info(`\nServer started on port ${PORT}.`)
 			console.info(`http://localhost:${PORT}/`)
 		}
 	})

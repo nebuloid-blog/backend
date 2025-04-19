@@ -1,12 +1,17 @@
-import {Role} from '../types/generated/schema.js'
-import type {UserDbObject} from '../types/generated/schema.js'
+import {Role} from '@app/types/generated/schema'
+import HttpError from 'standard-http-error'
+import type {UserDbObject} from '@app/types/generated/schema'
 
-const authorizationError = new Error('You don\'t have permission to make this request.')
+const authorizationError = new HttpError(
+	403, // FORBIDDEN
+	'Insufficient permissions to make this request.',
+)
 
 const roleAccessLevels = [
 	Role.GUEST,
 	Role.USER,
-	Role.OWNER,
+	Role.MODERATOR,
+	Role.ADMINISTRATOR,
 ]
 
 // Stupid work-around for filtering typescript enums...
@@ -29,32 +34,24 @@ const refineRole = (role: string | undefined): Role => {
 const authorizeOwnership = async (
 	user: UserDbObject | undefined,
 	ownerID: string,
-	throwErrorOnFailure = true,
 ) => {
 	if (user != null && user._id.toString( ) === ownerID) return true
-	else if (throwErrorOnFailure) throw authorizationError
-	else return false
+	else throw authorizationError
 }
 
 const authorizeRoleAccess = async (
 	user: UserDbObject | undefined,
 	requiredRole: Role,
-	throwErrorOnFailure = true,
 ) => {
 	const userRole = refineRole(user?.role)
 	const userAccessLevel = roleAccessLevels.indexOf(userRole)
 	const requiredAccessLevel = roleAccessLevels.indexOf(requiredRole)
 
 	if (userAccessLevel >= requiredAccessLevel) return true
-	else if (throwErrorOnFailure) throw authorizationError
-	else return false
+	else throw authorizationError
 }
 
 export {
-	// Variables
-	authorizationError,
-
-	// Functions
 	authorizeOwnership,
 	authorizeRoleAccess,
 }

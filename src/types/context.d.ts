@@ -1,6 +1,22 @@
+import type {YogaInitialContext} from 'graphql-yoga'
 import type {JwtPayload} from 'jsonwebtoken'
-import type {UserDbObject} from './generated/schema.js'
 
-export interface Context extends Record<string, unknown>, JwtPayload {
-	user?: UserDbObject,
+interface Payload extends JwtPayload {
+	userId: string,
+	username: string,
+	role: string,
 }
+
+interface Token {
+	prefix: string,
+	value: string,
+}
+
+interface Context extends YogaInitialContext {
+	jwt?: {
+		payload: Payload,
+		token: Token,
+	},
+}
+
+export type {Context, Payload}
